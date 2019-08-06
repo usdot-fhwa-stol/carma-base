@@ -123,6 +123,6 @@ RUN sudo apt-get -y install gcovr && \
         sudo echo 'export PATH=$PATH:/home/carma/.ci-image/engineering_tools/code_coverage/' >> /home/carma/.base-image/init-env.sh
 
 # Add engineering tools scripts to image
-ADD --chown=carma ./engineering_tools/code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
+ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
