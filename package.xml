@@ -44,6 +44,8 @@
   <depend>cpp_common</depend>
   <depend>curl</depend>
   <depend>cv_bridge</depend>
+  <depend>dbw_mkz_msgs</depend>
+  <depend>dbw_mkz_can</depend>
   <depend>diagnostic_aggregator</depend>
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
