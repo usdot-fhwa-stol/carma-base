@@ -16,7 +16,7 @@
 -->
 <package format="2">
   <name>carma_base</name>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
 
   <description>
         A metapackage to install the dependencies for CARMA
@@ -44,6 +44,8 @@
   <depend>cpp_common</depend>
   <depend>curl</depend>
   <depend>cv_bridge</depend>
+  <depend>dbw_mkz_msgs</depend>
+  <depend>dbw_mkz_can</depend>
   <depend>diagnostic_aggregator</depend>
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
