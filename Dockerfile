@@ -52,6 +52,9 @@ RUN apt-get update && \
         unzip \
         gcovr
 
+# Add dependencies for SScInterFaceWrapper
+RUN apt-get update && apt-get install -y ros-kinetic-jsk-recognition-msgs
+
 RUN pip3 install -U setuptools
 
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
