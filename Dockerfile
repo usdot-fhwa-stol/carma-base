@@ -55,6 +55,10 @@ RUN apt-get update && \
 # Add dependencies for SScInterFaceWrapper
 RUN apt-get update && apt-get install -y ros-kinetic-jsk-recognition-msgs
 
+# Add dependencies for Novatel Gps driver
+RUN apt-get update \
+    && apt-get install -y libpcap-dev ros-kinetic-gps-common ros-kinetic-swri-math-util ros-kinetic-swri-roscpp ros-kinetic-swri-serial-util ros-kinetic-swri-string-util ros-kinetic-swri-nodelet
+
 RUN pip3 install -U setuptools
 
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
