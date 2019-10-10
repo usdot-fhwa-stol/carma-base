@@ -52,12 +52,32 @@ RUN apt-get update && \
         unzip \
         gcovr
 
-# Add dependencies for SScInterFaceWrapper
-RUN apt-get update && apt-get install -y ros-kinetic-jsk-recognition-msgs
-
-# Add dependencies for Novatel Gps driver
-RUN apt-get update \
-    && apt-get install -y libpcap-dev ros-kinetic-gps-common ros-kinetic-swri-math-util ros-kinetic-swri-roscpp ros-kinetic-swri-serial-util ros-kinetic-swri-string-util ros-kinetic-swri-nodelet
+# Add dependencies for other CARMA package
+RUN apt-get install -y \
+        ros-kinetic-jsk-recognition-msgs \
+        ros-kinetic-pacmod-msgs \
+        ros-kinetic-can-msgs \
+        ros-kinetic-automotive-navigation-msgs \
+        ros-kinetic-autoware-msgs \
+        ros-kinetic-automotive-platform-msgs \
+        ros-kinetic-pacmod3 \
+        ros-kinetic-dbw-mkz-msgs \
+        libpcap-dev \
+        ros-kinetic-gps-common \
+        ros-kinetic-swri-math-util \
+        ros-kinetic-swri-roscpp \
+        ros-kinetic-swri-serial-util \
+        ros-kinetic-swri-string-util \
+        ros-kinetic-swri-nodelet \
+        ros-kinetic-message-runtime \
+        ros-kinetic-message-generation \
+        ros-kinetic-diagnostic-msgs \
+        ros-kinetic-diagnostic-updater \
+        ros-kinetic-nav-msgs \
+        ros-kinetic-nodelet \
+        ros-kinetic-novatel-gps-msgs \
+        ros-kinetic-sensor-msgs \
+        ros-kinetic-tf
 
 RUN pip3 install -U setuptools
 
