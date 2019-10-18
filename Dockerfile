@@ -50,7 +50,8 @@ RUN apt-get update && \
         python3-vcstool \
         nodejs \
         unzip \
-        gcovr
+        gcovr \
+        libpcap-dev
 
 RUN pip3 install -U setuptools
 
