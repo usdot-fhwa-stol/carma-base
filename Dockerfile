@@ -51,7 +51,9 @@ RUN apt-get update && \
         nodejs \
         unzip \
         gcovr \
-        libpcap-dev
+        libpcap-dev \
+        libfftw3-dev \
+        gnuplot-qt
 
 RUN pip3 install -U setuptools
 
@@ -89,6 +91,17 @@ RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.bas
 RUN mkdir -p /opt/carma/app/bin /opt/carma/params /opt/carma/routes /opt/carma/urdf /opt/carma/logs /opt/carma/launch /opt/carma/app/mock_data /opt/carma/app/engineering_tools /opt/carma/drivers &&\
     echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
     echo "cd /opt/carma" >> ~/.bashrc 
+
+# Install Armadillo
+RUN cd ~/ && \
+        curl -L  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
+        tar -xvf armadillo-9.800.1.tar.xz && \
+        cd armadillo-9.800.1 && \
+        ./configure && \
+        make && \
+        sudo make install && \
+        cd ../ && \
+        rm -R armadillo-9.800.1 armadillo-9.800.1.tar.xz
 
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
