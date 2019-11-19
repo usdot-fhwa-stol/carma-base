@@ -53,7 +53,11 @@ RUN apt-get update && \
         gcovr \
         libpcap-dev \
         libfftw3-dev \
-        gnuplot-qt
+        gnuplot-qt \
+        libgeographic-dev \ 
+        libpugixml-dev \
+        python-catkin-tools \
+        libboost-python-dev
 
 RUN pip3 install -U setuptools
 
