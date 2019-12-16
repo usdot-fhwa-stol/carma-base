@@ -144,4 +144,13 @@ RUN sudo apt-get -y install gcovr && \
 # Add engineering tools scripts to image
 ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
+RUN sudo apt-get install -y sqlite3 autotools-dev automake
+
+RUN sudo git clone https://github.com/OSGeo/PROJ.git && \
+        cd PROJ && \
+        sudo ./autogen.sh && \
+        sudo ./configure && \
+        sudo make && \
+        sudo make install
+
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
