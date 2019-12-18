@@ -153,5 +153,7 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo ./configure && \
         sudo make && \
         sudo make install
+        
+RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
