@@ -60,7 +60,9 @@ RUN apt-get update && \
         libboost-python-dev \
         sqlite3 \
         autotools-dev \
-        automake
+        automake \
+        ros-kinetic-rosserial-arduino \
+        ros-kinetic-rosserial
 
 RUN pip3 install -U setuptools
 
