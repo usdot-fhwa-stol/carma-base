@@ -149,7 +149,7 @@ RUN sudo apt-get install -y sqlite3 autotools-dev automake
 RUN sudo git clone https://github.com/OSGeo/PROJ.git && \
         cd PROJ && \
         sudo ./autogen.sh && \
-        sudo ./configure && \
+        sudo ./configure --prefix=/usr && \
         sudo make && \
         sudo make install
 
