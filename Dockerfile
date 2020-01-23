@@ -1,4 +1,4 @@
-#  Copyright (C) 2018-2019 LEIDOS.
+#  Copyright (C) 2018-2020 LEIDOS.
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -152,7 +152,7 @@ ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_c
 RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
         cd /home/carma/PROJ && \
         sudo ./autogen.sh && \
-        sudo ./configure && \
+        sudo ./configure --prefix=/usr && \
         sudo make && \
         sudo make install
         
