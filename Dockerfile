@@ -114,8 +114,8 @@ RUN cd ~/ && \
 
 # Install VimbaSDK for the Mako cameras
 RUN cd ~/ && \
-        curl -L  https://github.com/usdot-fhwa-stol/CARMAAvtVimbaDriver/blob/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
-        tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
+        curl -L  https://github.com/usdot-fhwa-stol/CARMAAvtVimbaDriver/raw/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
+        sudo tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
         cd /opt/Vimba_3_1/VimbaGigETL && \
         sudo ./Install.sh
   
