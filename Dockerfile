@@ -112,6 +112,13 @@ RUN cd ~/ && \
         cd ../ && \
         rm -R armadillo-9.800.1 armadillo-9.800.1.tar.xz
 
+# Install VimbaSDK for the Mako cameras
+RUN cd ~/ && \
+        curl -L  https://github.com/usdot-fhwa-stol/CARMAAvtVimbaDriver/blob/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
+        tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
+        cd /opt/Vimba_3_1/VimbaGigETL && \
+        sudo ./Install.sh
+  
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
 # The Build Wrapper which executes a code build to capture C++
