@@ -117,7 +117,9 @@ RUN cd ~/ && \
         curl -L  https://github.com/usdot-fhwa-stol/CARMAAvtVimbaDriver/raw/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
         sudo tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
         cd /opt/Vimba_3_1/VimbaGigETL && \
-        sudo ./Install.sh
+        sudo ./Install.sh && \
+        sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
+        sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
   
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
