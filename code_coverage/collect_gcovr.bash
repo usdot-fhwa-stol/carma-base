@@ -55,7 +55,7 @@ else
 	output_dir=$2;
 fi
 
-gcovr --sonarqube -k -r . # Run gcovr with -k to ensure generated .gcov files are preserved -r . makes it run in the current directory
+gcovr -k -r . # Run gcovr with -k to ensure generated .gcov files are preserved -r . makes it run in the current directory
 
 echo "Ensuring output directory exists"
 mkdir -p ${output_dir}
