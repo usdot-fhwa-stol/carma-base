@@ -71,6 +71,7 @@
   <depend>gtest</depend>
   <depend>image_common</depend>
   <depend>image_geometry</depend>
+  <depend>image_proc</depend>
   <depend>image_transport</depend>
   <depend>image_view2</depend>
   <depend>imu_filter_madgwick</depend>
