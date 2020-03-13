@@ -40,8 +40,8 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -t|--test)
-            USERNAME=usdotfhwastoltest
-            COMPONENT_VERSION_STRING=test
+            USERNAME=usdotfhwastoldev
+            COMPONENT_VERSION_STRING=stable
             shift
             ;;
     esac
