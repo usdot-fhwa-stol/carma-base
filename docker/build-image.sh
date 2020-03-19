@@ -41,7 +41,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         -t|--test)
             USERNAME=usdotfhwastoldev
-            COMPONENT_VERSION_STRING=stable
+            COMPONENT_VERSION_STRING=develop
             shift
             ;;
     esac
