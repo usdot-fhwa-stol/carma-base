@@ -39,6 +39,11 @@ while [[ $# -gt 0 ]]; do
             PUSH=true
             shift
             ;;
+        -t|--test)
+            USERNAME=usdotfhwastoldev
+            COMPONENT_VERSION_STRING=develop
+            shift
+            ;;
     esac
 done
 
