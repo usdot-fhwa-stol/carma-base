@@ -120,6 +120,16 @@ RUN cd ~/ && \
         sudo ./Install.sh && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
+
+ # Install Nvidia GPU Container support
+ RUN cd ~/ && \
+ 		distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+		curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey && \
+		sudo apt-key add - && \
+		curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list && \ 
+		sudo tee /etc/apt/sources.list.d/nvidia-docker.list && \
+		sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit && \
+		sudo systemctl restart docker       
   
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
