@@ -26,7 +26,7 @@ LABEL org.label-schema.description="Base operating system install for the CARMA 
 LABEL org.label-schema.vendor="Leidos"
 LABEL org.label-schema.version=${VERSION}
 LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
-LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/CARMAPlatform"
+LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platform"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
@@ -114,7 +114,7 @@ RUN cd ~/ && \
 
 # Install VimbaSDK for the Mako cameras
 RUN cd ~/ && \
-        curl -L  https://github.com/usdot-fhwa-stol/CARMAAvtVimbaDriver/raw/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
+        curl -L  https://github.com/usdot-fhwa-stol/avt_vimba_driver/raw/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
         sudo tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
         cd /opt/Vimba_3_1/VimbaGigETL && \
         sudo ./Install.sh && \
