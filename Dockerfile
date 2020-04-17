@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM ros:kinetic-ros-base 
+FROM nvidia/cuda:9.0-runtime-ubuntu16.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -30,6 +30,15 @@ LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platfor
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
+
+ENV ROS_DISTRO kinetic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
+    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
+    && apt-get update     \ 
+    && apt-get install ros-kinetic-desktop-full python-rosinstall -y     \ 
+    && rosdep init
+
 RUN apt-get update && \
         apt-get install -y \
         git \
@@ -41,6 +50,7 @@ RUN apt-get update && \
         vim \
         nano \
         less \
+        curl \
         apt-transport-https \
         python-catkin-pkg \
         python-rosdep \
@@ -120,6 +130,7 @@ RUN cd ~/ && \
         sudo ./Install.sh && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
+
   
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
