@@ -20,9 +20,11 @@
 # runs "roslaunch carma carma_docker.launch" after setting up the environment
 # such that ROS and CARMA are on the user's PATH
 
-if [ -z "$@" ]; then
+if [ -z "$@" ] || [ "$@" = "bash" ]; then
     # If no other command is passed to this script, run bash
-    source ~/.base-image/init-env.sh; exec "bash"
+    source ~/.base-image/init-env.sh;
+    bash
 else 
-    source ~/.base-image/init-env.sh; exec "$@"
+    source ~/.base-image/init-env.sh;
+    bash -c "$@"
 fi

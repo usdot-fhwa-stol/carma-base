@@ -40,7 +40,7 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
     && rosdep init
 
 RUN apt-get update && \
-        apt-get install -y \
+        DEBIAN_FRONTEND=noninteractive apt-get install -y \
         git \
         ssh \
         ros-kinetic-rosjava \
@@ -72,10 +72,15 @@ RUN apt-get update && \
         autotools-dev \
         automake \
         ros-kinetic-rosserial-arduino \
-        ros-kinetic-rosserial
+        ros-kinetic-rosserial \
+        dialog \
+        x-window-system \
+        mesa-utils
+
 
 RUN pip3 install -U setuptools
 
+# Pull AutonomouStuff deps
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
         apt-get install -y ros-kinetic-astuff-sensor-msgs \
@@ -103,13 +108,11 @@ ADD --chown=carma init-env.sh /home/carma/.base-image/
 RUN rosdep update && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
+# Export QT X11 Forwarding variables
+RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
+
 RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.base-image/wait-for-it &&\
     sudo mv ~/.base-image/wait-for-it/wait-for-it.sh /usr/bin 
-
-# Final system setup
-RUN mkdir -p /opt/carma/app/bin /opt/carma/params /opt/carma/routes /opt/carma/urdf /opt/carma/logs /opt/carma/launch /opt/carma/app/mock_data /opt/carma/app/engineering_tools /opt/carma/drivers &&\
-    echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
-    echo "cd /opt/carma" >> ~/.bashrc 
 
 # Install Armadillo
 RUN cd ~/ && \
@@ -177,5 +180,10 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo make install
         
 RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
+
+# Final system setup this must go last before the ENTRYPOINT
+RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
+    echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
+    echo "cd /opt/carma" >> ~/.bashrc 
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
