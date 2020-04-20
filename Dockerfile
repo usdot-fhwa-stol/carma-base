@@ -75,7 +75,8 @@ RUN apt-get update && \
         ros-kinetic-rosserial \
         dialog \
         x-window-system \
-        mesa-utils
+        mesa-utils \
+        gdb
 
 
 RUN pip3 install -U setuptools
