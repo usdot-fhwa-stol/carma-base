@@ -29,6 +29,8 @@
 #
 #
 
+set -eo pipefail
+
 usage() { echo "Usage: make_with_coverage.bash -e <execution dir> -o <output dir> -m -t ";}
 
  
@@ -62,6 +64,10 @@ fi
 execution_dir=$(readlink -f ${execution_dir}) # Get execution directory as absolute path
 cd ${execution_dir} # cd to execution directory
 echo "Execution Dir: ${execution_dir}"
+
+if ! [ -d ${output_dir} ]; then
+	mkdir -p ${output_dir}
+fi
 
 output_dir=$(readlink -f ${output_dir}); # Get output directory as absolute path
 echo "Output Dir: ${output_dir}"
