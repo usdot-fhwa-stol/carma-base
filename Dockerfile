@@ -54,6 +54,7 @@ RUN apt-get update && \
         apt-transport-https \
         python-catkin-pkg \
         python-rosdep \
+        python-pip \
         python3-pip \
         python3-colcon-common-extensions \
         python3-setuptools \
@@ -80,6 +81,9 @@ RUN apt-get update && \
 
 
 RUN pip3 install -U setuptools
+
+# Install simple-pid
+RUN pip install simple-pid
 
 # Pull AutonomouStuff deps
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
