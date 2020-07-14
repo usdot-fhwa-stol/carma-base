@@ -77,7 +77,8 @@ RUN apt-get update && \
         dialog \
         x-window-system \
         mesa-utils \
-        gdb
+        gdb \
+        software-properties-common
 
 
 RUN pip3 install -U setuptools
@@ -90,6 +91,11 @@ RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/
         apt-get update && \
         apt-get install -y ros-kinetic-astuff-sensor-msgs \
         libas-common
+
+# Install KVaser CAN
+RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
+    apt-get update -qq && \
+    apt-get install kvaser-canlib-dev
 
 # Add carma user
 ENV USERNAME carma
