@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM nvidia/cuda:9.0-runtime-ubuntu16.04
+FROM nvidia/cudagl:9.0-runtime-ubuntu16.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -30,6 +30,11 @@ LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platfor
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+    
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
 
 ENV ROS_DISTRO kinetic
