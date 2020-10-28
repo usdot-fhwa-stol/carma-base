@@ -48,7 +48,6 @@ RUN apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
         git \
         ssh \
-        ros-kinetic-rosjava \
         ros-kinetic-rosbridge-server \
         sudo \
         tmux \
@@ -156,7 +155,7 @@ RUN cd ~/ && \
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
 # The Build Wrapper which executes a code build to capture C++
-# The Sonar Scanner which evaluates both C++ and Java then uploads the results to SonarCloud
+# The Sonar Scanner which uploads the results to SonarCloud
 ENV SONAR_DIR=/opt/sonarqube
 
 # Pull scanner from internet
