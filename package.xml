@@ -57,7 +57,6 @@
   <depend>eigen</depend>
   <depend>gazebo_msgs</depend>
   <depend>gazebo_ros_control</depend>
-  <depend>genjava</depend>
   <depend>genmsg</depend>
   <depend>genpy</depend>
   <depend>geometry_msgs</depend>
@@ -130,8 +129,6 @@
   <depend>roscpp</depend>
   <depend>roscpp_serialization</depend>
   <depend>rosgraph_msgs</depend>
-  <depend>rosjava_build_tools</depend>
-  <depend>rosjava_messages</depend>
   <depend>roslaunch</depend>
   <depend>roslib</depend>
   <depend>roslint</depend>
