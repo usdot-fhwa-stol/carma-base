@@ -107,7 +107,6 @@
   <depend>novatel_gps_msgs</depend>
   <depend>opengl</depend>
   <depend>pacmod3</depend>
-  <depend>pacmod_msgs</depend>
   <depend>pcl_conversions</depend>
   <depend>pcl_msgs</depend>
   <depend>pcl_ros</depend>
