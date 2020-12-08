@@ -204,7 +204,7 @@ ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_c
 RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
         cd /home/carma/PROJ && \
         sudo ./autogen.sh && \
-        sudo ./configure --prefix=/usr && \
+        sudo ./configure && \
         sudo make && \
         sudo make install
         
