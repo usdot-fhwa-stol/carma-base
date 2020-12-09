@@ -44,6 +44,16 @@ while [[ $# -gt 0 ]]; do
             COMPONENT_VERSION_STRING=develop
             shift
             ;;
+        -c|--candidate)
+            if ! echo "$BRANCH" | grep -q "release/.*"; then
+                        echo "Please switch to a release branch before using the -c option. Exiting script now."
+                        exit 1
+            else
+                USERNAME=usdotfhwastolcandidate
+                COMPONENT_VERSION_STRING=$(git rev-parse --abbrev-ref HEAD | cut -d "/" -f 2)
+            fi
+            shift
+            ;;
     esac
 done
 
