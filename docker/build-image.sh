@@ -13,8 +13,10 @@
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #  License for the specific language governing permissions and limitations under
 #  the License.
+set -x
 
 USERNAME=usdotfhwastol
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 cd "$(dirname "$0")"
 IMAGE=$(basename `git rev-parse --show-toplevel`)
@@ -50,7 +52,7 @@ while [[ $# -gt 0 ]]; do
                         exit 1
             else
                 USERNAME=usdotfhwastolcandidate
-                COMPONENT_VERSION_STRING=$(git rev-parse --abbrev-ref HEAD | cut -d "/" -f 2)
+                COMPONENT_VERSION_STRING=$(echo $BRANCH | cut -d "/" -f 2)
             fi
             shift
             ;;
