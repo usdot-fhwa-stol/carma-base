@@ -1,9 +1,8 @@
 #!/bin/bash
 
-sed -i "s|IMAGE=.*|IMAGE=${DOCKER_REPO}|g" docker/build-image.sh
+echo "Building $IMAGE_NAME"
 
-if [[ "$SOURCE_BRANCH" = "develop" ]]; then
-    ./docker/build-image.sh -d
-elif [[ "$SOURCE_BRANCH" =~ ^release/.*$ ]]; then
-    ./docker/build-image.sh -c
-fi
+docker build --no-cache -t $IMAGE_NAME \
+    --build-arg VERSION="$DOCKER_TAG" \
+    --build-arg VCS_REF=`git rev-parse --short HEAD` \
+    --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` .
