@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM ros:kinetic-ros-base 
+FROM nvidia/cudagl:9.0-runtime-ubuntu16.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -26,12 +26,26 @@ LABEL org.label-schema.description="Base operating system install for the CARMA 
 LABEL org.label-schema.vendor="Leidos"
 LABEL org.label-schema.version=${VERSION}
 LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
-LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/CARMAPlatform"
+LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platform"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+    
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
+
+ENV ROS_DISTRO kinetic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
+    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
+    && apt-get update     \ 
+    && apt-get install ros-kinetic-desktop-full python-rosinstall -y     \ 
+    && rosdep init
+
 RUN apt-get update && \
-        apt-get install -y \
+        DEBIAN_FRONTEND=noninteractive apt-get install -y \
         git \
         ssh \
         ros-kinetic-rosjava \
@@ -41,9 +55,11 @@ RUN apt-get update && \
         vim \
         nano \
         less \
+        curl \
         apt-transport-https \
         python-catkin-pkg \
         python-rosdep \
+        python-pip \
         python3-pip \
         python3-colcon-common-extensions \
         python3-setuptools \
@@ -62,14 +78,31 @@ RUN apt-get update && \
         autotools-dev \
         automake \
         ros-kinetic-rosserial-arduino \
-        ros-kinetic-rosserial
+        ros-kinetic-rosserial \
+        dialog \
+        x-window-system \
+        mesa-utils \
+        gdb \
+        software-properties-common
+
 
 RUN pip3 install -U setuptools
 
+# Install simple-pid
+RUN pip install simple-pid
+
+# Pull AutonomouStuff deps
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
         apt-get install -y ros-kinetic-astuff-sensor-msgs \
         libas-common
+
+# Install KVaser CAN
+RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
+    apt-get update -qq && \
+    apt-get install -y kvaser-canlib-dev \
+    kvaser-drivers-dkms \
+    ros-kinetic-kvaser-interface
 
 # Add carma user
 ENV USERNAME carma
@@ -93,13 +126,11 @@ ADD --chown=carma init-env.sh /home/carma/.base-image/
 RUN rosdep update && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
+# Export QT X11 Forwarding variables
+RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
+
 RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.base-image/wait-for-it &&\
     sudo mv ~/.base-image/wait-for-it/wait-for-it.sh /usr/bin 
-
-# Final system setup
-RUN mkdir -p /opt/carma/app/bin /opt/carma/params /opt/carma/routes /opt/carma/urdf /opt/carma/logs /opt/carma/launch /opt/carma/app/mock_data /opt/carma/app/engineering_tools /opt/carma/drivers &&\
-    echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
-    echo "cd /opt/carma" >> ~/.bashrc 
 
 # Install Armadillo
 RUN cd ~/ && \
@@ -114,13 +145,25 @@ RUN cd ~/ && \
 
 # Install VimbaSDK for the Mako cameras
 RUN cd ~/ && \
-        curl -L  https://github.com/usdot-fhwa-stol/CARMAAvtVimbaDriver/raw/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
+        curl -L  https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
         sudo tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
         cd /opt/Vimba_3_1/VimbaGigETL && \
         sudo ./Install.sh && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
-  
+
+# Install gradle for carma-platform build
+RUN cd ~/ && \
+    wget https://services.gradle.org/distributions/gradle-4.10.2-bin.zip && \
+    sudo chmod 777 ~/gradle-4.10.2-bin.zip && \
+    mkdir -p /home/carma/.gradle/wrapper/dists/gradle-4.10.2-bin/cghg6c4gf4vkiutgsab8yrnwv/ && \
+    mv ~/gradle-4.10.2-bin.zip /home/carma/.gradle/wrapper/dists/gradle-4.10.2-bin/cghg6c4gf4vkiutgsab8yrnwv/gradle-4.10.2-bin.zip
+RUN cd ~/ && \
+    wget https://services.gradle.org/distributions/gradle-2.14.1-bin.zip && \
+    sudo chmod 777 ~/gradle-2.14.1-bin.zip && \
+    mkdir -p /home/carma/.gradle/wrapper/dists/gradle-2.14.1-bin/ && \
+    mv ~/gradle-2.14.1-bin.zip /home/carma/.gradle/wrapper/dists/gradle-2.14.1-bin/gradle-2.14.1-bin.zip
+
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
 # The Build Wrapper which executes a code build to capture C++
@@ -161,10 +204,15 @@ ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_c
 RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
         cd /home/carma/PROJ && \
         sudo ./autogen.sh && \
-        sudo ./configure --prefix=/usr && \
+        sudo ./configure && \
         sudo make && \
         sudo make install
         
 RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
+
+# Final system setup this must go last before the ENTRYPOINT
+RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
+    echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
+    echo "cd /opt/carma" >> ~/.bashrc 
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
