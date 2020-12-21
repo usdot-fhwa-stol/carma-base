@@ -13,8 +13,10 @@
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #  License for the specific language governing permissions and limitations under
 #  the License.
+set -x
 
 USERNAME=usdotfhwastol
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 cd "$(dirname "$0")"
 IMAGE=$(basename `git rev-parse --show-toplevel`)
@@ -42,6 +44,16 @@ while [[ $# -gt 0 ]]; do
         -d|--develop)
             USERNAME=usdotfhwastoldev
             COMPONENT_VERSION_STRING=develop
+            shift
+            ;;
+        -c|--candidate)
+            if ! echo "$BRANCH" | grep -q "release/.*"; then
+                        echo "Please switch to a release branch before using the -c option. Exiting script now."
+                        exit 1
+            else
+                USERNAME=usdotfhwastolcandidate
+                COMPONENT_VERSION_STRING=$(echo $BRANCH | cut -d "/" -f 2)
+            fi
             shift
             ;;
     esac
