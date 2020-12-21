@@ -151,18 +151,6 @@ RUN cd ~/ && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
 
-# Install gradle for carma-platform build
-RUN cd ~/ && \
-    wget https://services.gradle.org/distributions/gradle-4.10.2-bin.zip && \
-    sudo chmod 777 ~/gradle-4.10.2-bin.zip && \
-    mkdir -p /home/carma/.gradle/wrapper/dists/gradle-4.10.2-bin/cghg6c4gf4vkiutgsab8yrnwv/ && \
-    mv ~/gradle-4.10.2-bin.zip /home/carma/.gradle/wrapper/dists/gradle-4.10.2-bin/cghg6c4gf4vkiutgsab8yrnwv/gradle-4.10.2-bin.zip
-RUN cd ~/ && \
-    wget https://services.gradle.org/distributions/gradle-2.14.1-bin.zip && \
-    sudo chmod 777 ~/gradle-2.14.1-bin.zip && \
-    mkdir -p /home/carma/.gradle/wrapper/dists/gradle-2.14.1-bin/ && \
-    mv ~/gradle-2.14.1-bin.zip /home/carma/.gradle/wrapper/dists/gradle-2.14.1-bin/gradle-2.14.1-bin.zip
-
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
 # The Build Wrapper which executes a code build to capture C++
