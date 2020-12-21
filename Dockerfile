@@ -151,7 +151,6 @@ RUN cd ~/ && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
 
-  
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
 # The Build Wrapper which executes a code build to capture C++
@@ -192,7 +191,7 @@ ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_c
 RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
         cd /home/carma/PROJ && \
         sudo ./autogen.sh && \
-        sudo ./configure --prefix=/usr && \
+        sudo ./configure && \
         sudo make && \
         sudo make install
         
