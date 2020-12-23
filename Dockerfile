@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM nvidia/cudagl:9.0-runtime-ubuntu16.04
+FROM nvidia/cudagl:11.1-runtime-ubuntu20.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -37,18 +37,18 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
 
-ENV ROS_DISTRO kinetic
+ENV ROS_DISTRO noetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
     && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
     && apt-get update     \ 
-    && apt-get install ros-kinetic-desktop-full python-rosinstall -y     \ 
+    && apt-get install ros-noetic-desktop-full python3-rosinstall -y     \ 
     && rosdep init
 
 RUN apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
         git \
         ssh \
-        ros-kinetic-rosbridge-server \
+        ros-noetic-rosbridge-server \
         sudo \
         tmux \
         vim \
@@ -76,8 +76,8 @@ RUN apt-get update && \
         sqlite3 \
         autotools-dev \
         automake \
-        ros-kinetic-rosserial-arduino \
-        ros-kinetic-rosserial \
+        ros-noetic-rosserial-arduino \
+        ros-noetic-rosserial \
         dialog \
         x-window-system \
         mesa-utils \
@@ -93,7 +93,7 @@ RUN pip install simple-pid
 # Pull AutonomouStuff deps
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
-        apt-get install -y ros-kinetic-astuff-sensor-msgs \
+        apt-get install -y ros-noetic-astuff-sensor-msgs \
         libas-common
 
 # Install KVaser CAN
@@ -101,7 +101,7 @@ RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
     apt-get update -qq && \
     apt-get install -y kvaser-canlib-dev \
     kvaser-drivers-dkms \
-    ros-kinetic-kvaser-interface
+    ros-noetic-kvaser-interface
 
 # Add carma user
 ENV USERNAME carma
