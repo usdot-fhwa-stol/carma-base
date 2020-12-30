@@ -35,17 +35,33 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
     
+ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
 
-ENV ROS_DISTRO noetic
+# Install ROS Noetic
+ARG ROS_DISTRO=noetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
     && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
     && apt-get update     \ 
-    && apt-get install ros-noetic-desktop-full python3-rosinstall -y     \ 
-    && rosdep init
+    && apt-get install ros-noetic-desktop-full python3-rosinstall -y
+
+# Install ROS 2 Foxy
+RUN sudo apt update && sudo apt install locales \
+    && sudo locale-gen en_US en_US.UTF-8 \
+    && sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
+    && export LANG=en_US.UTF-8
+
+RUN sudo apt update && sudo apt install curl gnupg2 lsb-release \
+    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
+RUN sudo sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+
+RUN sudo apt update \
+    && sudo apt install ros-foxy-desktop -y
+
 
 RUN apt-get update && \
-        DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        apt-get install -y \
         git \
         ssh \
         ros-noetic-rosbridge-server \
@@ -56,9 +72,8 @@ RUN apt-get update && \
         less \
         curl \
         apt-transport-https \
-        python-catkin-pkg \
-        python-rosdep \
-        python-pip \
+        python3-catkin-pkg \
+        python3-rosdep \
         python3-pip \
         python3-colcon-common-extensions \
         python3-setuptools \
@@ -71,7 +86,7 @@ RUN apt-get update && \
         gnuplot-qt \
         libgeographic-dev \ 
         libpugixml-dev \
-        python-catkin-tools \
+        python3-catkin-tools \
         libboost-python-dev \
         sqlite3 \
         autotools-dev \
@@ -79,29 +94,30 @@ RUN apt-get update && \
         ros-noetic-rosserial-arduino \
         ros-noetic-rosserial \
         dialog \
+        apt-utils \
         x-window-system \
         mesa-utils \
         gdb \
         software-properties-common
 
-
-RUN pip3 install -U setuptools
+RUN pip3 install -U testresources \
+        setuptools
 
 # Install simple-pid
-RUN pip install simple-pid
+RUN pip3 install simple-pid
 
 # Pull AutonomouStuff deps
-RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-        apt-get update && \
-        apt-get install -y ros-noetic-astuff-sensor-msgs \
-        libas-common
+# RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
+#         apt-get update && \
+#         apt-get install -y ros-noetic-astuff-sensor-msgs \
+#         libas-common
 
 # Install KVaser CAN
-RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
-    apt-get update -qq && \
-    apt-get install -y kvaser-canlib-dev \
-    kvaser-drivers-dkms \
-    ros-noetic-kvaser-interface
+# RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
+#     apt-get update -qq && \
+#     apt-get install -y kvaser-canlib-dev \
+#     kvaser-drivers-dkms \
+#     ros-noetic-kvaser-interface
 
 # Add carma user
 ENV USERNAME carma
@@ -122,8 +138,9 @@ USER carma
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 ADD --chown=carma entrypoint.sh /home/carma/.base-image/
 ADD --chown=carma init-env.sh /home/carma/.base-image/
-RUN rosdep update && \
-        rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
+# RUN sudo rosdep init && \
+#         rosdep update && \
+#         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
 # Export QT X11 Forwarding variables
 RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
@@ -195,7 +212,7 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo make && \
         sudo make install
         
-RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
+RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
 # Add cuda path
 RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 

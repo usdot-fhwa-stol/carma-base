@@ -113,12 +113,12 @@
   <depend>position_controllers</depend>
   <depend>python-flask</depend>
   <depend>python-imaging</depend>
-  <depend>python-nose</depend>
+  <depend>python3-nose</depend>
   <depend>python_qt_binding</depend>
-  <depend>python-requests</depend>
-  <depend>python-rospkg</depend>
-  <depend>python-serial</depend>
-  <depend>python-yaml</depend>
+  <depend>python3-requests</depend>
+  <depend>python3-rospkg</depend>
+  <depend>python3-serial</depend>
+  <depend>python3-yaml</depend>
   <depend>qtbase5-dev</depend>
   <depend>robot_state_publisher</depend>
   <depend>rosbag</depend>
