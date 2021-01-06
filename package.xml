@@ -60,14 +60,14 @@
   <depend>genmsg</depend>
   <depend>genpy</depend>
   <depend>geometry_msgs</depend>
-  <depend>glut</depend>
+  <depend>glut</depend> <!-- ??? -->
   <depend>gps_common</depend>
-  <depend>grid_map_cv</depend>
+  <!-- <depend>grid_map_cv</depend>
   <depend>grid_map_msgs</depend>
   <depend>grid_map_ros</depend>
   <depend>grid_map_visualization</depend>
-  <depend>gscam</depend>
-  <depend>gstreamer0.10-plugins-good</depend>
+  <depend>gscam</depend> Not supported in noetic -->
+  <!-- <depend>gstreamer0.10-plugins-good</depend> -->
   <depend>gtest</depend>
   <depend>image_common</depend>
   <depend>image_geometry</depend>
@@ -97,21 +97,21 @@
   <depend>libxi-dev</depend>
   <depend>libxmu-dev</depend>
   <depend>linux-kernel-headers</depend>
-  <depend>mercurial</depend>
+  <!-- <depend>mercurial</depend>  -->
   <depend>message_filters</depend>
   <depend>message_generation</depend>
   <depend>message_runtime</depend>
   <depend>nav_msgs</depend>
   <depend>nmea_msgs</depend>
   <depend>nodelet</depend>
-  <depend>novatel_gps_msgs</depend>
+  <!-- <depend>novatel_gps_msgs</depend> not supported on noetic -->
   <depend>opengl</depend>
-  <depend>pacmod3</depend>
+  <!-- <depend>pacmod3</depend> --> <!-- from astuff -->
   <depend>pcl_conversions</depend>
   <depend>pcl_msgs</depend>
   <depend>pcl_ros</depend>
   <depend>position_controllers</depend>
-  <depend>python-flask</depend>
+  <!-- <depend>python3-flask</depend> -->
   <depend>python-imaging</depend>
   <depend>python3-nose</depend>
   <depend>python_qt_binding</depend>

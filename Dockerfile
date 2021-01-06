@@ -138,9 +138,9 @@ USER carma
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 ADD --chown=carma entrypoint.sh /home/carma/.base-image/
 ADD --chown=carma init-env.sh /home/carma/.base-image/
-# RUN sudo rosdep init && \
-#         rosdep update && \
-#         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
+RUN sudo rosdep init && \
+        rosdep update && \
+        rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
 # Export QT X11 Forwarding variables
 RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
