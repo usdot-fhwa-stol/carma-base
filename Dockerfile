@@ -197,6 +197,9 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         
 RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
+# Install pip futures to support rosbridge
+RUN pip install future
+
 # Final system setup this must go last before the ENTRYPOINT
 RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
     echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
