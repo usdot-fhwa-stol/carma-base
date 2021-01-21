@@ -197,6 +197,11 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         
 RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
+# Add cuda path
+RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
+    && echo 'export PATH=$PATH:/usr/local/cuda/bin' >> ~/.bashrc \
+    && echo 'export CUDA_BIN_PATH=/usr/local/cuda' >> ~/.bashrc
+
 # Install pip futures to support rosbridge
 RUN pip install future
 
