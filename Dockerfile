@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM nvidia/cudagl:9.0-runtime-ubuntu16.04
+FROM nvidia/cudagl:10.0-devel-ubuntu16.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
