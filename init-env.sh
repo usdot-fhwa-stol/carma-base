@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  Copyright (C) 2018-2020 LEIDOS.
+#  Copyright (C) 2018-2021 LEIDOS.
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -16,6 +16,8 @@
 
 
 # Sets all environment variables and sources scripts necessary for CARMA to operate
+
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/
 
 [ -f "/opt/ros/kinetic/setup.bash" ] && source /opt/ros/kinetic/setup.bash
 [ -f "/opt/autoware.ai/ros/install/setup.bash" ] && source /opt/autoware.ai/ros/install/setup.bash

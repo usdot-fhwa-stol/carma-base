@@ -1,4 +1,4 @@
-#  Copyright (C) 2018-2020 LEIDOS.
+#  Copyright (C) 2018-2021 LEIDOS.
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -48,7 +48,6 @@ RUN apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
         git \
         ssh \
-        ros-kinetic-rosjava \
         ros-kinetic-rosbridge-server \
         sudo \
         tmux \
@@ -152,22 +151,10 @@ RUN cd ~/ && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
 
-# Install gradle for carma-platform build
-RUN cd ~/ && \
-    wget https://services.gradle.org/distributions/gradle-4.10.2-bin.zip && \
-    sudo chmod 777 ~/gradle-4.10.2-bin.zip && \
-    mkdir -p /home/carma/.gradle/wrapper/dists/gradle-4.10.2-bin/cghg6c4gf4vkiutgsab8yrnwv/ && \
-    mv ~/gradle-4.10.2-bin.zip /home/carma/.gradle/wrapper/dists/gradle-4.10.2-bin/cghg6c4gf4vkiutgsab8yrnwv/gradle-4.10.2-bin.zip
-RUN cd ~/ && \
-    wget https://services.gradle.org/distributions/gradle-2.14.1-bin.zip && \
-    sudo chmod 777 ~/gradle-2.14.1-bin.zip && \
-    mkdir -p /home/carma/.gradle/wrapper/dists/gradle-2.14.1-bin/ && \
-    mv ~/gradle-2.14.1-bin.zip /home/carma/.gradle/wrapper/dists/gradle-2.14.1-bin/gradle-2.14.1-bin.zip
-
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
 # The Build Wrapper which executes a code build to capture C++
-# The Sonar Scanner which evaluates both C++ and Java then uploads the results to SonarCloud
+# The Sonar Scanner which uploads the results to SonarCloud
 ENV SONAR_DIR=/opt/sonarqube
 
 # Pull scanner from internet
@@ -209,6 +196,9 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo make install
         
 RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
+
+# Install pip futures to support rosbridge
+RUN pip install future
 
 # Final system setup this must go last before the ENTRYPOINT
 RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
