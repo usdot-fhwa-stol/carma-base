@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM nvidia/cudagl:11.1-runtime-ubuntu20.04
+FROM nvidia/cudagl:11.3.0-runtime-ubuntu20.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -35,7 +35,8 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
     
-ARG DEBIAN_FRONTEND="noninteractive"
+#ARG DEBIAN_FRONTEND="noninteractive"
+
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
 
 # Install ROS Noetic
@@ -107,16 +108,19 @@ RUN pip3 install -U testresources \
 RUN pip3 install simple-pid
 
 # Pull AutonomouStuff deps
-# RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-#         apt-get update && \
-#         apt-get install -y ros-noetic-astuff-sensor-msgs \
-#         libas-common
+RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
+        apt-get update && \
+        apt-get install -y ros-noetic-astuff-sensor-msgs \
+        libas-common
 
 # Install KVaser CAN
-# RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
-#     apt-get update -qq && \
-#     apt-get install -y kvaser-canlib-dev \
-#     kvaser-drivers-dkms \
+RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
+    apt-get update -qq && \
+    apt-get install -y kvaser-canlib-dev \
+    apt-get install -y can-utils \
+    kvaser-drivers-dkms
+
+# Build this one from source
 #     ros-noetic-kvaser-interface
 
 # Add carma user
@@ -166,7 +170,8 @@ RUN cd ~/ && \
         cd /opt/Vimba_3_1/VimbaGigETL && \
         sudo ./Install.sh && \
         sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
-        sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
+        sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh \
+	rm Vimba_v3.1_Linux.tgz
 
 # Set environment variable for SonarQube Binaries
 # Two binaries are will go in this repo. 
