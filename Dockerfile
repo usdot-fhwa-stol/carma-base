@@ -14,12 +14,15 @@
 
 # CARMA Base Image Docker Configuration Script
 
+# The parent docker image has CUDA support since some modules use GPU-based acceleration
 FROM nvidia/cudagl:11.3.0-runtime-ubuntu20.04
 
+# Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
 ARG VCS_REF="NULL"
 
+# Specify docker image metadata
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.name="carma-base"
 LABEL org.label-schema.description="Base operating system install for the CARMA Platform"
@@ -30,97 +33,91 @@ LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platfor
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
-ENV NVIDIA_VISIBLE_DEVICES \
-    ${NVIDIA_VISIBLE_DEVICES:-all}
-ENV NVIDIA_DRIVER_CAPABILITIES \
-    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+# Specify which platform GPUs are available inside the container
+ENV NVIDIA_VISIBLE_DEVICES ${NVIDIA_VISIBLE_DEVICES:-all}
+
+# Specify which driver libraries/binaries will be mounted inside the container
+ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
     
+# Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
 
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
-    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
-    && apt-get update     \ 
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' \ 
+    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \ 
+    && apt-get update \ 
     && apt-get install ros-noetic-desktop-full python3-rosinstall -y
 
-# Install ROS 2 Foxy
-RUN sudo apt update && sudo apt install locales \
-    && sudo locale-gen en_US en_US.UTF-8 \
-    && sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
+# Prepare for ROS 2 Foxy installation
+RUN apt update && apt install locales \
+    && locale-gen en_US en_US.UTF-8 \
+    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
     && export LANG=en_US.UTF-8
+RUN apt update && apt install curl gnupg2 lsb-release \
+    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
 
-RUN sudo apt update && sudo apt install curl gnupg2 lsb-release \
-    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-
-RUN sudo sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
-
-RUN sudo apt update \
-    && sudo apt install ros-foxy-desktop -y
-
+# Install ROS 2 Foxy
+RUN apt update && apt install ros-foxy-desktop -y
 
 RUN apt-get update && \
         apt-get install -y \
-        git \
-        ssh \
-        ros-noetic-rosbridge-server \
-        sudo \
-        tmux \
-        vim \
-        nano \
-        less \
-        curl \
         apt-transport-https \
+        apt-utils \
+        automake \
+        autotools-dev \
+        curl \
+        dialog \
+        gcovr \
+        gdb \
+        git \
+        gnuplot-qt \
+        less \
+        libboost-python-dev \
+        libfftw3-dev \
+        libgeographic-dev \ 
+        libpcap-dev \
+        libpugixml-dev \
+        mesa-utils \
+        nano \
+        nodejs \
         python3-catkin-pkg \
-        python3-rosdep \
-        python3-pip \
+        python3-catkin-tools \
         python3-colcon-common-extensions \
+        python3-pip \
+        python3-rosdep \
         python3-setuptools \
         python3-vcstool \
-        nodejs \
-        unzip \
-        gcovr \
-        libpcap-dev \
-        libfftw3-dev \
-        gnuplot-qt \
-        libgeographic-dev \ 
-        libpugixml-dev \
-        python3-catkin-tools \
-        libboost-python-dev \
-        sqlite3 \
-        autotools-dev \
-        automake \
-        ros-noetic-rosserial-arduino \
+        ros-noetic-rosbridge-server \
         ros-noetic-rosserial \
-        dialog \
-        apt-utils \
-        x-window-system \
-        mesa-utils \
-        gdb \
-        software-properties-common
+        ros-noetic-rosserial-arduino \
+        software-properties-common \
+        sqlite3 \
+        ssh \
+        sudo \
+        tmux \
+        unzip \
+        vim \
+        x-window-system
 
-RUN pip3 install -U testresources \
-        setuptools
+RUN pip3 install -U testresources setuptools
 
 # Install simple-pid
 RUN pip3 install simple-pid
 
-# Pull AutonomouStuff deps
+# Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
-        apt-get install -y ros-noetic-astuff-sensor-msgs \
-        libas-common
+        apt-get install -y libas-common
 
 # Install KVaser CAN
 RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
     apt-get update -qq && \
     apt-get install -y kvaser-canlib-dev \
         can-utils kvaser-drivers-dkms
-
-# Build this one from source
-#     ros-noetic-kvaser-interface
 
 # Add carma user
 ENV USERNAME carma
@@ -133,14 +130,13 @@ RUN useradd -m $USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME && \
         usermod  --uid 1000 $USERNAME && \
         groupmod --gid 1000 $USERNAME
-
 RUN mkdir -p /opt/carma && chown carma:carma -R /opt/carma
-
 USER carma
 
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 ADD --chown=carma entrypoint.sh /home/carma/.base-image/
 ADD --chown=carma init-env.sh /home/carma/.base-image/
+
 RUN sudo rosdep init && \
         rosdep update && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
@@ -172,10 +168,9 @@ RUN cd ~/ && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh && \
         rm ~/Vimba_v3.1_Linux.tgz
 
-# Set environment variable for SonarQube Binaries
-# Two binaries are will go in this repo. 
-# The Build Wrapper which executes a code build to capture C++
-# The Sonar Scanner which uploads the results to SonarCloud
+# Set environment variable for SonarQube Binaries. Two binaries are will go into this directory:
+#   - The Build Wrapper which executes a code build to capture C++
+#   - The Sonar Scanner which uploads the results to SonarCloud
 ENV SONAR_DIR=/opt/sonarqube
 
 # Pull scanner from internet
@@ -209,6 +204,7 @@ RUN sudo apt-get -y install gcovr && \
 # Add engineering tools scripts to image
 ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
+# Download, build, and install PROJ, a package for coordinate transformations
 RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
         cd /home/carma/PROJ && \
         sudo ./autogen.sh && \
@@ -216,6 +212,7 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo make && \
         sudo make install
         
+# Download a cmake module for PROJ
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
 # Add cuda path
