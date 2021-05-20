@@ -19,7 +19,7 @@
 
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/
 
-[ -f "/opt/ros/kinetic/setup.bash" ] && source /opt/ros/kinetic/setup.bash
+[ -f "/opt/ros/noetic/setup.bash" ] && source /opt/ros/noetic/setup.bash
 [ -f "/opt/autoware.ai/ros/install/setup.bash" ] && source /opt/autoware.ai/ros/install/setup.bash
 [ -f "/opt/carma/install/setup.bash" ] && source /opt/carma/install/setup.bash
 [ -f "/opt/carma/vehicle/config/carma.env" ] && source /opt/carma/vehicle/config/carma.env # Always source environment variables as last step

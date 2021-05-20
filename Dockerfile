@@ -63,8 +63,7 @@ RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org
 # Install ROS 2 Foxy
 RUN apt update && apt install ros-foxy-desktop -y
 
-RUN apt-get update && \
-        apt-get install -y \
+RUN apt-get update && apt-get install -y \
         apt-transport-https \
         apt-utils \
         automake \
@@ -79,6 +78,7 @@ RUN apt-get update && \
         libboost-python-dev \
         libfftw3-dev \
         libgeographic-dev \ 
+        libgmock-dev \
         libpcap-dev \
         libpugixml-dev \
         mesa-utils \
@@ -91,6 +91,8 @@ RUN apt-get update && \
         python3-rosdep \
         python3-setuptools \
         python3-vcstool \
+        ros-noetic-costmap-2d \
+        ros-noetic-geodesy \
         ros-noetic-rosbridge-server \
         ros-noetic-rosserial \
         ros-noetic-rosserial-arduino \
@@ -215,7 +217,7 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
 # Download a cmake module for PROJ
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
-# Add cuda path
+# Add CUDA path
 RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
     && echo 'export PATH=$PATH:/usr/local/cuda/bin' >> ~/.bashrc \
     && echo 'export CUDA_BIN_PATH=/usr/local/cuda' >> ~/.bashrc
@@ -223,7 +225,7 @@ RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.b
 # Install pip futures to support rosbridge
 RUN pip install future
 
-# Final system setup this must go last before the ENTRYPOINT
+# Final system setup. This must go last before the ENTRYPOINT
 RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
     echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
     echo "cd /opt/carma" >> ~/.bashrc 
