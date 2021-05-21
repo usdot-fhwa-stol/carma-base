@@ -15,7 +15,7 @@
 # CARMA Base Image Docker Configuration Script
 
 # The parent docker image has CUDA support since some modules use GPU-based acceleration
-FROM nvidia/cudagl:11.3.0-runtime-ubuntu20.04
+FROM nvidia/cudagl:11.3.0-devel-ubuntu20.04
 
 # Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
