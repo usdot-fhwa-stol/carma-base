@@ -56,12 +56,11 @@
   <depend>genmsg</depend>
   <depend>genpy</depend>
   <depend>geometry_msgs</depend>
-  <depend>glut</depend> <!-- ??? -->
+  <depend>glut</depend>
   <depend>gps_common</depend>
   <depend>grid_map_msgs</depend>
   <depend>grid_map_ros</depend>
   <depend>grid_map_visualization</depend>
-  <depend>gscam</depend> Not supported in noetic -->
   <depend>gtest</depend>
   <depend>image_common</depend>
   <depend>image_geometry</depend>

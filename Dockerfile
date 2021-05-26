@@ -223,7 +223,7 @@ RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.b
     && echo 'export CUDA_BIN_PATH=/usr/local/cuda' >> ~/.bashrc
 
 # Install pip futures to support rosbridge
-RUN pip install future
+RUN pip3 install future
 
 # Final system setup. This must go last before the ENTRYPOINT
 RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
