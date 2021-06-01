@@ -48,6 +48,8 @@
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
   <depend>dynamic_reconfigure</depend>
+  <depend>dbw_mkz_msgs</depend>
+  <depend>dataspeed_ulc_can</depend>
   <depend>effort_controllers</depend>
   <depend>eigen_conversions</depend>
   <depend>eigen</depend>
@@ -70,6 +72,7 @@
   <depend>imu_filter_madgwick</depend>
   <depend>imu_tools</depend>
   <depend>joint_state_controller</depend>
+  <depend>joy</depend>
   <depend>jsk_recognition_msgs</depend>
   <depend>jsk_recognition_utils</depend>
   <depend>jsk_rviz_plugins</depend>
