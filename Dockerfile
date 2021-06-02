@@ -92,10 +92,14 @@ RUN apt-get update && apt-get install -y \
         python3-setuptools \
         python3-vcstool \
         ros-noetic-costmap-2d \
+        ros-noetic-dataspeed-can \
+        ros-noetic-dbw-mkz \
         ros-noetic-geodesy \
-        ros-noetic-rosbridge-server \
+        ros-noetic-grid-map \
+        ros-noetic-lusb \
         ros-noetic-rosserial \
         ros-noetic-rosserial-arduino \
+        ros-noetic-velodyne-pcl \
         software-properties-common \
         sqlite3 \
         ssh \
