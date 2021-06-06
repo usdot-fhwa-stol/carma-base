@@ -122,8 +122,7 @@ RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/
 # Install KVaser CAN
 RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
     apt-get update -qq && \
-    apt-get install -y kvaser-canlib-dev \
-        can-utils kvaser-drivers-dkms
+    apt-get install -y kvaser-canlib-dev can-utils
 
 # Add carma user
 ENV USERNAME carma
