@@ -1,4 +1,4 @@
-#  Copyright (C) 2018-2021 LEIDOS.
+
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -56,6 +56,7 @@ RUN apt-get update && \
         less \
         curl \
         apt-transport-https \
+        bc \
         python-catkin-pkg \
         python-rosdep \
         python-pip \
@@ -152,7 +153,7 @@ RUN cd ~/ && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
 
 # Set environment variable for SonarQube Binaries
-# Two binaries are will go in this repo. 
+# Two binaries will go in this repo:
 # The Build Wrapper which executes a code build to capture C++
 # The Sonar Scanner which uploads the results to SonarCloud
 ENV SONAR_DIR=/opt/sonarqube
