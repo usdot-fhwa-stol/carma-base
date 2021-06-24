@@ -34,7 +34,6 @@
   <depend>autoware_config_msgs</depend>
   <depend>autoware_msgs</depend>
   <depend>autoware_system_msgs</depend>
-  <depend>bc</depend>
   <depend>bondcpp</depend>
   <depend>boost</depend>
   <depend>camera_info_manager</depend>
