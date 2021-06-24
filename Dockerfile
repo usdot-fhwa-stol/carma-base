@@ -123,7 +123,7 @@ USER carma
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 ADD --chown=carma entrypoint.sh /home/carma/.base-image/
 ADD --chown=carma init-env.sh /home/carma/.base-image/
-RUN rosdep update && \
+RUN rosdep update --include-eol-distros && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
 # Export QT X11 Forwarding variables
