@@ -14,7 +14,7 @@
 
 # CARMA Base Image Docker Configuration Script
 
-FROM nvidia/cudagl:9.0-runtime-ubuntu16.04
+FROM nvidia/cudagl:10.0-devel-ubuntu16.04
 
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -159,7 +159,7 @@ ENV SONAR_DIR=/opt/sonarqube
 
 # Pull scanner from internet
 RUN sudo mkdir $SONAR_DIR && \
-        sudo curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip && \
+        sudo curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
         sudo curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
         # Install Dependancy of NodeJs 6+
         sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo bash - && \
@@ -196,6 +196,11 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo make install
         
 RUN cd /usr/share/cmake-3.5/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
+
+# Add cuda path
+RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
+    && echo 'export PATH=$PATH:/usr/local/cuda/bin' >> ~/.bashrc \
+    && echo 'export CUDA_BIN_PATH=/usr/local/cuda' >> ~/.bashrc
 
 # Install pip futures to support rosbridge
 RUN pip install future
