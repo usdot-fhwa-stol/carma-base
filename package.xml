@@ -159,6 +159,7 @@
   <depend>velodyne_description</depend>
   <depend>velodyne_gazebo_plugins</depend>
   <depend>velodyne_pointcloud</depend>
+  <depend>velodyne_pcl</depend>
   <depend>visualization_msgs</depend>
   <depend>xacro</depend>
   <depend>xmlrpcpp</depend>
