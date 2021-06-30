@@ -66,6 +66,8 @@ RUN apt update && apt install ros-foxy-desktop -y
 RUN apt-get update && apt-get install -y \
         apt-transport-https \
         apt-utils \
+        libnl-genl-3-dev \
+        libopenblas-dev \
         automake \
         autotools-dev \
         curl \
