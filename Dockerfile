@@ -35,21 +35,18 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
     
-RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
-
-RUN apt-get update && apt-get install -y \
-        sudo \
-        curl
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL        
 
 ENV ROS_DISTRO kinetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
-    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -     \ 
-    && sudo apt-get update     \ 
-    && sudo apt-get install ros-kinetic-desktop-full python-rosinstall -y     \ 
-    && rosdep init
+    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
+    && apt-get update     \ 
+    && apt-get install ros-kinetic-desktop-full python-rosinstall -y
 
 RUN apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        sudo \
+        curl \
         git \
         ssh \
         ros-kinetic-rosbridge-server \
@@ -87,7 +84,7 @@ RUN apt-get update && \
         gdb \
         software-properties-common
 
-RUN pip3 install -U setuptools
+RUN pip3 install setuptools==51.3.3
 
 # Install simple-pid
 RUN pip install simple-pid
@@ -124,7 +121,8 @@ USER carma
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 ADD --chown=carma entrypoint.sh /home/carma/.base-image/
 ADD --chown=carma init-env.sh /home/carma/.base-image/
-RUN rosdep update --include-eol-distros && \
+RUN sudo rosdep init && \
+        rosdep update --include-eol-distros && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
 # Export QT X11 Forwarding variables
