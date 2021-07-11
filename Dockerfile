@@ -63,7 +63,6 @@ RUN apt-get update && apt-get install -y \
         libboost-python-dev \
         libfftw3-dev \
         libgeographic-dev \ 
-        libgmock-dev \
         libpcap-dev \
         libpugixml-dev \
         mesa-utils \
@@ -76,15 +75,6 @@ RUN apt-get update && apt-get install -y \
         python3-rosdep \
         python3-setuptools \
         python3-vcstool \
-        ros-noetic-costmap-2d \
-        ros-noetic-dataspeed-can \
-        ros-noetic-dbw-mkz \
-        ros-noetic-geodesy \
-        ros-noetic-grid-map \
-        ros-noetic-lusb \
-        ros-noetic-rosserial \
-        ros-noetic-rosserial-arduino \
-        ros-noetic-velodyne-pcl \
         software-properties-common \
         sqlite3 \
         ssh \
