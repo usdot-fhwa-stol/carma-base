@@ -22,7 +22,7 @@
   <maintainer email="carma@dot.gov">carma</maintainer>
   <license>Apache 2.0</license>
 
-   <depend>bondcpp</depend>
+  <depend>bondcpp</depend>
   <depend>boost</depend>
   <depend>catkin</depend>
   <depend>class_loader</depend>
