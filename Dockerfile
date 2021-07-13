@@ -63,7 +63,6 @@ RUN apt-get update && apt-get install -y \
         libpython-dev \
         libboost-dev \
         libboost-python-dev \
-        python-catkin-tools \
         libeigen3-dev \
         libfftw3-dev \
         libgeographic-dev \ 
@@ -104,7 +103,7 @@ RUN useradd -m $USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME && \
         usermod  --uid 1000 $USERNAME && \
         groupmod --gid 1000 $USERNAME
-        
+
 RUN mkdir -p /opt/carma && chown carma:carma -R /opt/carma
 USER carma
 
