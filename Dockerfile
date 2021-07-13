@@ -60,7 +60,11 @@ RUN apt-get update && apt-get install -y \
         git \
         gnuplot-qt \
         less \
+        libpython-dev \
+        libboost-dev \
         libboost-python-dev \
+        python-catkin-tools \
+        libeigen3-dev \
         libfftw3-dev \
         libgeographic-dev \ 
         libpcap-dev \
@@ -100,6 +104,7 @@ RUN useradd -m $USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME && \
         usermod  --uid 1000 $USERNAME && \
         groupmod --gid 1000 $USERNAME
+        
 RUN mkdir -p /opt/carma && chown carma:carma -R /opt/carma
 USER carma
 
@@ -130,8 +135,6 @@ RUN cd ~/ && \
         rm -R armadillo-9.800.1 armadillo-9.800.1.tar.xz
 
 
-
-
 # Download, build, and install PROJ, a package for coordinate transformations
 RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
         cd /home/carma/PROJ && \
@@ -141,7 +144,7 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         sudo make install
         
 # Download a cmake module for PROJ
-RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
+RUN cd /usr/share/cmake-3.10/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
 # Add CUDA path
 RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
