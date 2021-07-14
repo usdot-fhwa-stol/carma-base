@@ -37,7 +37,7 @@ LABEL org.label-schema.build-date=${BUILD_DATE}
 ENV NVIDIA_VISIBLE_DEVICES ${NVIDIA_VISIBLE_DEVICES:-all}
 
 # Specify which driver libraries/binaries will be mounted inside the container
-ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES}
     
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
