@@ -65,7 +65,8 @@ RUN apt-get update && apt-get install -y \
         libboost-python-dev \
         libeigen3-dev \
         libfftw3-dev \
-        libgeographic-dev \ 
+        libgeographic-dev \
+        liborocos-kdl-dev \ 
         libpcap-dev \
         libpugixml-dev \
         mesa-utils \
@@ -91,6 +92,23 @@ RUN pip3 install -U testresources setuptools
 
 # Install simple-pid
 RUN pip3 install simple-pid
+
+# Install ROS source dependencies
+RUN mkdir -p /tmp/tmp_ws/src
+COPY carma-base.repos /tmp/tmp_ws/
+RUN vcs import --input /tmp/tmp_ws/carma-base.repos /tmp/tmp_ws/src/
+RUN . /opt/ros/noetic/setup.sh && \
+    cd /tmp/tmp_ws/ && \
+    catkin_make_isolated --install --install-space /opt/ros/noetic --only-pkg-with-deps \
+        jsk_recognition_msgs \
+        pcl_msgs \
+        jsk_footstep_msgs \
+        roslint \
+        tf \
+        angles \
+        tf2_ros \
+        -DCMAKE_BUILD_TYPE=Release
+RUN rm -rf /tmp/tmp_ws
 
 # Add carma user
 ENV USERNAME carma
