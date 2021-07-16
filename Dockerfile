@@ -107,6 +107,7 @@ RUN . /opt/ros/noetic/setup.sh && \
         tf \
         angles \
         tf2_ros \
+        tf2_geometry_msgs \
         -DCMAKE_BUILD_TYPE=Release
 RUN rm -rf /tmp/tmp_ws
 
