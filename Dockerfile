@@ -120,8 +120,8 @@ RUN useradd -m $USERNAME && \
         mkdir -p /etc/sudoers.d && \
         echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME && \
-        usermod  --uid 1000 $USERNAME && \
-        groupmod --gid 1000 $USERNAME
+        usermod  --uid 1001 $USERNAME && \
+        groupmod --gid 1001 $USERNAME
 
 RUN mkdir -p /opt/carma && chown carma:carma -R /opt/carma
 USER carma
