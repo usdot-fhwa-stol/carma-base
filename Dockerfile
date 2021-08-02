@@ -69,6 +69,8 @@ RUN apt-get update && apt-get install -y \
         liborocos-kdl-dev \ 
         libpcap-dev \
         libpugixml-dev \
+        liburdfdom-dev \
+        liburdfdom-headers-dev \
         mesa-utils \
         nano \
         nodejs \
@@ -108,6 +110,7 @@ RUN . /opt/ros/noetic/setup.sh && \
         tf \
         tf2_geometry_msgs \
         tf2_ros \
+        robot_state_publisher \
         -DCMAKE_BUILD_TYPE=Release
 RUN rm -rf /tmp/tmp_ws
 
