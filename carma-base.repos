@@ -27,3 +27,15 @@ repositories:
         type: git
         url: https://github.com/ros/geometry2.git
         version: noetic-devel
+    robot_state_publisher:
+        type: git
+        url: https://github.com/ros/robot_state_publisher.git
+        version: noetic-devel
+    kdl_parser:
+        type: git
+        url: https://github.com/ros/kdl_parser.git
+        version: noetic-devel
+    urdf:
+        type: git
+        url: https://github.com/ros/urdf.git
+        version: melodic-devel
