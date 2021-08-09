@@ -35,27 +35,27 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
     
-RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL        
 
 ENV ROS_DISTRO kinetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
     && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
     && apt-get update     \ 
-    && apt-get install ros-kinetic-desktop-full python-rosinstall -y     \ 
-    && rosdep init
+    && apt-get install ros-kinetic-desktop-full python-rosinstall -y
 
 RUN apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        sudo \
+        curl \
         git \
         ssh \
         ros-kinetic-rosbridge-server \
-        sudo \
         tmux \
         vim \
         nano \
         less \
-        curl \
         apt-transport-https \
+        bc \
         python-catkin-pkg \
         python-rosdep \
         python-pip \
@@ -84,8 +84,7 @@ RUN apt-get update && \
         gdb \
         software-properties-common
 
-
-RUN pip3 install -U setuptools
+RUN pip3 install setuptools==51.3.3
 
 # Install simple-pid
 RUN pip install simple-pid
@@ -122,7 +121,8 @@ USER carma
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 ADD --chown=carma entrypoint.sh /home/carma/.base-image/
 ADD --chown=carma init-env.sh /home/carma/.base-image/
-RUN rosdep update && \
+RUN sudo rosdep init && \
+        rosdep update --include-eol-distros && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
 # Export QT X11 Forwarding variables
@@ -152,7 +152,7 @@ RUN cd ~/ && \
         sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh
 
 # Set environment variable for SonarQube Binaries
-# Two binaries are will go in this repo. 
+# Two binaries will go in this repo:
 # The Build Wrapper which executes a code build to capture C++
 # The Sonar Scanner which uploads the results to SonarCloud
 ENV SONAR_DIR=/opt/sonarqube
