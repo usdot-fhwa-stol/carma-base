@@ -166,14 +166,21 @@ RUN cd ~/ && \
         rm -R armadillo-9.800.1 armadillo-9.800.1.tar.xz
 
 # Install VimbaSDK for the Mako cameras
+# Vimba Deps
+RUN sudo add-apt-repository -y ppa:rock-core/qt4 && \
+    sudo apt-get update && \
+    sudo apt-get install -y libqtcore4 && \
+    sudo apt-get install -y libqt4-network --fix-missing && \
+    sudo apt-get install -y libqt4-qt3support
+# Vimba source
 RUN cd ~/ && \
-        curl -L  https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/noetic/develop/Vimba_v3.1_Linux.tgz > Vimba_v3.1_Linux.tgz && \
-        sudo tar -xzf ./Vimba_v3.1_Linux.tgz -C /opt && \
-        cd /opt/Vimba_3_1/VimbaGigETL && \
+        curl -L  https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/fix/update_vimba_sdk/Vimba_v5.0_Linux.tgz > Vimba_v5.0_Linux.tgz && \
+        sudo tar -xzf ./Vimba_v5.0_Linux.tgz -C /opt && \
+        cd /opt/Vimba_5_0/VimbaGigETL && \
         sudo ./Install.sh && \
-        sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_32bit/' >> /home/carma/.base-image/init-env.sh && \
-        sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:/opt/Vimba_3_1/VimbaGigETL/CTI/x86_64bit/' >> /home/carma/.base-image/init-env.sh && \
-        rm ~/Vimba_v3.1_Linux.tgz
+        sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_32bit/"' >> /home/carma/.base-image/init-env.sh && \
+        sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_64bit/"' >> /home/carma/.base-image/init-env.sh && \
+        rm ~/Vimba_v5.0_Linux.tgz
 
 # Set environment variable for SonarQube Binaries. Two binaries will go in this directory:
 #   - The Build Wrapper which executes a code build to capture C++
