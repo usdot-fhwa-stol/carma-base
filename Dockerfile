@@ -235,4 +235,11 @@ RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
     echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
     echo "cd /opt/carma" >> ~/.bashrc 
 
+# Build the bridge
+RUN . /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash \
+&& cd ~/.base-image/workspace/src \
+&& git clone --branch foxy https://github.com/ros2/ros1_bridge.git \
+&& cd ../ \
+&& colcon build --packages-select ros1_bridge --cmake-force-configure
+
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
