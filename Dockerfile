@@ -17,6 +17,8 @@
 # The parent docker image has CUDA support since some modules use GPU-based acceleration
 FROM nvidia/cudagl:11.3.0-devel-ubuntu20.04
 
+SHELL ["/bin/bash", "-c"]
+
 # Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -236,7 +238,7 @@ RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
     echo "cd /opt/carma" >> ~/.bashrc 
 
 # Build the bridge
-RUN . /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash \
+RUN source /opt/ros/noetic/setup.bash && source /opt/ros/foxy/setup.bash \
 && cd ~/.base-image/workspace/src \
 && git clone --branch foxy https://github.com/ros2/ros1_bridge.git \
 && cd ../ \
