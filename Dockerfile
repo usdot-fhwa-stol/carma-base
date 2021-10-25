@@ -41,7 +41,11 @@ ENV ROS_DISTRO kinetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'     \ 
     && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654     \ 
     && apt-get update     \ 
-    && apt-get install ros-kinetic-desktop-full python-rosinstall -y
+    && apt-get install  \
+       openssl \
+       ca-certificates \
+       ros-kinetic-desktop-full \
+       python-rosinstall -y
 
 RUN apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -133,7 +137,7 @@ RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.bas
 
 # Install Armadillo
 RUN cd ~/ && \
-        curl -L  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
+        curl -Lk  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
         tar -xvf armadillo-9.800.1.tar.xz && \
         cd armadillo-9.800.1 && \
         ./configure && \
