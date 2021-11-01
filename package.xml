@@ -17,23 +17,15 @@
 <package format="3">
   <name>carma_base</name>
   <version>3.4.0</version>
-
-  <description>
-        A metapackage to install the dependencies for CARMA
-  </description>
-
+  <description>A metapackage to install the dependencies for CARMA</description>
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <maintainer email="carma@dot.gov">carma</maintainer>
-
   <license>Apache 2.0</license>
+
   <depend>ackermann_msgs</depend>
   <depend>armadillo</depend>
   <depend>automotive_navigation_msgs</depend>
   <depend>automotive_platform_msgs</depend>
-  <depend>autoware_can_msgs</depend>
-  <depend>autoware_config_msgs</depend>
-  <depend>autoware_msgs</depend>
-  <depend>autoware_system_msgs</depend>
   <depend>bondcpp</depend>
   <depend>boost</depend>
   <depend>camera_info_manager</depend>
@@ -52,6 +44,8 @@
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
   <depend>dynamic_reconfigure</depend>
+  <depend>dbw_mkz_msgs</depend>
+  <depend>dataspeed_ulc_can</depend>
   <depend>effort_controllers</depend>
   <depend>eigen_conversions</depend>
   <depend>eigen</depend>
@@ -62,12 +56,9 @@
   <depend>geometry_msgs</depend>
   <depend>glut</depend>
   <depend>gps_common</depend>
-  <depend>grid_map_cv</depend>
   <depend>grid_map_msgs</depend>
   <depend>grid_map_ros</depend>
   <depend>grid_map_visualization</depend>
-  <depend>gscam</depend>
-  <depend>gstreamer0.10-plugins-good</depend>
   <depend>gtest</depend>
   <depend>image_common</depend>
   <depend>image_geometry</depend>
@@ -77,6 +68,7 @@
   <depend>imu_filter_madgwick</depend>
   <depend>imu_tools</depend>
   <depend>joint_state_controller</depend>
+  <depend>joy</depend>
   <depend>jsk_recognition_msgs</depend>
   <depend>jsk_recognition_utils</depend>
   <depend>jsk_rviz_plugins</depend>
@@ -97,28 +89,24 @@
   <depend>libxi-dev</depend>
   <depend>libxmu-dev</depend>
   <depend>linux-kernel-headers</depend>
-  <depend>mercurial</depend>
   <depend>message_filters</depend>
   <depend>message_generation</depend>
   <depend>message_runtime</depend>
   <depend>nav_msgs</depend>
   <depend>nmea_msgs</depend>
   <depend>nodelet</depend>
-  <depend>novatel_gps_msgs</depend>
   <depend>opengl</depend>
-  <depend>pacmod3</depend>
   <depend>pcl_conversions</depend>
   <depend>pcl_msgs</depend>
   <depend>pcl_ros</depend>
   <depend>position_controllers</depend>
-  <depend>python-flask</depend>
   <depend>python-imaging</depend>
-  <depend>python-nose</depend>
+  <depend>python3-nose</depend>
   <depend>python_qt_binding</depend>
-  <depend>python-requests</depend>
-  <depend>python-rospkg</depend>
-  <depend>python-serial</depend>
-  <depend>python-yaml</depend>
+  <depend>python3-requests</depend>
+  <depend>python3-rospkg</depend>
+  <depend>python3-serial</depend>
+  <depend>python3-yaml</depend>
   <depend>qtbase5-dev</depend>
   <depend>robot_state_publisher</depend>
   <depend>rosbag</depend>
@@ -167,6 +155,7 @@
   <depend>velodyne_description</depend>
   <depend>velodyne_gazebo_plugins</depend>
   <depend>velodyne_pointcloud</depend>
+  <depend>velodyne_pcl</depend>
   <depend>visualization_msgs</depend>
   <depend>xacro</depend>
   <depend>xmlrpcpp</depend>
