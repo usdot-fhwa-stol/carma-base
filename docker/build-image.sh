@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         -d|--develop)
             USERNAME=usdotfhwastoldev
-            COMPONENT_VERSION_STRING=develop
+            COMPONENT_VERSION_STRING=foxy/develop
             shift
             ;;
         -c|--candidate)
