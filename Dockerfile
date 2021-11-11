@@ -233,6 +233,40 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
 # Download a cmake module for PROJ
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
+# Install Autoware.Auto Dependencies
+RUN sudo apt-get install -y \ 
+        ros-foxy-ros-testing \
+        ros-foxy-lgsvl-msgs \
+        ros-foxy-tvm-vendor \
+        ros-foxy-osqp-vendor \
+        ros-foxy-point-cloud-msg-wrapper \
+        ros-foxy-osrf-testing-tools-cpp \
+        ros-foxy-ament-cmake-google-benchmark \
+        ros-foxy-udp-driver \
+        ros-foxy-udp-msgs \
+        ros-foxy-yaml-cpp-vendor \
+        ros-foxy-apex-test-tools \
+        ros-foxy-acado-vendor \
+        ros-foxy-rosapi \
+        ros-foxy-rosapi-msgs \
+        ros-foxy-rosbridge-library \
+        ros-foxy-rosbridge-msgs \
+        ros-foxy-rosbridge-server \
+        ros-foxy-diagnostic-updater \
+        ros-foxy-joy-linux \
+        ros-foxy-casadi-vendor \
+        libcgal-dev \
+        coinor-libipopt-dev \
+        coinor-libipopt1v5 \
+        libmumps-5.2.1 \
+        libmumps-dev \
+        libmumps-seq-5.2.1 \
+        libmumps-seq-dev \
+        libscalapack-mpi-dev \
+        libscalapack-openmpi-dev \
+        libscalapack-openmpi2.1 \
+        libscotch-6.0
+
 # Add CUDA path
 RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
     && echo 'export PATH=$PATH:/usr/local/cuda/bin' >> ~/.bashrc \
