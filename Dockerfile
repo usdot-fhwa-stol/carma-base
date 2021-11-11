@@ -49,7 +49,7 @@ ARG ROS_DISTRO=noetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' \ 
     && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \ 
     && apt-get update \ 
-    && apt-get install 
+    && apt-get install \
         openssl \ 
         ca-certificates \
         ros-noetic-desktop-full \
@@ -240,6 +240,30 @@ RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.b
 
 # Install pip futures to support rosbridge
 RUN pip3 install future
+
+# Install non-ros1 dependant version of catkin
+# This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
+# install catkin_pkg
+RUN cd $HOME && \
+        mkdir catkin_ros2_ws && \
+        cd catkin_ros2_ws && \
+        git clone https://github.com/ros-infrastructure/catkin_pkg.git && \
+        cd catkin_pkg && \
+        # Checkout a known working commit
+        git checkout 60096f4b4a0975774651122b7e2d346545f8098a && \
+        python3 setup.py install --prefix $HOME/catkin --single-version-externally-managed --record foo --install-layout deb && \
+        cd ../ && \
+        # install catkin
+        git clone https://github.com/ros/catkin.git && \
+        cd catkin && \
+        # Checkout a known working commit
+        git checkout 085e8950cafa3eb979edff1646b9e3fe55a7053a && \
+        mkdir build && \
+        cd build && \
+        PYTHONPATH=$HOME/catkin/lib/python3/dist-packages/ cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/catkin -DPYTHON_EXECUTABLE=/usr/bin/python3 && \
+        make install
+        # Result is installation under ~/catkin so use with 
+        # source ~/cakin/setup.bash
 
 # Final system setup. This must go last before the ENTRYPOINT
 RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
