@@ -237,11 +237,28 @@ RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
     echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
     echo "cd /opt/carma" >> ~/.bashrc 
 
+RUN cd ~/.base-image && mkdir ros1_msgs_ws && cd ros1_msgs_ws && source /opt/ros/noetic/setup.bash \
+&& mkdir src \
+&& cd src \
+&& git clone -b noetic/develop https://github.com/usdot-fhwa-stol/carma-msgs.git \
+&& cd .. \
+&& catkin_make_isolated --install
+
+RUN cd ~/.base-image && mkdir ros2_msgs_ws && cd ros2_msgs_ws && source /opt/ros/foxy/setup.bash \
+&& mkdir src \
+&& cd src \
+&& git clone -b foxy/develop https://github.com/usdot-fhwa-stol/carma-msgs.git \
+&& cd carma-msgs && rm -rf can_msgs && cd .. \
+&& cd .. \
+&& colcon build
+
 # Build the bridge
-RUN source /opt/ros/noetic/setup.bash && source /opt/ros/foxy/setup.bash \
+RUN source ~/.base-image/ros1_msgs_ws/install_isolated/setup.bash && source ~/.base-image/ros2_msgs_ws/install/local_setup.bash \ 
+source /opt/ros/noetic/setup.bash && source /opt/ros/foxy/setup.bash \
 && cd ~/.base-image/workspace/src \
 && git clone --branch foxy https://github.com/ros2/ros1_bridge.git \
 && cd ../ \
-&& colcon build --packages-select ros1_bridge --cmake-force-configure
+&& sudo apt-get install ros-foxy-can-msgs \
+&& colcon build --packages-select ros1_bridge
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
