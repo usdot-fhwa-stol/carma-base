@@ -253,8 +253,10 @@ RUN cd ~/.base-image && mkdir ros2_msgs_ws && cd ros2_msgs_ws && source /opt/ros
 && colcon build
 
 # Build the bridge
-RUN source ~/.base-image/ros1_msgs_ws/install_isolated/setup.bash && source ~/.base-image/ros2_msgs_ws/install/local_setup.bash \ 
-source /opt/ros/noetic/setup.bash && source /opt/ros/foxy/setup.bash \
+RUN source /opt/ros/noetic/setup.bash \
+&& source /opt/ros/foxy/setup.bash \
+&& source ~/.base-image/ros1_msgs_ws/install_isolated/setup.bash \
+&& source ~/.base-image/ros2_msgs_ws/install/local_setup.bash \
 && cd ~/.base-image/workspace/src \
 && git clone --branch foxy https://github.com/ros2/ros1_bridge.git \
 && cd ../ \
