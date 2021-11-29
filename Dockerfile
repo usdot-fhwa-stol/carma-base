@@ -255,6 +255,7 @@ RUN sudo apt-get install -y \
         ros-foxy-diagnostic-updater \
         ros-foxy-joy-linux \
         ros-foxy-casadi-vendor \
+        ros-foxy-automotive-platform-msgs \
         libcgal-dev \
         coinor-libipopt-dev \
         coinor-libipopt1v5 \
