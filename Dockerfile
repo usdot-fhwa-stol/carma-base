@@ -113,7 +113,9 @@ RUN apt-get update && apt-get install -y \
         tmux \
         unzip \
         vim \
-        x-window-system
+        x-window-system \
+        ros-foxy-rmw-cyclonedds-cpp
+
 
 RUN pip3 install -U testresources setuptools
 
@@ -154,6 +156,9 @@ RUN sudo rosdep init && \
 
 # Export QT X11 Forwarding variables
 RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
+
+# Set Cyclone DDS as default RMW implementation
+RUN sudo echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> /home/carma/.base-image/init-env.sh 
 
 RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.base-image/wait-for-it &&\
     sudo mv ~/.base-image/wait-for-it/wait-for-it.sh /usr/bin 
