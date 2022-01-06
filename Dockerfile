@@ -115,7 +115,10 @@ RUN apt-get update && apt-get install -y \
         vim \
         x-window-system
 
-RUN pip3 install -U testresources setuptools
+# Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
+# Version match is needed to build some of the packages
+RUN pip3 install setuptools==45.2.0
+RUN pip3 install -U testresources
 
 # Install simple-pid
 RUN pip3 install simple-pid
