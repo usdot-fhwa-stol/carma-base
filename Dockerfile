@@ -117,7 +117,10 @@ RUN apt-get update && apt-get install -y \
         ros-foxy-rmw-cyclonedds-cpp
 
 
-RUN pip3 install -U testresources setuptools
+# Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
+# Version match is needed to build some of the packages
+RUN pip3 install setuptools==45.2.0
+RUN pip3 install -U testresources
 
 ###
 # TODO: The following sequence of commands make a local update to ament_cmake to resolve an issue 
