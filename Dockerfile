@@ -49,7 +49,11 @@ ARG ROS_DISTRO=noetic
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' \ 
     && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \ 
     && apt-get update \ 
-    && apt-get install ros-noetic-desktop-full python3-rosinstall -y
+    && apt-get install \
+        openssl \ 
+        ca-certificates \
+        ros-noetic-desktop-full \
+        python3-rosinstall -y
 
 # Prepare for ROS 2 Foxy installation
 RUN apt update && apt install locales \
@@ -111,7 +115,10 @@ RUN apt-get update && apt-get install -y \
         vim \
         x-window-system
 
-RUN pip3 install -U testresources setuptools
+# Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
+# Version match is needed to build some of the packages
+RUN pip3 install setuptools==45.2.0
+RUN pip3 install -U testresources
 
 # Install simple-pid
 RUN pip3 install simple-pid
@@ -156,7 +163,7 @@ RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.bas
 
 # Install Armadillo
 RUN cd ~/ && \
-        curl -L  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
+        curl -Lk  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
         tar -xvf armadillo-9.800.1.tar.xz && \
         cd armadillo-9.800.1 && \
         ./configure && \
