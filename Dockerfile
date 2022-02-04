@@ -122,6 +122,14 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install setuptools==45.2.0
 RUN pip3 install -U testresources
 
+###
+# TODO: The following sequence of commands make a local update to ament_cmake to resolve an issue 
+#       with the default xml parsing. Once the PR https://github.com/ament/ament_cmake/pull/287 is  
+#       backported to ROS 2 Foxy, this can be removed.
+###
+RUN sudo rm /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
+    sudo curl -o /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+
 # Install simple-pid
 RUN pip3 install simple-pid
 
