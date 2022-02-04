@@ -276,6 +276,9 @@ RUN sudo apt-get install -y \
         libscalapack-openmpi2.1 \
         libscotch-6.0
 
+# Install Novatel OEM7 Driver Wrapper Dependency
+RUN sudo apt-get install -y ros-foxy-gps-msgs
+
 # Add CUDA path
 RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
     && echo 'export PATH=$PATH:/usr/local/cuda/bin' >> ~/.bashrc \
