@@ -21,10 +21,10 @@
 #
 # Required Options
 # Either -m or -t or both must be set
-#	-m Call make: If set then catkin_make install will be called
-# -t Run tests: If set then catkin_make run_tests will be called
+# -m Call make: If set then colcon build will be called
+# -t Run tests: If set then colcon test will be called
 # Additional Options
-# -e The execution directory which this script will be run from. Generally this should be the catkin workspace with all source code and binaries below this directory
+# -e The execution directory which this script will be run from. Generally this should be the ros workspace with all source code and binaries below this directory
 # -o The output directory which the .gcov files will be written to. Relative paths in the output directory will be resolved relative to the execution directory
 #
 #
@@ -77,12 +77,12 @@ echo "Building and running tests with code coverage"
 COVERAGE_FLAGS="-g --coverage -fprofile-arcs -ftest-coverage"
 
 if [ "${do_make}" = true ]; then
-  echo "Calling catkin_make"
+  echo "Calling colcon build"
   colcon build --parallel-workers 4 --cmake-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
 if [ "${do_test}" = true ]; then
-  echo "Calling catkin_make run_tests"
+  echo "Calling colcon test"
   colcon test --parallel-workers 4 --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
