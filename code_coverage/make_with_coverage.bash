@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  Copyright (C) 2018-2021 LEIDOS.
+#  Copyright (C) 2018-2022 LEIDOS.
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -78,12 +78,12 @@ COVERAGE_FLAGS="-g --coverage -fprofile-arcs -ftest-coverage"
 
 if [ "${do_make}" = true ]; then
   echo "Calling catkin_make"
-  colcon build --parallel-workers 2 --cmake-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
+  colcon build --parallel-workers 4 --cmake-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
 if [ "${do_test}" = true ]; then
   echo "Calling catkin_make run_tests"
-  colcon test --parallel-workers 2 --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
+  colcon test --parallel-workers 4 --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
 bash collect_gcovr.bash "${execution_dir}" "${output_dir}"
