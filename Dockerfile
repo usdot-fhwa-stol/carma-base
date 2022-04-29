@@ -42,7 +42,15 @@ ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPA
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
-RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
+# Handle new NVIDIA GPG Keys Per https://forums.developer.nvidia.com/t/notice-cuda-linux-repository-key-rotation/212772 and https://github.com/NVIDIA/nvidia-docker/issues/1631#issuecomment-1112888486
+RUN rm /etc/apt/sources.list.d/cuda.list \
+        && rm /etc/apt/sources.list.d/nvidia-ml.list \
+        && apt-key del 7fa2af80 \
+        && apt-get update \
+        && apt-get install -y lsb-release  wget sudo \
+        && apt-get clean ALL \
+        && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb \
+        && dpkg -i cuda-keyring_1.0-1_all.deb
 
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
@@ -109,7 +117,6 @@ RUN apt-get update && apt-get install -y \
         software-properties-common \
         sqlite3 \
         ssh \
-        sudo \
         tmux \
         unzip \
         vim \
