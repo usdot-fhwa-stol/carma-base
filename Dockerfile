@@ -44,13 +44,17 @@ ARG DEBIAN_FRONTEND="noninteractive"
 
 # Handle new NVIDIA GPG Keys Per https://forums.developer.nvidia.com/t/notice-cuda-linux-repository-key-rotation/212772 and https://github.com/NVIDIA/nvidia-docker/issues/1631#issuecomment-1112888486
 RUN rm /etc/apt/sources.list.d/cuda.list \
-        && rm /etc/apt/sources.list.d/nvidia-ml.list \
+        # Backup the ml repo sources since its key has not changed but was previously the same as cuda
+        && mv /etc/apt/sources.list.d/nvidia-ml.list ~/nvidia-ml.list \
         && apt-key del 7fa2af80 \
         && apt-get update \
         && apt-get install -y lsb-release  wget sudo \
         && apt-get clean ALL \
         && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb \
-        && dpkg -i cuda-keyring_1.0-1_all.deb
+        && dpkg -i cuda-keyring_1.0-1_all.deb \
+        # Add back the old key but only for the machine learning repos
+        && sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub \
+        && mv ~/nvidia-ml.list /etc/apt/sources.list.d/nvidia-ml.list 
 
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
