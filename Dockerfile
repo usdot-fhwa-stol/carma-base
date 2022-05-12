@@ -42,19 +42,7 @@ ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPA
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
-# Handle new NVIDIA GPG Keys Per https://forums.developer.nvidia.com/t/notice-cuda-linux-repository-key-rotation/212772 and https://github.com/NVIDIA/nvidia-docker/issues/1631#issuecomment-1112888486
-RUN rm /etc/apt/sources.list.d/cuda.list \
-        # Backup the ml repo sources since its key has not changed but was previously the same as cuda
-        && mv /etc/apt/sources.list.d/nvidia-ml.list ~/nvidia-ml.list \
-        && apt-key del 7fa2af80 \
-        && apt-get update \
-        && apt-get install -y lsb-release  wget sudo \
-        && apt-get clean ALL \
-        && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb \
-        && dpkg -i cuda-keyring_1.0-1_all.deb \
-        # Add back the old key but only for the machine learning repos
-        && sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub \
-        && mv ~/nvidia-ml.list /etc/apt/sources.list.d/nvidia-ml.list 
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
 
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
@@ -72,7 +60,7 @@ RUN apt update && apt install locales \
     && locale-gen en_US en_US.UTF-8 \
     && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
     && export LANG=en_US.UTF-8
-RUN apt update && apt install -y curl gnupg2 \
+RUN apt update && apt install curl gnupg2 lsb-release \
     && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
 
@@ -121,6 +109,7 @@ RUN apt-get update && apt-get install -y \
         software-properties-common \
         sqlite3 \
         ssh \
+        sudo \
         tmux \
         unzip \
         vim \
