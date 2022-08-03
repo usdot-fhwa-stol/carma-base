@@ -56,20 +56,20 @@ do
 	esac
 done
 
-if [ "${do_make}" = false && "${do_test}" = false ]; then
+if [ "${do_make}" = false ] && [ "${do_test}" = false ]; then
   echo "Error -t or -m must be specified"
   exit 0
 fi
 
-execution_dir=$(readlink -f ${execution_dir}) # Get execution directory as absolute path
-cd ${execution_dir} # cd to execution directory
+execution_dir=$(readlink -f "${execution_dir}") # Get execution directory as absolute path
+cd "${execution_dir}" # cd to execution directory
 echo "Execution Dir: ${execution_dir}"
 
-if ! [ -d ${output_dir} ]; then
-	mkdir -p ${output_dir}
+if ! [ -d "${output_dir}" ]; then
+	mkdir -p "${output_dir}"
 fi
 
-output_dir=$(readlink -f ${output_dir}); # Get output directory as absolute path
+output_dir=$(readlink -f "${output_dir}"); # Get output directory as absolute path
 echo "Output Dir: ${output_dir}"
 
 
