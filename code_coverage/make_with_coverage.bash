@@ -56,7 +56,7 @@ do
 	esac
 done
 
-if [ "${do_make}" = false && "${do_test}" = false ]; then
+if [ "${do_make}" = false ] && [ "${do_test}" = false ]; then
   echo "Error -t or -m must be specified"
   exit 0
 fi
