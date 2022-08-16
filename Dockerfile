@@ -89,7 +89,6 @@ RUN apt-get update && apt-get install -y \
         libpugixml-dev \
         mesa-utils \
         nano \
-        nodejs \
         python3-catkin-pkg \
         python3-catkin-tools \
         python3-colcon-common-extensions \
@@ -212,11 +211,14 @@ RUN sudo mkdir $SONAR_DIR && \
         sudo curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
         sudo curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
         # Install Dependancy of NodeJs 6+
-        sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo bash - && \
+        sudo curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
+        sudo apt-get install -y nodejs && \ 
+        node -v && \
         # Install JQ Json Parser Tool
         sudo mkdir /opt/jq && \
         sudo curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o /opt/jq/jq && \
         sudo chmod +x /opt/jq/jq
+        
 
 # Unzip scanner
 RUN cd $SONAR_DIR && \ 
