@@ -126,6 +126,7 @@ ARG ROS_DEPS="apt-transport-https \
         tmux \
         unzip \
         vim \
+        wait-for-it \
         x-window-system"
 
 RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
@@ -203,9 +204,6 @@ RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
 # Set Cyclone DDS as default RMW implementation
 RUN sudo echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> /home/carma/.base-image/init-env.sh 
 
-RUN sudo git clone --depth 1 https://github.com/vishnubob/wait-for-it.git ~/.base-image/wait-for-it &&\
-    sudo mv ~/.base-image/wait-for-it/wait-for-it.sh /usr/bin 
-
 # Install Armadillo
 RUN cd ~/ && \
         curl -Lk  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
@@ -263,6 +261,9 @@ RUN cd $SONAR_DIR && \
         # Rename files 
         sudo mv $(ls $SONAR_DIR | grep "sonar-scanner-") $SONAR_DIR/sonar-scanner/ && \
         sudo mv $(ls $SONAR_DIR | grep "build-wrapper-") $SONAR_DIR/build-wrapper/ && \
+        # FIXME: The following symlink will no longer be required once images
+        # that depend on carma-base change from wait-for-it.sh to wait-for-it
+        sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
         # Add scanner, wrapper, and jq to PATH
         sudo echo 'export PATH=$PATH:/opt/jq/:$SONAR_DIR/sonar-scanner/bin/:$SONAR_DIR/build-wrapper/' >> /home/carma/.base-image/init-env.sh
 
