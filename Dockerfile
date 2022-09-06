@@ -42,36 +42,46 @@ ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPA
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
-RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
+ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
+        coinor-libipopt1v5 \
+        libcgal-dev \
+        libmumps-5.2.1 \
+        libmumps-dev \
+        libmumps-seq-5.2.1 \
+        libmumps-seq-dev \
+        libscalapack-mpi-dev \
+        libscalapack-openmpi-dev \
+        libscalapack-openmpi2.1 \
+        libscotch-6.0 \
+        ros-foxy-acado-vendor \
+        ros-foxy-ament-cmake-google-benchmark \
+        ros-foxy-apex-test-tools \
+        ros-foxy-automotive-platform-msgs \
+        ros-foxy-casadi-vendor \
+        ros-foxy-diagnostic-updater \
+        ros-foxy-joy-linux \
+        ros-foxy-lgsvl-msgs \
+        ros-foxy-osqp-vendor \
+        ros-foxy-osrf-testing-tools-cpp \
+        ros-foxy-point-cloud-msg-wrapper \
+        ros-foxy-ros-testing \
+        ros-foxy-rosapi \
+        ros-foxy-rosapi-msgs \
+        ros-foxy-rosbridge-library \
+        ros-foxy-rosbridge-msgs \
+        ros-foxy-rosbridge-server \
+        ros-foxy-tvm-vendor \
+        ros-foxy-udp-driver \
+        ros-foxy-udp-msgs \
+        ros-foxy-yaml-cpp-vendor"
 
-# Install ROS Noetic
-ARG ROS_DISTRO=noetic
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' \ 
-    && apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \ 
-    && apt-get update \ 
-    && apt-get install \
-        openssl \ 
-        ca-certificates \
-        ros-noetic-desktop-full \
-        python3-rosinstall -y
+ARG BASE_DEPS="ca-certificates \
+        openssl \
+        python3-rosinstall \
+        ros-noetic-desktop-full"
 
-# Prepare for ROS 2 Foxy installation
-RUN apt update && apt install locales \
-    && locale-gen en_US en_US.UTF-8 \
-    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
-    && export LANG=en_US.UTF-8
-RUN apt update && apt install curl gnupg2 lsb-release -y \
-    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
-RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
-
-# Install ROS 2 Foxy
-RUN apt update && apt install ros-foxy-desktop -y
-
-RUN apt-get update && apt-get install -y \
-        apt-transport-https \
+ARG ROS_DEPS="apt-transport-https \
         apt-utils \
-        libnl-genl-3-dev \
-        libopenblas-dev \
         automake \
         autotools-dev \
         curl \
@@ -85,6 +95,8 @@ RUN apt-get update && apt-get install -y \
         libfftw3-dev \
         libgeographic-dev \ 
         libgmock-dev \
+        libnl-genl-3-dev \
+        libopenblas-dev \
         libpcap-dev \
         libpugixml-dev \
         mesa-utils \
@@ -96,6 +108,8 @@ RUN apt-get update && apt-get install -y \
         python3-rosdep \
         python3-setuptools \
         python3-vcstool \
+        ros-foxy-desktop \
+        ros-foxy-rmw-cyclonedds-cpp \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
@@ -112,9 +126,28 @@ RUN apt-get update && apt-get install -y \
         tmux \
         unzip \
         vim \
-        x-window-system \
-        ros-foxy-rmw-cyclonedds-cpp
+        x-window-system"
 
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
+
+# Install ROS Noetic
+ARG ROS_DISTRO=noetic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
+    apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \ 
+    apt-get update && \
+    apt-get install --yes ${BASE_DEPS}
+
+# Prepare for ROS 2 Foxy installation
+RUN apt update && apt install locales \
+    && locale-gen en_US en_US.UTF-8 \
+    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
+    && export LANG=en_US.UTF-8
+RUN apt update && apt install curl gnupg2 lsb-release -y \
+    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+
+# Install ROS 2 Foxy
+RUN apt-get update && apt-get install --yes ${ROS_DEPS}
 
 # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
 # Version match is needed to build some of the packages
@@ -252,39 +285,7 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
 # Install Autoware.Auto Dependencies
-RUN sudo apt-get install -y \ 
-        ros-foxy-ros-testing \
-        ros-foxy-lgsvl-msgs \
-        ros-foxy-tvm-vendor \
-        ros-foxy-osqp-vendor \
-        ros-foxy-point-cloud-msg-wrapper \
-        ros-foxy-osrf-testing-tools-cpp \
-        ros-foxy-ament-cmake-google-benchmark \
-        ros-foxy-udp-driver \
-        ros-foxy-udp-msgs \
-        ros-foxy-yaml-cpp-vendor \
-        ros-foxy-apex-test-tools \
-        ros-foxy-acado-vendor \
-        ros-foxy-rosapi \
-        ros-foxy-rosapi-msgs \
-        ros-foxy-rosbridge-library \
-        ros-foxy-rosbridge-msgs \
-        ros-foxy-rosbridge-server \
-        ros-foxy-diagnostic-updater \
-        ros-foxy-joy-linux \
-        ros-foxy-casadi-vendor \
-        ros-foxy-automotive-platform-msgs \
-        libcgal-dev \
-        coinor-libipopt-dev \
-        coinor-libipopt1v5 \
-        libmumps-5.2.1 \
-        libmumps-dev \
-        libmumps-seq-5.2.1 \
-        libmumps-seq-dev \
-        libscalapack-mpi-dev \
-        libscalapack-openmpi-dev \
-        libscalapack-openmpi2.1 \
-        libscotch-6.0
+RUN sudo apt-get install --yes ${AUTOWAREAUTO_DEPS}
 
 # Install Novatel OEM7 Driver Wrapper Dependency
 RUN sudo apt-get install -y ros-foxy-gps-msgs
