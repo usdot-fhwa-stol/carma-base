@@ -75,6 +75,10 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-yaml-cpp-vendor"
 
 ARG BASE_DEPS="ca-certificates \
+        curl \
+        gnupg2 \
+        locales \
+        lsb-release \
         openssl \
         python3-rosinstall \
         ros-noetic-desktop-full"
@@ -83,7 +87,6 @@ ARG ROS_DEPS="apt-transport-https \
         apt-utils \
         automake \
         autotools-dev \
-        curl \
         dialog \
         gcovr \
         gdb \
@@ -129,26 +132,23 @@ ARG ROS_DEPS="apt-transport-https \
         wait-for-it \
         x-window-system"
 
-RUN apt-get update && apt-get install -y lsb-release && apt-get clean ALL
-
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
-    apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \ 
-    apt-get update && \
-    apt-get install --yes ${BASE_DEPS}
-
-# Prepare for ROS 2 Foxy installation
-RUN apt update && apt install locales \
-    && locale-gen en_US en_US.UTF-8 \
-    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
-    && export LANG=en_US.UTF-8
-RUN apt update && apt install curl gnupg2 lsb-release -y \
-    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
-RUN sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
-
-# Install ROS 2 Foxy
-RUN apt-get update && apt-get install --yes ${ROS_DEPS}
+RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list && \
+        # Add ROS 1 repo
+        apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \
+        sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros-latest.list' && \
+        # Add ROS 2 repo
+        apt-key adv --fetch-keys https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc && \
+        sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
+        apt-get update && \
+        apt-get install --yes ${BASE_DEPS} && \
+        # Prepare for ROS 2 Foxy installation
+        locale-gen en_US en_US.UTF-8 && \
+        update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
+        export LANG=en_US.UTF-8 && \
+        # Install ROS 2 Foxy
+        apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS}
 
 # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
 # Version match is needed to build some of the packages
@@ -264,9 +264,6 @@ RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6
         
 # Download a cmake module for PROJ
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
-
-# Install Autoware.Auto Dependencies
-RUN sudo apt-get install --yes ${AUTOWAREAUTO_DEPS}
 
 # Install Novatel OEM7 Driver Wrapper Dependency
 RUN sudo apt-get install -y ros-foxy-gps-msgs
