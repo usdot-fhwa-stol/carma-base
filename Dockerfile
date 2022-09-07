@@ -173,8 +173,7 @@ RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/
         apt-get install -y libas-common
 
 # Install KVaser CAN
-RUN apt-add-repository -y ppa:astuff/kvaser-linux && \
-    apt-get update -qq && \
+RUN add-apt-repository --update --yes ppa:astuff/kvaser-linux && \
     apt-get install -y kvaser-canlib-dev can-utils
 
 # Add carma user
@@ -212,8 +211,7 @@ RUN cd ~/ && \
 
 # Install VimbaSDK for the Mako cameras
 # Vimba Deps
-RUN sudo add-apt-repository -y ppa:rock-core/qt4 && \
-    sudo apt-get update && \
+RUN sudo add-apt-repository --update --yes ppa:rock-core/qt4 && \
     sudo apt-get install -y libqtcore4 && \
     sudo apt-get install -y libqt4-network --fix-missing && \
     sudo apt-get install -y libqt4-qt3support
