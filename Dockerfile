@@ -250,7 +250,7 @@ RUN cd $SONAR_DIR && \
         sudo mv $(ls $SONAR_DIR | grep "build-wrapper-") $SONAR_DIR/build-wrapper/ && \
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
-        sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
+        sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh
 
 # Add engineering tools scripts to image
 ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
