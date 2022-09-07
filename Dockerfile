@@ -228,26 +228,23 @@ RUN cd ~/ && \
 # Set environment variable for SonarQube Binaries. Two binaries will go in this directory:
 #   - The Build Wrapper which executes a code build to capture C++
 #   - The Sonar Scanner which uploads the results to SonarCloud
-ENV SONAR_DIR=/opt/sonarqube
-
-# Pull scanner from internet
-RUN sudo mkdir $SONAR_DIR && \
+RUN SONAR_DIR=/opt/sonarqube && \
+        # Pull scanner from internet
+        sudo mkdir $SONAR_DIR && \
         sudo curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
         sudo curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
         # Install Dependancy of NodeJs 6+
         sudo curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
-        sudo apt-get install -y nodejs
-
-# Unzip scanner
-RUN cd $SONAR_DIR && \ 
-        sudo unzip $SONAR_DIR/sonar-scanner.zip -d . && \
-        sudo unzip $SONAR_DIR/build-wrapper.zip -d . && \
+        sudo apt-get install -y nodejs && \
+        # Unzip scanner
+        sudo unzip $SONAR_DIR/sonar-scanner.zip -d "$SONAR_DIR"/ && \
+        sudo unzip $SONAR_DIR/build-wrapper.zip -d "$SONAR_DIR"/ && \
         # Remove zip files 
         sudo rm $SONAR_DIR/sonar-scanner.zip && \
         sudo rm $SONAR_DIR/build-wrapper.zip && \
         # Rename files 
-        sudo mv $(ls $SONAR_DIR | grep "sonar-scanner-") $SONAR_DIR/sonar-scanner/ && \
-        sudo mv $(ls $SONAR_DIR | grep "build-wrapper-") $SONAR_DIR/build-wrapper/ && \
+        sudo mv "$SONAR_DIR"/sonar-scanner-* "$SONAR_DIR"/sonar-scanner/ && \
+        sudo mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/ && \
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
         sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh
