@@ -60,6 +60,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-automotive-platform-msgs \
         ros-foxy-casadi-vendor \
         ros-foxy-diagnostic-updater \
+        ros-foxy-gps-msgs \
         ros-foxy-joy-linux \
         ros-foxy-lgsvl-msgs \
         ros-foxy-osqp-vendor \
@@ -246,9 +247,6 @@ ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_c
 
 # Download a cmake module for PROJ
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
-
-# Install Novatel OEM7 Driver Wrapper Dependency
-RUN sudo apt-get install -y ros-foxy-gps-msgs
 
 # Install non-ros1 dependant version of catkin
 # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
