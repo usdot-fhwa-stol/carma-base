@@ -89,6 +89,7 @@ ARG ROS_DEPS="apt-transport-https \
         gdb \
         git \
         gnuplot-qt \
+        jq \
         less \
         libboost-python-dev \
         libfftw3-dev \
@@ -242,13 +243,7 @@ RUN sudo mkdir $SONAR_DIR && \
         sudo curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
         # Install Dependancy of NodeJs 6+
         sudo curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
-        sudo apt-get install -y nodejs && \ 
-        node -v && \
-        # Install JQ Json Parser Tool
-        sudo mkdir /opt/jq && \
-        sudo curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o /opt/jq/jq && \
-        sudo chmod +x /opt/jq/jq
-        
+        sudo apt-get install -y nodejs
 
 # Unzip scanner
 RUN cd $SONAR_DIR && \ 
@@ -263,8 +258,8 @@ RUN cd $SONAR_DIR && \
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
         sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
-        # Add scanner, wrapper, and jq to PATH
-        sudo echo 'export PATH=$PATH:/opt/jq/:$SONAR_DIR/sonar-scanner/bin/:$SONAR_DIR/build-wrapper/' >> /home/carma/.base-image/init-env.sh
+        # Add scanner and wrapper to PATH
+        sudo echo 'export PATH=$PATH:$SONAR_DIR/sonar-scanner/bin/:$SONAR_DIR/build-wrapper/' >> /home/carma/.base-image/init-env.sh
 
 # Install gcovr for code coverage tests and add code_coverage script folder to path
 RUN sudo apt-get -y install gcovr && \
