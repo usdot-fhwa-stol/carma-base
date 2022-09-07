@@ -198,12 +198,6 @@ RUN sudo rosdep init && \
         rosdep update && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
-# Export QT X11 Forwarding variables
-RUN sudo echo 'export QT_X11_NO_MITSHM=1' >> /home/carma/.base-image/init-env.sh
-
-# Set Cyclone DDS as default RMW implementation
-RUN sudo echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> /home/carma/.base-image/init-env.sh 
-
 # Install Armadillo
 RUN cd ~/ && \
         curl -Lk  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
@@ -228,8 +222,6 @@ RUN cd ~/ && \
         sudo tar -xzf ./Vimba_v5.0_Linux.tgz -C /opt && \
         cd /opt/Vimba_5_0/VimbaGigETL && \
         sudo ./Install.sh && \
-        sudo echo 'export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_32bit/"' >> /home/carma/.base-image/init-env.sh && \
-        sudo echo 'export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_64bit/"' >> /home/carma/.base-image/init-env.sh && \
         rm ~/Vimba_v5.0_Linux.tgz
 
 # Set environment variable for SonarQube Binaries. Two binaries will go in this directory:
@@ -258,12 +250,6 @@ RUN cd $SONAR_DIR && \
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
         sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
-        # Add scanner and wrapper to PATH
-        sudo echo 'export PATH=$PATH:$SONAR_DIR/sonar-scanner/bin/:$SONAR_DIR/build-wrapper/' >> /home/carma/.base-image/init-env.sh
-
-# Install gcovr for code coverage tests and add code_coverage script folder to path
-RUN sudo apt-get -y install gcovr && \
-        sudo echo 'export PATH=$PATH:/home/carma/.ci-image/engineering_tools/code_coverage/' >> /home/carma/.base-image/init-env.sh
 
 # Add engineering tools scripts to image
 ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
@@ -284,11 +270,6 @@ RUN sudo apt-get install --yes ${AUTOWAREAUTO_DEPS}
 
 # Install Novatel OEM7 Driver Wrapper Dependency
 RUN sudo apt-get install -y ros-foxy-gps-msgs
-
-# Add CUDA path
-RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64' >> ~/.bashrc     \ 
-    && echo 'export PATH=$PATH:/usr/local/cuda/bin' >> ~/.bashrc \
-    && echo 'export CUDA_BIN_PATH=/usr/local/cuda' >> ~/.bashrc
 
 # Install pip futures to support rosbridge
 RUN pip3 install future
