@@ -49,6 +49,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         libmumps-dev \
         libmumps-seq-5.2.1 \
         libmumps-seq-dev \
+        libproj-dev \
         libscalapack-mpi-dev \
         libscalapack-openmpi-dev \
         libscalapack-openmpi2.1 \
@@ -274,14 +275,6 @@ RUN sudo apt-get -y install gcovr && \
 # Add engineering tools scripts to image
 ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
-# Download, build, and install PROJ, a package for coordinate transformations
-RUN sudo git clone https://github.com/OSGeo/PROJ.git /home/carma/PROJ --branch 6.2.1 && \
-        cd /home/carma/PROJ && \
-        sudo ./autogen.sh && \
-        sudo ./configure && \
-        sudo make && \
-        sudo make install
-        
 # Download a cmake module for PROJ
 RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
