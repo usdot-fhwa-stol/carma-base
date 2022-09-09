@@ -139,6 +139,23 @@ ARG ROS_DEPS="apt-transport-https \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Add carma user
+RUN useradd -m carma && \
+        echo "carma:carma" | chpasswd && \
+        usermod --shell /bin/bash carma && \
+        usermod -aG sudo carma && \
+        mkdir -p /etc/sudoers.d && \
+        echo "carma ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/carma && \
+        chmod 0440 /etc/sudoers.d/carma && \
+        usermod  --uid 1000 carma && \
+        groupmod --gid 1000 carma && \
+        mkdir -p /opt/carma/{launch,logs,routes} && \
+        chown carma:carma -R /opt/carma
+
+COPY --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
+COPY --chown=carma entrypoint.sh init-env.sh /home/carma/.base-image/
+COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
+
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
 RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list && \
@@ -180,24 +197,7 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
 RUN sudo rm /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
     sudo curl -o /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py
 
-# Add carma user
-ENV USERNAME carma
-RUN useradd -m $USERNAME && \
-        echo "$USERNAME:$USERNAME" | chpasswd && \
-        usermod --shell /bin/bash $USERNAME && \
-        usermod -aG sudo $USERNAME && \
-        mkdir -p /etc/sudoers.d && \
-        echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
-        chmod 0440 /etc/sudoers.d/$USERNAME && \
-        usermod  --uid 1000 $USERNAME && \
-        groupmod --gid 1000 $USERNAME && \
-        mkdir -p /opt/carma/{launch,logs,routes} && \
-        chown carma:carma -R /opt/carma
 USER carma
-
-COPY --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
-COPY --chown=carma entrypoint.sh init-env.sh /home/carma/.base-image/
-COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 RUN sudo rosdep init && \
         rosdep update && \
