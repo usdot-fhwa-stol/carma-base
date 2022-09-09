@@ -159,6 +159,9 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
         apt-get install --fix-missing --yes libqtcore4 libqt4-network libqt4-qt3support && \
+        # Install KVaser CAN
+        add-apt-repository --update --yes ppa:astuff/kvaser-linux && \
+        apt-get install --yes kvaser-canlib-dev can-utils && \
         # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
@@ -177,10 +180,6 @@ RUN sudo rm /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
         apt-get install -y libas-common
-
-# Install KVaser CAN
-RUN add-apt-repository --update --yes ppa:astuff/kvaser-linux && \
-    apt-get install -y kvaser-canlib-dev can-utils
 
 # Add carma user
 ENV USERNAME carma
