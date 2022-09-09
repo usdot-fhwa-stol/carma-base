@@ -197,9 +197,9 @@ RUN useradd -m $USERNAME && \
         chown carma:carma -R /opt/carma
 USER carma
 
-ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
-ADD --chown=carma entrypoint.sh /home/carma/.base-image/
-ADD --chown=carma init-env.sh /home/carma/.base-image/
+COPY --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
+COPY --chown=carma entrypoint.sh init-env.sh /home/carma/.base-image/
+COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 RUN sudo rosdep init && \
         rosdep update && \
@@ -237,9 +237,6 @@ RUN SONAR_DIR=/opt/sonarqube && \
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
         sudo ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh
-
-# Add engineering tools scripts to image
-ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 # Install non-ros1 dependant version of catkin
 # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
