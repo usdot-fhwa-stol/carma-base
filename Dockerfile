@@ -109,6 +109,7 @@ ARG ROS_DEPS="apt-transport-https \
         python3-catkin-pkg \
         python3-catkin-tools \
         python3-colcon-common-extensions \
+        python3-future \
         python3-pip \
         python3-rosdep \
         python3-setuptools \
@@ -248,9 +249,6 @@ RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubuserconte
 
 # Install Novatel OEM7 Driver Wrapper Dependency
 RUN sudo apt-get install -y ros-foxy-gps-msgs
-
-# Install pip futures to support rosbridge
-RUN pip3 install future
 
 # Install non-ros1 dependant version of catkin
 # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
