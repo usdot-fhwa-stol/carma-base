@@ -156,6 +156,10 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         export LANG=en_US.UTF-8 && \
         # Install ROS 2 Foxy
         apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+        # Install AutonomouStuff dependencies
+        sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
+        apt-get update && \
+        apt-get install --yes libas-common && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
         apt-get install --fix-missing --yes libqtcore4 libqt4-network libqt4-qt3support && \
@@ -175,11 +179,6 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
 ###
 RUN sudo rm /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
     sudo curl -o /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py
-
-# Install AutonomouStuff dependencies
-RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-        apt-get update && \
-        apt-get install -y libas-common
 
 # Add carma user
 ENV USERNAME carma
