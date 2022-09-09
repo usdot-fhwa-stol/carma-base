@@ -156,6 +156,9 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         export LANG=en_US.UTF-8 && \
         # Install ROS 2 Foxy
         apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+        # Vimba Deps
+        add-apt-repository --update --yes ppa:rock-core/qt4 && \
+        apt-get install --fix-missing --yes libqtcore4 libqt4-network libqt4-qt3support && \
         # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
@@ -203,11 +206,6 @@ RUN sudo rosdep init && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
 
 # Install VimbaSDK for the Mako cameras
-# Vimba Deps
-RUN sudo add-apt-repository --update --yes ppa:rock-core/qt4 && \
-    sudo apt-get install -y libqtcore4 && \
-    sudo apt-get install -y libqt4-network --fix-missing && \
-    sudo apt-get install -y libqt4-qt3support
 # Vimba source
 RUN cd ~/ && \
         curl -L  https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/fix/update_vimba_sdk/Vimba_v5.0_Linux.tgz > Vimba_v5.0_Linux.tgz && \
