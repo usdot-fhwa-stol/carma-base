@@ -193,22 +193,18 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         #       with the default xml parsing. Once the PR https://github.com/ament/ament_cmake/pull/287 is
         #       backported to ROS 2 Foxy, this can be removed.
         ###
-        curl https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py > /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+        curl https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py > /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
+        # Vimba source
+        curl -L -o Vimba_v5.0_Linux.tgz https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/fix/update_vimba_sdk/Vimba_v5.0_Linux.tgz && \
+        tar -xzf ./Vimba_v5.0_Linux.tgz -C /opt && \
+        ./opt/Vimba_5_0/VimbaGigETL/Install.sh && \
+        rm Vimba_v5.0_Linux.tgz
 
 USER carma
 
 RUN sudo rosdep init && \
         rosdep update && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
-
-# Install VimbaSDK for the Mako cameras
-# Vimba source
-RUN cd ~/ && \
-        curl -L  https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/fix/update_vimba_sdk/Vimba_v5.0_Linux.tgz > Vimba_v5.0_Linux.tgz && \
-        sudo tar -xzf ./Vimba_v5.0_Linux.tgz -C /opt && \
-        cd /opt/Vimba_5_0/VimbaGigETL && \
-        sudo ./Install.sh && \
-        rm ~/Vimba_v5.0_Linux.tgz
 
 # Set environment variable for SonarQube Binaries. Two binaries will go in this directory:
 #   - The Build Wrapper which executes a code build to capture C++
