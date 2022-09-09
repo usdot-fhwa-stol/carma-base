@@ -155,11 +155,10 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
         export LANG=en_US.UTF-8 && \
         # Install ROS 2 Foxy
-        apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS}
-
-# Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
-# Version match is needed to build some of the packages
-RUN pip3 install setuptools==45.2.0
+        apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+        # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
+        # Version match is needed to build some of the packages
+        pip3 install --no-cache-dir setuptools==45.2.0 simple-pid
 
 ###
 # TODO: The following sequence of commands make a local update to ament_cmake to resolve an issue 
@@ -168,9 +167,6 @@ RUN pip3 install setuptools==45.2.0
 ###
 RUN sudo rm /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
     sudo curl -o /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py
-
-# Install simple-pid
-RUN pip3 install simple-pid
 
 # Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
