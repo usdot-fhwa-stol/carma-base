@@ -113,6 +113,7 @@ ARG ROS_DEPS="apt-transport-https \
         python3-pip \
         python3-rosdep \
         python3-setuptools \
+        python3-testresources \
         python3-vcstool \
         ros-foxy-desktop \
         ros-foxy-rmw-cyclonedds-cpp \
@@ -156,7 +157,6 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
 # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
 # Version match is needed to build some of the packages
 RUN pip3 install setuptools==45.2.0
-RUN pip3 install -U testresources
 
 ###
 # TODO: The following sequence of commands make a local update to ament_cmake to resolve an issue 
