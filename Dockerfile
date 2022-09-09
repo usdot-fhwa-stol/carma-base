@@ -136,6 +136,8 @@ ARG ROS_DEPS="apt-transport-https \
         wait-for-it \
         x-window-system"
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Install ROS Noetic
 ARG ROS_DISTRO=noetic
 RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list && \
@@ -188,8 +190,9 @@ RUN useradd -m $USERNAME && \
         echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
         chmod 0440 /etc/sudoers.d/$USERNAME && \
         usermod  --uid 1000 $USERNAME && \
-        groupmod --gid 1000 $USERNAME
-RUN mkdir -p /opt/carma && chown carma:carma -R /opt/carma
+        groupmod --gid 1000 $USERNAME && \
+        mkdir -p /opt/carma/{launch,logs,routes} && \
+        chown carma:carma -R /opt/carma
 USER carma
 
 ADD --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
@@ -267,13 +270,11 @@ RUN cd $HOME && \
         mkdir build && \
         cd build && \
         PYTHONPATH=$HOME/catkin/lib/python3/dist-packages/ cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/catkin -DPYTHON_EXECUTABLE=/usr/bin/python3 && \
-        make install
+        make -j install && \
         # Result is installation under ~/catkin so use with 
         # source ~/cakin/setup.bash
-
-# Final system setup. This must go last before the ENTRYPOINT
-RUN mkdir -p /opt/carma/routes /opt/carma/logs /opt/carma/launch &&\
-    echo "source ~/.base-image/init-env.sh" >> ~/.bashrc &&\
-    echo "cd /opt/carma" >> ~/.bashrc 
+        # Final system setup. This must go last before the ENTRYPOINT
+        echo "source ~/.base-image/init-env.sh" >> ~/.bashrc && \
+        echo "cd /opt/carma" >> ~/.bashrc
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
