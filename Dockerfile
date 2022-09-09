@@ -156,6 +156,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         export LANG=en_US.UTF-8 && \
         # Install ROS 2 Foxy
         apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+        # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
+        curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
         # Version match is needed to build some of the packages
         pip3 install --no-cache-dir setuptools==45.2.0 simple-pid
@@ -240,9 +242,6 @@ RUN SONAR_DIR=/opt/sonarqube && \
 
 # Add engineering tools scripts to image
 ADD --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
-
-# Download a cmake module for PROJ
-RUN cd /usr/share/cmake-3.16/Modules && sudo curl -O https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake
 
 # Install non-ros1 dependant version of catkin
 # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
