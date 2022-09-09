@@ -40,7 +40,19 @@ export PATH=$PATH:/usr/local/cuda/bin
 export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_32bit/"
 export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_64bit/"
 
-[ -f "/opt/ros/noetic/setup.bash" ] && source /opt/ros/noetic/setup.bash
-[ -f "/opt/autoware.ai/ros/install/setup.bash" ] && source /opt/autoware.ai/ros/install/setup.bash
-[ -f "/opt/carma/install/setup.bash" ] && source /opt/carma/install/setup.bash
-[ -f "/opt/carma/vehicle/config/carma.env" ] && source /opt/carma/vehicle/config/carma.env # Always source environment variables as last step
+if [ -f "/opt/ros/noetic/setup.bash" ]; then
+    source /opt/ros/noetic/setup.bash
+fi
+
+if [ -f "/opt/autoware.ai/ros/install/setup.bash" ]; then
+    source /opt/autoware.ai/ros/install/setup.bash
+fi
+
+if [ -f "/opt/carma/install/setup.bash" ]; then
+    source /opt/carma/install/setup.bash
+fi
+
+# Always source environment variables as last step
+if [ -f "/opt/carma/vehicle/config/carma.env" ]; then
+    source /opt/carma/vehicle/config/carma.env
+fi
