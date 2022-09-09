@@ -43,6 +43,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 
 ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         coinor-libipopt1v5 \
+        libarmadillo-dev \
         libcgal-dev \
         libmumps-5.2.1 \
         libmumps-dev \
@@ -198,17 +199,6 @@ ADD --chown=carma init-env.sh /home/carma/.base-image/
 RUN sudo rosdep init && \
         rosdep update && \
         rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
-
-# Install Armadillo
-RUN cd ~/ && \
-        curl -Lk  http://sourceforge.net/projects/arma/files/armadillo-9.800.1.tar.xz > armadillo-9.800.1.tar.xz && \
-        tar -xvf armadillo-9.800.1.tar.xz && \
-        cd armadillo-9.800.1 && \
-        ./configure && \
-        make && \
-        sudo make install && \
-        cd ../ && \
-        rm -R armadillo-9.800.1 armadillo-9.800.1.tar.xz
 
 # Install VimbaSDK for the Mako cameras
 # Vimba Deps
