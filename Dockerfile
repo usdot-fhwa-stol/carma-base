@@ -166,15 +166,13 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
         # Version match is needed to build some of the packages
-        pip3 install --no-cache-dir setuptools==45.2.0 simple-pid
-
-###
-# TODO: The following sequence of commands make a local update to ament_cmake to resolve an issue 
-#       with the default xml parsing. Once the PR https://github.com/ament/ament_cmake/pull/287 is  
-#       backported to ROS 2 Foxy, this can be removed.
-###
-RUN sudo rm /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
-    sudo curl -o /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+        pip3 install --no-cache-dir setuptools==45.2.0 simple-pid && \
+        ###
+        # TODO: The following sequence of commands make -j a local update to ament_cmake to resolve an issue
+        #       with the default xml parsing. Once the PR https://github.com/ament/ament_cmake/pull/287 is
+        #       backported to ROS 2 Foxy, this can be removed.
+        ###
+        curl https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py > /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py
 
 # Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
