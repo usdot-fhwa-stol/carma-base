@@ -108,6 +108,7 @@ ARG ROS_DEPS="apt-transport-https \
         libpugixml-dev \
         mesa-utils \
         nano \
+        nodejs \
         python3-catkin-pkg \
         python3-catkin-tools \
         python3-colcon-common-extensions \
@@ -172,13 +173,12 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         locale-gen en_US en_US.UTF-8 && \
         update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
         export LANG=en_US.UTF-8 && \
+        # Install Sonar dependency nodejs
+        curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
         # Install ROS 2 Foxy
         apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
         # Install AutonomouStuff dependencies
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-        # Install Sonar dependency nodejs
-        curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
-        apt-get install --no-install-recommends --yes nodejs && \
         apt-get install --no-install-recommends --yes libas-common && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
