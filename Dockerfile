@@ -85,7 +85,8 @@ ARG BASE_DEPS="ca-certificates \
         nodejs \
         openssl \
         python3-rosinstall \
-        ros-noetic-desktop-full"
+        ros-noetic-desktop-full \
+        xterm"
 
 ARG ROS_DEPS="apt-transport-https \
         apt-utils \
@@ -168,23 +169,23 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
         # Install Sonar dependency nodejs
         curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
-        apt-get install --yes ${BASE_DEPS} && \
+        apt-get install --no-install-recommends --yes ${BASE_DEPS} && \
         # Prepare for ROS 2 Foxy installation
         locale-gen en_US en_US.UTF-8 && \
         update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
         export LANG=en_US.UTF-8 && \
         # Install ROS 2 Foxy
-        apt-get install --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+        apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
         # Install AutonomouStuff dependencies
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
-        apt-get install --yes libas-common && \
+        apt-get install --no-install-recommends --yes libas-common && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
-        apt-get install --fix-missing --yes libqtcore4 libqt4-network libqt4-qt3support && \
+        apt-get install --fix-missing --no-install-recommends --yes libqtcore4 libqt4-network libqt4-qt3support && \
         # Install KVaser CAN
         add-apt-repository --update --yes ppa:astuff/kvaser-linux && \
-        apt-get install --yes kvaser-canlib-dev can-utils && \
+        apt-get install --no-install-recommends --yes kvaser-canlib-dev can-utils && \
         # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
