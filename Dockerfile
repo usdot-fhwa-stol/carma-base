@@ -246,7 +246,7 @@ RUN cd $HOME && \
         cd build && \
         PYTHONPATH=$HOME/catkin/lib/python3/dist-packages/ cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/catkin -DPYTHON_EXECUTABLE=/usr/bin/python3 && \
         make -j install && \
-        # Result is installation under ~/catkin so use with 
+        # Result is installation under ~/catkin so use with
         # source ~/cakin/setup.bash
         sudo rosdep init && \
         rosdep update && \
