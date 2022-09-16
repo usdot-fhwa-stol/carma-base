@@ -82,6 +82,7 @@ ARG BASE_DEPS="ca-certificates \
         gnupg2 \
         locales \
         lsb-release \
+        nodejs \
         openssl \
         python3-rosinstall \
         ros-noetic-desktop-full"
@@ -165,7 +166,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # Add ROS 2 repo
         apt-key adv --fetch-keys https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc && \
         sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
-        apt-get update && \
+        # Install Sonar dependency nodejs
+        curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
         apt-get install --yes ${BASE_DEPS} && \
         # Prepare for ROS 2 Foxy installation
         locale-gen en_US en_US.UTF-8 && \
@@ -207,9 +209,6 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         mkdir $SONAR_DIR && \
         curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
         curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
-        # Install Dependancy of NodeJs 6+
-        curl -sL https://deb.nodesource.com/setup_16.x | sudo bash - && \
-        apt-get install -y nodejs && \
         # Unzip scanner
         unzip $SONAR_DIR/sonar-scanner.zip -d "$SONAR_DIR"/ && \
         unzip $SONAR_DIR/build-wrapper.zip -d "$SONAR_DIR"/ && \
