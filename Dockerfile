@@ -225,10 +225,6 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
 
 USER carma
 
-RUN sudo rosdep init && \
-        rosdep update && \
-        rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y
-
 # Install non-ros1 dependant version of catkin
 # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
 # install catkin_pkg
@@ -252,6 +248,9 @@ RUN cd $HOME && \
         make -j install && \
         # Result is installation under ~/catkin so use with 
         # source ~/cakin/setup.bash
+        sudo rosdep init && \
+        rosdep update && \
+        rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y && \
         # Final system setup. This must go last before the ENTRYPOINT
         echo "source ~/.base-image/init-env.sh" >> ~/.bashrc && \
         echo "cd /opt/carma" >> ~/.bashrc
