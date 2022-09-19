@@ -222,38 +222,35 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/ && \
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
-        ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh
-
-USER carma
-
-# Install non-ros1 dependant version of catkin
-# This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
-# install catkin_pkg
-RUN cd $HOME && \
-        mkdir catkin_ros2_ws && \
-        cd catkin_ros2_ws && \
-        git clone https://github.com/ros-infrastructure/catkin_pkg.git && \
-        cd catkin_pkg && \
+        ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
+        # Install non-ros1 dependant version of catkin
+        # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
+        # install catkin_pkg
+        sudo -u carma mkdir /home/carma/catkin_ros2_ws && \
+        sudo -u carma git clone https://github.com/ros-infrastructure/catkin_pkg.git /home/carma/catkin_ros2_ws/catkin_pkg && \
+        cd /home/carma/catkin_ros2_ws/catkin_pkg && \
         # Checkout a known working commit
-        git checkout 60096f4b4a0975774651122b7e2d346545f8098a && \
-        python3 setup.py install --prefix $HOME/catkin --single-version-externally-managed --record foo --install-layout deb && \
-        cd ../ && \
+        sudo -u carma git checkout 60096f4b4a0975774651122b7e2d346545f8098a && \
+        sudo -u carma python3 setup.py install --prefix /home/carma/catkin --single-version-externally-managed --record foo --install-layout deb && \
         # install catkin
-        git clone https://github.com/ros/catkin.git && \
-        cd catkin && \
+        sudo -u carma git clone https://github.com/ros/catkin.git /home/carma/catkin_ros2_ws/catkin && \
+        cd /home/carma/catkin_ros2_ws/catkin && \
         # Checkout a known working commit
-        git checkout 085e8950cafa3eb979edff1646b9e3fe55a7053a && \
-        mkdir build && \
+        sudo -u carma git checkout 085e8950cafa3eb979edff1646b9e3fe55a7053a && \
+        sudo -u carma mkdir build && \
         cd build && \
-        PYTHONPATH=$HOME/catkin/lib/python3/dist-packages/ cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/catkin -DPYTHON_EXECUTABLE=/usr/bin/python3 && \
-        make -j install && \
+        PYTHONPATH=/home/carma/catkin/lib/python3/dist-packages/ sudo -u carma cmake .. -DCMAKE_INSTALL_PREFIX=/home/carma/catkin -DPYTHON_EXECUTABLE=/usr/bin/python3 && \
+        sudo -u carma make -j install && \
         # Result is installation under ~/catkin so use with
         # source ~/cakin/setup.bash
-        sudo rosdep init && \
-        rosdep update && \
-        rosdep install --from-paths ~/.base-image/workspace/src --ignore-src -y && \
-        # Final system setup. This must go last before the ENTRYPOINT
-        echo "source ~/.base-image/init-env.sh" >> ~/.bashrc && \
-        echo "cd /opt/carma" >> ~/.bashrc
+        rosdep --rosdistro noetic init && \
+        sudo -u carma rosdep --rosdistro noetic update && \
+        sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
+        sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
+        sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/*
+
+USER carma
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
