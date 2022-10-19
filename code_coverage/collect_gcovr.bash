@@ -54,7 +54,7 @@ find "${output_dir}" -iname "*\.gcda" -o -iname "*\.gcna" -o -iname "*\.gcov" -t
 # Grab resulting gcov files and move them to the ${output_dir} directory
 echo "Moving new files"
 cd "${output_dir}"
-find /opt/carma -iname "*\.gcda" -o -iname "\.gcna" | xargs gcov
+for i in $(find /opt/carma -iname "*\.gcda" -o -iname "\.gcna"); do gcov "$i"; done
 
 echo "Generating coverage.xml"
 gcovr --sonarqube coverage.xml -k -r . # Run gcovr with -k to ensure generated .gcov files are preserved -r . makes it run in the current directory
