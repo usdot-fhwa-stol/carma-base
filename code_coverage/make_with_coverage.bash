@@ -83,7 +83,7 @@ fi
 
 if [ "${do_test}" = true ]; then
   echo "Calling catkin_make run_tests"
-  colcon test --parallel-workers 4 --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
+  colcon test --return-code-on-test-failure --parallel-workers 4 --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
 bash collect_gcovr.bash "${execution_dir}" "${output_dir}"
