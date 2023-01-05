@@ -78,12 +78,12 @@ COVERAGE_FLAGS="-g --coverage -fprofile-arcs -ftest-coverage"
 
 if [ "${do_make}" = true ]; then
   echo "Calling catkin_make"
-  colcon build --parallel-workers 4 --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
+  colcon build --parallel-workers 4 --event-handlers console_direct+ --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
 if [ "${do_test}" = true ]; then
   echo "Calling catkin_make run_tests"
-  colcon test --return-code-on-test-failure --parallel-workers 4 --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
+  colcon test --return-code-on-test-failure --parallel-workers 4 --event-handlers console_direct+ --ctest-args -DCMAKE_CXX_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_C_FLAGS="${COVERAGE_FLAGS}" -DCMAKE_BUILD_TYPE="Debug"
 fi
 
 bash collect_gcovr.bash "${execution_dir}" "${output_dir}"
