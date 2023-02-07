@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "develop"
+      - "release/*"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Determine info
+        run: |
+          echo "$GITHUB_REF_NAME"
+          if [[ "$GITHUB_REF_NAME" =~ release/(.*) ]]; then
+              echo DOCKERHUB_ORG="usdotfhwastolcandidate" >> $GITHUB_ENV
+              echo DOCKERHUB_TAG="${BASH_REMATCH[1]}" >> $GITHUB_ENV
+          elif [ "$GITHUB_REF_NAME" == "develop" ]; then
+              echo DOCKERHUB_ORG="usdotfhwastoldev" >> $GITHUB_ENV
+              echo DOCKERHUB_TAG="develop" >> $GITHUB_ENV
+          fi
+      - name: This step is named ${{ env.DOCKERHUB_TAG }}
+        run: |
+          echo
+      - name: This step is named ${{ env.DOCKERHUB_ORG }}
+        run: |
+          echo
