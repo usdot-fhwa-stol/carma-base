@@ -24,19 +24,6 @@
 #
 #
 
-# Helper function to convert the results of find into a bash array
-# This runs on the current directory 
-#
-# $1 An initialized array
-# $2 The regex pattern to find this is passed to the -iname command
-# $3 Any additional inputs to find
-find_as_array() {
-	local -n ref_array=$1 # Pass the output array by reference
-	# Run the find command and store the results in the array
-	while IFS=  read -r -d $'\0'; do
-	    ref_array+=("$REPLY")
-	done < <(find . -iname "$2" -print0 $3)
-}
 
 execution_dir="."
 output_dir="./coverage_reports/gcov"
@@ -55,29 +42,22 @@ else
 	output_dir=$2;
 fi
 
-gcovr -k -r . # Run gcovr with -k to ensure generated .gcov files are preserved -r . makes it run in the current directory
 
 echo "Ensuring output directory exists"
 mkdir -p ${output_dir}
 
 
 echo "Deleting old files"
-find "${output_dir}" -name "*.gcov" -type f -exec rm -fv {} \;
+find "${output_dir}" -iname "*\.gcda" -o -iname "*\.gcna" -o -iname "*\.gcov" -type f -exec rm -fv {} \;
 
 
 # Grab resulting gcov files and move them to the ${output_dir} directory
-gcov_file_array=()
-find_as_array gcov_file_array "*.gcov" "-type f"
-
 echo "Moving new files"
+cd "${output_dir}"
+find /opt/carma -iname "*\.gcda" -o -iname "\.gcna" | xargs gcov
 
-for gcov_file in "${gcov_file_array[@]}"
-do
-   base_file_name=$(basename ${gcov_file})
-   mv ${gcov_file} ${output_dir}/${base_file_name}
-done
-
-echo "Files Moved"
+echo "Generating coverage.xml"
+gcovr --sonarqube coverage.xml -k -r . # Run gcovr with -k to ensure generated .gcov files are preserved -r . makes it run in the current directory
 
 exit 0
 

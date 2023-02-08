@@ -19,7 +19,40 @@
 
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/
 
-[ -f "/opt/ros/noetic/setup.bash" ] && source /opt/ros/noetic/setup.bash
-[ -f "/opt/autoware.ai/ros/install/setup.bash" ] && source /opt/autoware.ai/ros/install/setup.bash
-[ -f "/opt/carma/install/setup.bash" ] && source /opt/carma/install/setup.bash
-[ -f "/opt/carma/vehicle/config/carma.env" ] && source /opt/carma/vehicle/config/carma.env # Always source environment variables as last step
+# Export QT X11 Forwarding variables
+export QT_X11_NO_MITSHM=1
+
+# Set Cyclone DDS as default RMW implementation
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+
+# Add scanner and wrapper to PATH
+export PATH=$PATH:/opt/sonarqube/sonar-scanner/bin/:/opt/sonarqube/build-wrapper/
+
+# Add code_coverage script folder to path for gcovr
+export PATH=$PATH:/home/carma/.ci-image/engineering_tools/code_coverage/
+
+# Add CUDA paths
+export CUDA_BIN_PATH=/usr/local/cuda
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+export PATH=$PATH:/usr/local/cuda/bin
+
+# Vimba
+export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_32bit/"
+export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_64bit/"
+
+if [ -f "/opt/ros/noetic/setup.bash" ]; then
+    source /opt/ros/noetic/setup.bash
+fi
+
+if [ -f "/opt/autoware.ai/ros/install/setup.bash" ]; then
+    source /opt/autoware.ai/ros/install/setup.bash
+fi
+
+if [ -f "/opt/carma/install/setup.bash" ]; then
+    source /opt/carma/install/setup.bash
+fi
+
+# Always source environment variables as last step
+if [ -f "/opt/carma/vehicle/config/carma.env" ]; then
+    source /opt/carma/vehicle/config/carma.env
+fi
