@@ -120,6 +120,7 @@ ARG ROS_DEPS="apt-transport-https \
         python3-vcstool \
         ros-foxy-desktop \
         ros-foxy-rmw-cyclonedds-cpp \
+        ros-foxy-pcl-ros \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
