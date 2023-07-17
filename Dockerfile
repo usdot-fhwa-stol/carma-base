@@ -75,6 +75,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-tvm-vendor \
         ros-foxy-udp-driver \
         ros-foxy-udp-msgs \
+        ros-foxy-velodyne-pointcloud \
         ros-foxy-yaml-cpp-vendor"
 
 ARG BASE_DEPS="ca-certificates \
