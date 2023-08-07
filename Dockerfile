@@ -119,9 +119,11 @@ ARG ROS_DEPS="apt-transport-https \
         python3-setuptools \
         python3-testresources \
         python3-vcstool \
+        python3-pybind11 \
         ros-foxy-desktop \
         ros-foxy-rmw-cyclonedds-cpp \
         ros-foxy-pcl-ros \
+        ros-foxy-test-msgs \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
