@@ -124,6 +124,8 @@ ARG ROS_DEPS="apt-transport-https \
         ros-foxy-rmw-cyclonedds-cpp \
         ros-foxy-pcl-ros \
         ros-foxy-test-msgs \
+        ros-foxy-nmea-msgs \
+        ros-foxy-gps-tools \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
