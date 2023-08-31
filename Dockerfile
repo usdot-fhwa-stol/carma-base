@@ -86,7 +86,8 @@ ARG BASE_DEPS="ca-certificates \
         openssl \
         python3-rosinstall \
         ros-noetic-desktop-full \
-        xterm"
+        xterm \
+	libmsgsl-dev"
 
 ARG ROS_DEPS="apt-transport-https \
         apt-utils \
