@@ -3,9 +3,7 @@ name: Docker Hub build
 on:
   push:
     branches:
-      - "develop"
-      - "release/*"
-
+      - "upgrade_sonar_scanner"
 jobs:
   dockerhub:
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
