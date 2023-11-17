@@ -108,13 +108,18 @@ ARG ROS_DEPS="apt-transport-https \
         libopenblas-dev \
         libpcap-dev \
         libpugixml-dev \
+        lttng-tools \
+        lttng-modules-dkms \
+        liblttng-ust-dev \
         mesa-utils \
         nano \
         nodejs \
+        python3-babeltrace \
         python3-catkin-pkg \
         python3-catkin-tools \
         python3-colcon-common-extensions \
         python3-future \
+        python3-lttng \
         python3-pip \
         python3-rosdep \
         python3-setuptools \
