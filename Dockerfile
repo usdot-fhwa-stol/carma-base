@@ -108,13 +108,18 @@ ARG ROS_DEPS="apt-transport-https \
         libopenblas-dev \
         libpcap-dev \
         libpugixml-dev \
+        lttng-tools \
+        lttng-modules-dkms \
+        liblttng-ust-dev \
         mesa-utils \
         nano \
         nodejs \
+        python3-babeltrace \
         python3-catkin-pkg \
         python3-catkin-tools \
         python3-colcon-common-extensions \
         python3-future \
+        python3-lttng \
         python3-pip \
         python3-rosdep \
         python3-setuptools \
@@ -255,8 +260,13 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
+	apt-get update && \
+        apt-get install -y --no-install-recommends ${BASE_DEPS} && \
+        # Install Java 17
+        apt-get install -y openjdk-17-jdk && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
+	
 
 USER carma
 
