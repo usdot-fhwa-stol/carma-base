@@ -1,11 +1,11 @@
-#  Copyright (C) 2018-2021 LEIDOS.
-# 
+#  Copyright (C) 2018-2024 LEIDOS.
+#
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
 #  the License at
-# 
+#
 #  http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -37,7 +37,7 @@ LABEL org.label-schema.build-date=${BUILD_DATE}
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all} \
         # Specify which driver libraries/binaries will be mounted inside the container
         NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-    
+
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -102,7 +102,7 @@ ARG ROS_DEPS="apt-transport-https \
         less \
         libboost-python-dev \
         libfftw3-dev \
-        libgeographic-dev \ 
+        libgeographic-dev \
         libgmock-dev \
         libnl-genl-3-dev \
         libopenblas-dev \
@@ -132,6 +132,7 @@ ARG ROS_DEPS="apt-transport-https \
         ros-foxy-test-msgs \
         ros-foxy-nmea-msgs \
         ros-foxy-gps-tools \
+        ros-foxy-rosbag2-storage-mcap \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
@@ -226,10 +227,10 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # Unzip scanner
         unzip $SONAR_DIR/sonar-scanner.zip -d "$SONAR_DIR"/ && \
         unzip $SONAR_DIR/build-wrapper.zip -d "$SONAR_DIR"/ && \
-        # Remove zip files 
+        # Remove zip files
         rm $SONAR_DIR/sonar-scanner.zip && \
         rm $SONAR_DIR/build-wrapper.zip && \
-        # Rename files 
+        # Rename files
         mv "$SONAR_DIR"/sonar-scanner-* "$SONAR_DIR"/sonar-scanner/ && \
         mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/ && \
         # FIXME: The following symlink will no longer be required once images
@@ -260,13 +261,10 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
-	apt-get update && \
-        apt-get install -y --no-install-recommends ${BASE_DEPS} && \
-        # Install Java 17
+	# Install Java 17
         apt-get install -y openjdk-17-jdk && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
-	
 
 USER carma
 
