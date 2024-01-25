@@ -1,4 +1,4 @@
-#  Copyright (C) 2018-2021 LEIDOS.
+#  Copyright (C) 2018-2024 LEIDOS.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -222,7 +222,7 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         SONAR_DIR=/opt/sonarqube && \
         # Pull scanner from internet
         mkdir $SONAR_DIR && \
-        curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
+        curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip && \
         curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
         # Unzip scanner
         unzip $SONAR_DIR/sonar-scanner.zip -d "$SONAR_DIR"/ && \
@@ -261,6 +261,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
+	# Install Java 17
+        apt-get install -y openjdk-17-jdk && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
 
