@@ -5,17 +5,16 @@
 
 apt update
 
-mkdir -p /opt/ros/humble/src
-cd /opt/ros/src
+export ROS_PACKAGE_PATH=/opt/ros/humble/install/share
 
-rosinstall_generator --deps --rosdistro humble ros-base \
+mkdir -p /opt/ros/humble/src
+cd /opt/ros/humble/src
+
+rosinstall_generator --deps --rosdistro humble \
     acado_vendor \
-    ament_cmake_google_benchmark \
-    apex_test_tools \
     automotive_platform_msgs \
     casadi_vendor \
     diagnostic_updater \
-    gps_msgs \ 
     joy_linux \
     lgsvl_msgs \
     osqp_vendor \
@@ -32,17 +31,15 @@ rosinstall_generator --deps --rosdistro humble ros-base \
     udp_msgs \
     velodyne_pointcloud \
     yaml_cpp_vendor \
-    rmw_cyclonedds_cpp \
     pcl_ros \
     test_msgs \
     nmea_msgs \
-    gps_tools \
     rosbag2 \
+    --exclude RPP \
 > ros2.humble.ros-base.rosinstall
 cat ros2.humble.ros-base.rosinstall
 vcs import src < ros2.humble.ros-base.rosinstall
 
-rosdep init
 rosdep update
 rosdep install - y \
     --ignore-src \

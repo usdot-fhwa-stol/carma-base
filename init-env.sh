@@ -36,10 +36,6 @@ export CUDA_BIN_PATH=/usr/local/cuda
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 export PATH=$PATH:/usr/local/cuda/bin
 
-if [ -f "/opt/ros/noetic/setup.bash" ]; then
-    source /opt/ros/noetic/setup.bash
-fi
-
 if [ -f "/opt/autoware.ai/ros/install/setup.bash" ]; then
     source /opt/autoware.ai/ros/install/setup.bash
 fi
