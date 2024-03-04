@@ -117,18 +117,18 @@ COPY --chown=carma entrypoint.sh init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 # Layer for installing base dependencies
-RUN apt update && \
-        apt install --no-install--recommends --yes ${BASE_DEPS}
+RUN apt-get update && \
+        apt-get install --no-install-recommends --yes ${BASE_DEPS}
 
 # Layer for installing Autoware/ROS2/misc dependencies
 # NOTE: Sonarcloud does not seem to support ARM, further investigation needed
-RUN apt update && \
-        apt install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+RUN apt-get update && \
+        apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
         sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list && \
-        # Install AutonomouStuff dependencies
-        sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-        apt-get update && \
-        apt-get install --no-install-recommends --yes libas-common && \
+        # # Install AutonomouStuff dependencies
+        # sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
+        # apt-get update && \
+        # apt-get install --no-install-recommends --yes libas-common && \
         # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
@@ -143,7 +143,8 @@ RUN apt update && \
         rm -rf /var/lib/apt/lists/*
 
 # Layer for building ROS2 Humble packages from source
-COPY install_pkgs.sh install_pkgs.sh
+# NOTICE: needs to be chmod +x
+COPY install_pkgs.sh install_pkgs.sh 
 RUN ./install_pkgs.sh
 
 

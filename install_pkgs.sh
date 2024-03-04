@@ -8,7 +8,7 @@ apt update
 export ROS_PACKAGE_PATH=/opt/ros/humble/install/share
 
 mkdir -p /opt/ros/humble/src
-cd /opt/ros/humble/src
+cd /opt/ros/humble
 
 rosinstall_generator --deps --rosdistro humble \
     acado_vendor \
@@ -36,12 +36,12 @@ rosinstall_generator --deps --rosdistro humble \
     nmea_msgs \
     rosbag2 \
     --exclude RPP \
-> ros2.humble.ros-base.rosinstall
-cat ros2.humble.ros-base.rosinstall
-vcs import src < ros2.humble.ros-base.rosinstall
+> ros2.humble.ros_base.rosinstall
+cat ros2.humble.ros_base.rosinstall
+vcs import src < ros2.humble.ros_base.rosinstall
 
 rosdep update
-rosdep install - y \
+rosdep install -y \
     --ignore-src \
     --from-paths src \
     --rosdistro humble
