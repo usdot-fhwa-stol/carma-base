@@ -6,18 +6,17 @@
 apt update
 
 export ROS_PACKAGE_PATH=/opt/ros/humble/install/share
+export PYTHONPATH="opt/ros/humble/install/lib/python3.8/site-packages/"
+export CMAKE_PREFIX_PATH="/opt/ros/humble/install"
 
 mkdir -p /opt/ros/humble/src
 cd /opt/ros/humble
 
 rosinstall_generator --deps --rosdistro humble \
     acado_vendor \
-    automotive_platform_msgs \
     casadi_vendor \
     diagnostic_updater \
     joy_linux \
-    lgsvl_msgs \
-    osqp_vendor \
     osrf_testing_tools_cpp \
     point_cloud_msg_wrapper \
     ros_testing \
@@ -26,7 +25,6 @@ rosinstall_generator --deps --rosdistro humble \
     rosbridge_library \
     rosbridge_msgs \
     rosbridge_server \
-    tvm_vendor \
     udp_driver \
     udp_msgs \
     velodyne_pointcloud \
