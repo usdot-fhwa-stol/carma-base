@@ -5,9 +5,9 @@
 
 apt update
 
-export ROS_PACKAGE_PATH=/opt/ros/humble/install/share
-export PYTHONPATH="opt/ros/humble/install/lib/python3.8/site-packages/"
-export CMAKE_PREFIX_PATH="/opt/ros/humble/install"
+export ROS_PACKAGE_PATH='/opt/ros/humble/install/share'
+export PYTHONPATH='/opt/ros/humble/install/lib/python3.8/site-packages/:$PYTHONPATH'
+export CMAKE_PREFIX_PATH='/opt/ros/humble/install'
 
 mkdir -p /opt/ros/humble/src
 cd /opt/ros/humble
@@ -35,7 +35,6 @@ rosinstall_generator --deps --rosdistro humble \
     rosbag2 \
     --exclude RPP \
 > ros2.humble.ros_base.rosinstall
-cat ros2.humble.ros_base.rosinstall
 vcs import src < ros2.humble.ros_base.rosinstall
 
 rosdep update

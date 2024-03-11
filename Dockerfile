@@ -33,70 +33,6 @@ LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platfor
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
-# Avoid interactive prompts during the building of this docker image
-ARG DEBIAN_FRONTEND="noninteractive"
-
-ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
-        coinor-libipopt1v5 \
-        libarmadillo-dev \
-        libcgal-dev \
-        libmumps-5.2.1 \
-        libmumps-dev \
-        libmumps-seq-5.2.1 \
-        libmumps-seq-dev \
-        libproj-dev \
-        libscalapack-mpi-dev \
-        libscalapack-openmpi-dev \
-        libscalapack-openmpi2.1 \
-        libscotch-6.0"
-
-ARG BASE_DEPS="gnupg2 \
-        locales \
-        openssl \
-        python3-rosinstall \
-        xterm \
-	libmsgsl-dev"
-
-ARG ROS_DEPS="apt-transport-https \
-        apt-utils \
-        automake \
-        autotools-dev \
-        dialog \
-        gcovr \
-        gdb \
-        git \
-        gnuplot-qt \
-        jq \
-        less \
-        libboost-python-dev \
-        libfftw3-dev \
-        libgeographic-dev \
-        libgmock-dev \
-        libnl-genl-3-dev \
-        libopenblas-dev \
-        libpcap-dev \
-        libpugixml-dev \
-        lttng-tools \
-        lttng-modules-dkms \
-        liblttng-ust-dev \
-        mesa-utils \
-        nano \
-        nodejs \
-        python3-babeltrace \
-        python3-future \
-        python3-lttng \
-        python3-testresources \
-        python3-pybind11 \
-        software-properties-common \
-        sqlite3 \
-        ssh \
-        sudo \
-        tmux \
-        unzip \
-        vim \
-        wait-for-it \
-        x-window-system"
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Add carma user
@@ -116,19 +52,10 @@ COPY --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
 COPY --chown=carma entrypoint.sh init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
-# Layer for installing base dependencies
-RUN apt-get update && \
-        apt-get install --no-install-recommends --yes ${BASE_DEPS}
-
-# Layer for installing Autoware/ROS2/misc dependencies
+# Layer for installing dependencies
 # NOTE: Sonarcloud does not seem to support ARM, further investigation needed
-RUN apt-get update && \
-        apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+RUN apt-get update && \\
         sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt/sources.list && \
-        # # Install AutonomouStuff dependencies
-        # sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-        # apt-get update && \
-        # apt-get install --no-install-recommends --yes libas-common && \
         # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
@@ -144,7 +71,7 @@ RUN apt-get update && \
 
 # Layer for building ROS2 Humble packages from source
 # NOTICE: needs to be chmod +x
-COPY install_pkgs.sh install_pkgs.sh 
+COPY install_pkgs.sh install_pkgs.sh
 RUN ./install_pkgs.sh
 
 
