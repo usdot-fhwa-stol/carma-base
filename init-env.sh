@@ -36,17 +36,6 @@ export CUDA_BIN_PATH=/usr/local/cuda
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 export PATH=$PATH:/usr/local/cuda/bin
 
-# Vimba
-export GENICAM_GENTL32_PATH=$GENICAM_GENTL32_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_32bit/"
-export GENICAM_GENTL64_PATH=$GENICAM_GENTL64_PATH:"/opt/Vimba_5_0/VimbaGigETL/CTI/x86_64bit/"
-
-if [ -f "/opt/ros/noetic/setup.bash" ]; then
-    source /opt/ros/noetic/setup.bash
-fi
-
-if [ -f "/opt/autoware.ai/ros/install/setup.bash" ]; then
-    source /opt/autoware.ai/ros/install/setup.bash
-fi
 
 if [ -f "/opt/carma/install/setup.bash" ]; then
     source /opt/carma/install/setup.bash
