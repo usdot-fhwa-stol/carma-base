@@ -1,11 +1,11 @@
-#  Copyright (C) 2018-2021 LEIDOS.
-# 
+#  Copyright (C) 2018-2024 LEIDOS.
+#
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
 #  the License at
-# 
+#
 #  http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -37,7 +37,7 @@ LABEL org.label-schema.build-date=${BUILD_DATE}
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all} \
         # Specify which driver libraries/binaries will be mounted inside the container
         NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-    
+
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -75,6 +75,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-tvm-vendor \
         ros-foxy-udp-driver \
         ros-foxy-udp-msgs \
+        ros-foxy-velodyne-pointcloud \
         ros-foxy-yaml-cpp-vendor"
 
 ARG BASE_DEPS="ca-certificates \
@@ -85,7 +86,8 @@ ARG BASE_DEPS="ca-certificates \
         openssl \
         python3-rosinstall \
         ros-noetic-desktop-full \
-        xterm"
+        xterm \
+	libmsgsl-dev"
 
 ARG ROS_DEPS="apt-transport-https \
         apt-utils \
@@ -100,26 +102,37 @@ ARG ROS_DEPS="apt-transport-https \
         less \
         libboost-python-dev \
         libfftw3-dev \
-        libgeographic-dev \ 
+        libgeographic-dev \
         libgmock-dev \
         libnl-genl-3-dev \
         libopenblas-dev \
         libpcap-dev \
         libpugixml-dev \
+        lttng-tools \
+        lttng-modules-dkms \
+        liblttng-ust-dev \
         mesa-utils \
         nano \
         nodejs \
+        python3-babeltrace \
         python3-catkin-pkg \
         python3-catkin-tools \
         python3-colcon-common-extensions \
         python3-future \
+        python3-lttng \
         python3-pip \
         python3-rosdep \
         python3-setuptools \
         python3-testresources \
         python3-vcstool \
+        python3-pybind11 \
         ros-foxy-desktop \
         ros-foxy-rmw-cyclonedds-cpp \
+        ros-foxy-pcl-ros \
+        ros-foxy-test-msgs \
+        ros-foxy-nmea-msgs \
+        ros-foxy-gps-tools \
+        ros-foxy-rosbag2-storage-mcap \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
@@ -209,15 +222,15 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         SONAR_DIR=/opt/sonarqube && \
         # Pull scanner from internet
         mkdir $SONAR_DIR && \
-        curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
+        curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip && \
         curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
         # Unzip scanner
         unzip $SONAR_DIR/sonar-scanner.zip -d "$SONAR_DIR"/ && \
         unzip $SONAR_DIR/build-wrapper.zip -d "$SONAR_DIR"/ && \
-        # Remove zip files 
+        # Remove zip files
         rm $SONAR_DIR/sonar-scanner.zip && \
         rm $SONAR_DIR/build-wrapper.zip && \
-        # Rename files 
+        # Rename files
         mv "$SONAR_DIR"/sonar-scanner-* "$SONAR_DIR"/sonar-scanner/ && \
         mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/ && \
         # FIXME: The following symlink will no longer be required once images
@@ -248,6 +261,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
+	# Install Java 17
+        apt-get install -y openjdk-17-jdk && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
 
