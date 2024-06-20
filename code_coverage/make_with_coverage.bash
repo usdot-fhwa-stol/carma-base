@@ -88,4 +88,6 @@ fi
 
 bash collect_gcovr.bash "${execution_dir}" "${output_dir}"
 
+ls -lha "${output_dir}"
+
 echo "Test coverage complete"
