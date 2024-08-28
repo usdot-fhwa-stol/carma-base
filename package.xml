@@ -127,8 +127,6 @@
   <depend>rqt_plot</depend>
   <depend>rviz</depend>
   <depend>sensor_msgs</depend>
-  <depend>socketcan_bridge</depend>
-  <depend>socketcan_interface</depend>
   <depend>sound_play</depend>
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
