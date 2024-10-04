@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  Copyright (C) 2018-2024 LEIDOS.
+#  Copyright (C) 2018-2021 LEIDOS.
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -63,42 +63,32 @@ if [[ -z "$COMPONENT_VERSION_STRING" ]]; then
     COMPONENT_VERSION_STRING=$("./get-component-version.sh")
 fi
 
-build_image() {
-    local dockerfile_path=$1
-    local tag_suffix=$2
-
-    echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING using Dockerfile: $dockerfile_path"
-    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix"
-
-    docker build --network=host --no-cache -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix \
-        --build-arg VERSION="$COMPONENT_VERSION_STRING" \
-        --build-arg VCS_REF=`git rev-parse --short HEAD` \
-        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-        -f $dockerfile_path .
-
-    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix")
-
-    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix $USERNAME/$IMAGE:latest-$tag_suffix
-    TAGS+=("$USERNAME/$IMAGE:latest-$tag_suffix")
-
-    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix as $USERNAME/$IMAGE:latest-$tag_suffix"
-
-    if [ "$SYSTEM_RELEASE" = true ]; then
-        SYSTEM_VERSION_STRING=$("./get-system-version.sh")
-        docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING-$tag_suffix
-        echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix as $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING-$tag_suffix"
-        TAGS+=("$USERNAME/$IMAGE:$SYSTEM_VERSION_STRING-$tag_suffix")
-    fi
-}
-
-TAGS=()
+echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING"
+echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING"
 
 cd ..
-build_image "focal/Dockerfile" "focal"
-build_image "jammy/Dockerfile" "jammy"
+docker build --network=host --no-cache -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING \
+    --build-arg VERSION="$COMPONENT_VERSION_STRING" \
+    --build-arg VCS_REF=`git rev-parse --short HEAD` \
+    --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` .
+
+TAGS=()
+TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING")
+
+docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING $USERNAME/$IMAGE:latest
+TAGS+=("$USERNAME/$IMAGE:latest")
+
+echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING as $USERNAME/$IMAGE:latest"
+
+if [ "$SYSTEM_RELEASE" = true ]; then
+    SYSTEM_VERSION_STRING=$("./get-system-version.sh")
+    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING
+    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING as $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING"
+    TAGS+=("$USERNAME/$IMAGE:$SYSTEM_VERSION_STRING")
+fi
 
 if [ "$PUSH" = true ]; then
-    for tag in "${TAGS[@]}"; do
+    for tag in $TAGS; do
         docker push "${tag}"
     done
 fi
