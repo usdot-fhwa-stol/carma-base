@@ -28,31 +28,24 @@ LABEL org.label-schema.build-date=${BUILD_DATE}
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
+# Copy package lists early
+COPY ${DOCKERFILE_DIR}/ros_packages.txt ${DOCKERFILE_DIR}/additional_packages.txt /tmp/
+
 # Install basic dependencies
 RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    curl \
-    gnupg2 \
-    lsb-release
+    ca-certificates curl gnupg2 lsb-release
 
-# Copy package lists into the container
-COPY ${DOCKERFILE_DIR}/ros_packages.txt /tmp/ros_packages.txt
-COPY ${DOCKERFILE_DIR}/additional_packages.txt /tmp/additional_packages.txt
+# Set up ROS2 repository
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-# Add ROS2 repository
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
-
-# Install ROS2 and additional packages
-# Make sure the txt files are saved as UTF-8 without BOM in your editor
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    $(cat /tmp/ros_packages.txt)
+# Install ROS2 packages
+RUN apt-get update && \
+    apt-get install -y $(cat /tmp/ros_packages.txt)
 
 # Install additional packages
-# Make sure the txt files are saved as UTF-8 without BOM in your editor
-RUN apt-get update && \ apt-get install -y \
-    $(cat /tmp/additional_packages.txt)
+RUN apt-get update && \
+    apt-get install -y $(cat /tmp/additional_packages.txt)
 
 # Install Python packages
 RUN pip3 install --no-cache-dir vcstool setuptools pybind11

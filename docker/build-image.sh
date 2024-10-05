@@ -13,7 +13,6 @@
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #  License for the specific language governing permissions and limitations under
 #  the License.
-set -x
 
 USERNAME=usdotfhwastol
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -80,7 +79,7 @@ build_image() {
     echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING using Dockerfile: $dockerfile_path"
     echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix"
 
-    docker build --network=host --no-cache -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix \
+    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix \
         --build-arg VERSION="$COMPONENT_VERSION_STRING" \
         --build-arg VCS_REF=`git rev-parse --short HEAD` \
         --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
