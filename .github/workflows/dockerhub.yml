@@ -6,6 +6,7 @@ on:
       - develop
       - master
       - "release/*"
+      - arc-155-support-jammy
     tags:
       - "carma-system-*"
 jobs:
