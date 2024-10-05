@@ -17,7 +17,8 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
       file: ./focal/Dockerfile
-      tag_name_suffix: focal
+      # TODO: add focal suffix when humble is migrated 
+      #tag_name_suffix: focal https://usdot-carma.atlassian.net/browse/ARC-227
   dockerhub-jammy:
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@arc-155-support-tag-suffix
     secrets:
