@@ -33,7 +33,7 @@ COPY ${DOCKERFILE_DIR}/ros_packages.txt ${DOCKERFILE_DIR}/additional_packages.tx
 
 # Install basic dependencies
 RUN apt-get update && apt-get install -y \
-    ca-certificates curl gnupg2 lsb-release python3-pip
+    ca-certificates curl gnupg2 lsb-release
 
 # Set up ROS2 repository
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
