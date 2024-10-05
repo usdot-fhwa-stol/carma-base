@@ -4,12 +4,14 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Jammy (ROS2 Humble)
 jobs:
-  docker:
-    steps:
-    - name: Build Jammy (ROS2 Humble)
-      uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
-      file: ./jammy/Dockerfile
-    - name: Build Focal (ROS1 Noetic/ ROS2 Foxy)
-      uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
-      file: ./focal/Dockerfile
+  docker-build-jammy:
+    uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
+    file: ./jammy/Dockerfile
+
+# Focal (ROS1 Noetic/ ROS2 Foxy)
+jobs:
+  docker-build-focal:
+    uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
+    file: ./focal/Dockerfile
