@@ -85,7 +85,7 @@ RUN useradd -m carma && \
 
 # Copy files for carma user
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
-COPY --chown=carma ${DOCKERFILE_DIR}/entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
+COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 USER carma
