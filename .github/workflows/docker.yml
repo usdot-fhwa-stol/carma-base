@@ -9,9 +9,6 @@ jobs:
   docker-build-jammy:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     file: ./jammy/Dockerfile
-
-# Focal (ROS1 Noetic/ ROS2 Foxy)
-jobs:
   docker-build-focal:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     file: ./focal/Dockerfile
