@@ -11,16 +11,18 @@ on:
       - "carma-system-*"
 jobs:
   dockerhub-focal:
-    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
+    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@arc-155-support-tag-suffix
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
       file: ./focal/Dockerfile
+      tag_name_suffix: focal
   dockerhub-jammy:
-    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
+    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@arc-155-support-tag-suffix
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
       file: ./jammy/Dockerfile
+      tag_name_suffix: jammy
