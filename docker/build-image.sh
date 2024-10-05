@@ -35,7 +35,8 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --system-release)
-            SYSTEM_RELEASE=true
+            USERNAME=usdotfhwastol
+            COMPONENT_VERSION_STRING=$("./get-system-version.sh")
             shift
             ;;
         -p|--push)
@@ -77,27 +78,20 @@ build_image() {
     local tag_suffix=$2
 
     echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING using Dockerfile: $dockerfile_path"
-    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix"
+    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix"
 
-    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix \
+    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix \
         --build-arg VERSION="$COMPONENT_VERSION_STRING" \
         --build-arg VCS_REF=`git rev-parse --short HEAD` \
         --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
         -f $dockerfile_path .
 
-    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix")
+    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix")
 
-    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix $USERNAME/$IMAGE:latest-$tag_suffix
-    TAGS+=("$USERNAME/$IMAGE:latest-$tag_suffix")
+    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix $USERNAME/$IMAGE:latest$tag_suffix
+    TAGS+=("$USERNAME/$IMAGE:latest$tag_suffix")
 
-    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix as $USERNAME/$IMAGE:latest-$tag_suffix"
-
-    if [ "$SYSTEM_RELEASE" = true ]; then
-        SYSTEM_VERSION_STRING=$("./get-system-version.sh")
-        docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING-$tag_suffix
-        echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix as $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING-$tag_suffix"
-        TAGS+=("$USERNAME/$IMAGE:$SYSTEM_VERSION_STRING-$tag_suffix")
-    fi
+    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix as $USERNAME/$IMAGE:latest$tag_suffix"
 }
 
 TAGS=()
@@ -110,12 +104,15 @@ if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
     BUILD_JAMMY=true
 fi
 
+# TODO, distinguish with suffix when Humble is fully integrated
+# until then focal will have no suffix and be the main image
+# https://usdot-carma.atlassian.net/browse/ARC-227
 if [ "$BUILD_FOCAL" = true ]; then
-    build_image "focal/Dockerfile" "focal"
+    build_image "focal/Dockerfile" ""
 fi
 
 if [ "$BUILD_JAMMY" = true ]; then
-    build_image "jammy/Dockerfile" "jammy"
+    build_image "jammy/Dockerfile" "-jammy"
 fi
 
 if [ "$PUSH" = true ]; then
