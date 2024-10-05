@@ -17,6 +17,9 @@
 # The parent docker image has CUDA support since some modules use GPU-based acceleration
 FROM nvidia/cudagl:11.2.0-devel-ubuntu20.04
 
+# Dockerfile directory relative to root
+ARG DOCKERFILE_DIR="focal"
+
 # Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"
@@ -29,7 +32,7 @@ LABEL org.label-schema.description="Base operating system install for the CARMA 
 LABEL org.label-schema.vendor="Leidos"
 LABEL org.label-schema.version=${VERSION}
 LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
-LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-platform"
+LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-base"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 LABEL org.label-schema.build-date=${BUILD_DATE}
 
@@ -167,8 +170,8 @@ RUN useradd -m carma && \
         mkdir -p /opt/carma/{launch,logs,routes} && \
         chown carma:carma -R /opt/carma
 
-COPY --chown=carma package.xml /home/carma/.base-image/workspace/src/carma_base/
-COPY --chown=carma entrypoint.sh init-env.sh /home/carma/.base-image/
+COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
+COPY --chown=carma ${DOCKERFILE_DIR}/entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 # Install ROS Noetic
