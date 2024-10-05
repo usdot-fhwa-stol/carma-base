@@ -8,7 +8,9 @@ on:
 jobs:
   docker-build-jammy:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
-    file: ./jammy/Dockerfile
+    with:
+      file: ./jammy/Dockerfile
   docker-build-focal:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
-    file: ./focal/Dockerfile
+    with:
+      file: ./focal/Dockerfile
