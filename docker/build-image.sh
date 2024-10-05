@@ -17,6 +17,8 @@ set -x
 
 USERNAME=usdotfhwastol
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+BUILD_FOCAL=false
+BUILD_JAMMY=false
 
 cd "$(dirname "$0")"
 IMAGE=$(basename `git rev-parse --show-toplevel`)
@@ -54,6 +56,14 @@ while [[ $# -gt 0 ]]; do
                 USERNAME=usdotfhwastolcandidate
                 COMPONENT_VERSION_STRING=$(echo $BRANCH | cut -d "/" -f 2)
             fi
+            shift
+            ;;
+        --focal)
+            BUILD_FOCAL=true
+            shift
+            ;;
+        --jammy)
+            BUILD_JAMMY=true
             shift
             ;;
     esac
@@ -94,8 +104,20 @@ build_image() {
 TAGS=()
 
 cd ..
-build_image "focal/Dockerfile" "focal"
-build_image "jammy/Dockerfile" "jammy"
+
+# If neither --focal nor --jammy is specified, build both
+if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
+    BUILD_FOCAL=true
+    BUILD_JAMMY=true
+fi
+
+if [ "$BUILD_FOCAL" = true ]; then
+    build_image "focal/Dockerfile" "focal"
+fi
+
+if [ "$BUILD_JAMMY" = true ]; then
+    build_image "jammy/Dockerfile" "jammy"
+fi
 
 if [ "$PUSH" = true ]; then
     for tag in "${TAGS[@]}"; do
