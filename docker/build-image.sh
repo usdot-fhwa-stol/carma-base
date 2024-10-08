@@ -98,10 +98,12 @@ TAGS=()
 
 cd ..
 
-# If neither --focal nor --jammy is specified, build both
+# If neither --focal nor --jammy is specified, build only focal for now.
+# Once all humble related changes are merged into develop, jammy should be enabled.
+# https://usdot-carma.atlassian.net/browse/ARC-227
 if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
     BUILD_FOCAL=true
-    BUILD_JAMMY=true
+    BUILD_JAMMY=false
 fi
 
 # TODO, distinguish with suffix when Humble is fully integrated
