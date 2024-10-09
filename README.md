@@ -1,7 +1,6 @@
-| DockerHub Release | DockerHub Release Candidate | DockerHub Develop |
-|------|-----|-----|
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/usdotfhwastol/carma-base?label=Docker%20Build&logo=232496ED)](https://hub.docker.com/repository/docker/usdotfhwastol/carma-base) | [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/usdotfhwastolcandidate/carma-base?label=Docker%20Build&logo=232496ED)](https://hub.docker.com/repository/docker/usdotfhwastolcandidate/carma-base) | [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/usdotfhwastoldev/carma-base?label=Docker%20Build&logo=232496ED)](https://hub.docker.com/repository/docker/usdotfhwastoldev/carma-base)
-
+| Dockerhub Focal Build - Develop | Dockerhub Focal Build - Release | Dockerhub Jammy Build - Develop | Dockerhub Jammy Build - Release |
+|-------------------------------|------------------------------|------------------------------|------------------------------|
+[![Focal Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml) | [![Focal Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml) | [![Jammy Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml) | [![Jammy Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml)
 
 # CARMABase
 CARMA Base is the Docker base image for Dockerized releases and deployments of the CARMA Platform. All CARMA images should inherit from this and any dependencies of those images should be instaled in this base image to minimize system build time and final image size.
