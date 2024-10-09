@@ -110,10 +110,12 @@ fi
 # until then focal will have no suffix and be the main image
 # https://usdot-carma.atlassian.net/browse/ARC-227
 if [ "$BUILD_FOCAL" = true ]; then
+    echo "Building carma-base focal image"
     build_image "focal/Dockerfile" "" #replace with "-focal"
 fi
 
 if [ "$BUILD_JAMMY" = true ]; then
+    echo "Building carma-base jammy image"
     build_image "jammy/Dockerfile" "-jammy"
 fi
 
