@@ -78,45 +78,41 @@ build_image() {
     local tag_suffix=$2
 
     echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING using Dockerfile: $dockerfile_path"
-    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix"
+    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix"
 
-    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix \
+    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix \
         --build-arg VERSION="$COMPONENT_VERSION_STRING" \
         --build-arg VCS_REF=`git rev-parse --short HEAD` \
         --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
         -f $dockerfile_path .
 
-    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix")
+    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix")
 
-    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix $USERNAME/$IMAGE:latest$tag_suffix
-    TAGS+=("$USERNAME/$IMAGE:latest$tag_suffix")
+    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix $USERNAME/$IMAGE:latest-$tag_suffix
+    TAGS+=("$USERNAME/$IMAGE:latest-$tag_suffix")
 
-    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix as $USERNAME/$IMAGE:latest$tag_suffix"
+    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix as $USERNAME/$IMAGE:latest-$tag_suffix"
 }
 
 TAGS=()
 
 cd ..
 
-# If neither --focal nor --jammy is specified, build only focal for now.
-# Once all humble related changes are merged into develop, jammy should be enabled.
-# https://usdot-carma.atlassian.net/browse/ARC-227
+# If neither --focal nor --jammy is specified, build both.
 if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
+    echo "No specific OS specified. Building both carma-base focal and jammy images"
     BUILD_FOCAL=true
-    BUILD_JAMMY=false
+    BUILD_JAMMY=true
 fi
 
-# TODO, distinguish with suffix when Humble is fully integrated
-# until then focal will have no suffix and be the main image
-# https://usdot-carma.atlassian.net/browse/ARC-227
 if [ "$BUILD_FOCAL" = true ]; then
     echo "Building carma-base focal image"
-    build_image "focal/Dockerfile" "" #replace with "-focal"
+    build_image "focal/Dockerfile" "focal"
 fi
 
 if [ "$BUILD_JAMMY" = true ]; then
     echo "Building carma-base jammy image"
-    build_image "jammy/Dockerfile" "-jammy"
+    build_image "jammy/Dockerfile" "jammy"
 fi
 
 if [ "$PUSH" = true ]; then

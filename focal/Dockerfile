@@ -44,43 +44,6 @@ ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all} \
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
 
-ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
-        coinor-libipopt1v5 \
-        libarmadillo-dev \
-        libcgal-dev \
-        libmumps-5.2.1 \
-        libmumps-dev \
-        libmumps-seq-5.2.1 \
-        libmumps-seq-dev \
-        libproj-dev \
-        libscalapack-mpi-dev \
-        libscalapack-openmpi-dev \
-        libscalapack-openmpi2.1 \
-        libscotch-6.0 \
-        ros-foxy-acado-vendor \
-        ros-foxy-ament-cmake-google-benchmark \
-        ros-foxy-apex-test-tools \
-        ros-foxy-automotive-platform-msgs \
-        ros-foxy-casadi-vendor \
-        ros-foxy-diagnostic-updater \
-        ros-foxy-gps-msgs \
-        ros-foxy-joy-linux \
-        ros-foxy-lgsvl-msgs \
-        ros-foxy-osqp-vendor \
-        ros-foxy-osrf-testing-tools-cpp \
-        ros-foxy-point-cloud-msg-wrapper \
-        ros-foxy-ros-testing \
-        ros-foxy-rosapi \
-        ros-foxy-rosapi-msgs \
-        ros-foxy-rosbridge-library \
-        ros-foxy-rosbridge-msgs \
-        ros-foxy-rosbridge-server \
-        ros-foxy-tvm-vendor \
-        ros-foxy-udp-driver \
-        ros-foxy-udp-msgs \
-        ros-foxy-velodyne-pointcloud \
-        ros-foxy-yaml-cpp-vendor"
-
 ARG BASE_DEPS="ca-certificates \
         curl \
         gnupg2 \
@@ -90,7 +53,7 @@ ARG BASE_DEPS="ca-certificates \
         python3-rosinstall \
         ros-noetic-desktop-full \
         xterm \
-	libmsgsl-dev"
+        libmsgsl-dev"
 
 ARG ROS_DEPS="apt-transport-https \
         apt-utils \
@@ -129,13 +92,6 @@ ARG ROS_DEPS="apt-transport-https \
         python3-testresources \
         python3-vcstool \
         python3-pybind11 \
-        ros-foxy-desktop \
-        ros-foxy-rmw-cyclonedds-cpp \
-        ros-foxy-pcl-ros \
-        ros-foxy-test-msgs \
-        ros-foxy-nmea-msgs \
-        ros-foxy-gps-tools \
-        ros-foxy-rosbag2-storage-mcap \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
@@ -180,19 +136,12 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # Add ROS 1 repo
         apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \
         sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros-latest.list' && \
-        # Add ROS 2 repo
-        apt-key adv --fetch-keys https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc && \
-        sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
         apt update && \
         apt-get install --no-install-recommends --yes ${BASE_DEPS} && \
-        # Prepare for ROS 2 Foxy installation
-        locale-gen en_US en_US.UTF-8 && \
-        update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
-        export LANG=en_US.UTF-8 && \
         # Install Sonar dependency nodejs
         curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-        # Install ROS 2 Foxy
-        apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+        # Install ROS dependencies
+        apt-get install --no-install-recommends --yes ${ROS_DEPS} && \
         # Install AutonomouStuff dependencies
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
@@ -208,12 +157,6 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
         # Version match is needed to build some of the packages
         pip3 install --no-cache-dir setuptools==45.2.0 simple-pid && \
-        ###
-        # TODO: The following sequence of commands make -j a local update to ament_cmake to resolve an issue
-        #       with the default xml parsing. Once the PR https://github.com/ament/ament_cmake/pull/287 is
-        #       backported to ROS 2 Foxy, this can be removed.
-        ###
-        curl https://raw.githubusercontent.com/ament/ament_cmake/efcbe328d001c9ade93a06bd8035642e37dd6f2a/ament_cmake_core/cmake/core/package_xml_2_cmake.py > /opt/ros/foxy/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py && \
         # Vimba source
         curl -L -o Vimba_v5.0_Linux.tgz https://github.com/usdot-fhwa-stol/avt_vimba_camera/raw/fix/update_vimba_sdk/Vimba_v5.0_Linux.tgz && \
         tar -xzf ./Vimba_v5.0_Linux.tgz -C /opt && \
@@ -239,32 +182,12 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # FIXME: The following symlink will no longer be required once images
         # that depend on carma-base change from wait-for-it.sh to wait-for-it
         ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
-        # Install non-ros1 dependant version of catkin
-        # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
-        # install catkin_pkg
-        sudo -u carma mkdir /home/carma/catkin_ros2_ws && \
-        sudo -u carma git clone https://github.com/ros-infrastructure/catkin_pkg.git /home/carma/catkin_ros2_ws/catkin_pkg && \
-        cd /home/carma/catkin_ros2_ws/catkin_pkg && \
-        # Checkout a known working commit
-        sudo -u carma git checkout 60096f4b4a0975774651122b7e2d346545f8098a && \
-        sudo -u carma python3 setup.py install --prefix /home/carma/catkin --single-version-externally-managed --record foo --install-layout deb && \
-        # install catkin
-        sudo -u carma git clone https://github.com/ros/catkin.git /home/carma/catkin_ros2_ws/catkin && \
-        cd /home/carma/catkin_ros2_ws/catkin && \
-        # Checkout a known working commit
-        sudo -u carma git checkout 085e8950cafa3eb979edff1646b9e3fe55a7053a && \
-        sudo -u carma mkdir build && \
-        cd build && \
-        PYTHONPATH=/home/carma/catkin/lib/python3/dist-packages/ sudo -u carma cmake .. -DCMAKE_INSTALL_PREFIX=/home/carma/catkin -DPYTHON_EXECUTABLE=/usr/bin/python3 && \
-        sudo -u carma make -j install && \
-        # Result is installation under ~/catkin so use with
-        # source ~/cakin/setup.bash
         rosdep --rosdistro noetic init && \
         sudo -u carma rosdep --rosdistro noetic update && \
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
-	# Install Java 17
+        # Install Java 17
         apt-get install -y openjdk-17-jdk && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
