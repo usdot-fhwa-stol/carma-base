@@ -7,7 +7,6 @@ on:
       - develop
       - master
       - "release/*"
-      - arc-154-noetic-base-image
     tags:
       - "carma-system-*"
     paths:
