@@ -68,7 +68,7 @@ RUN SONAR_DIR=/opt/sonarqube \
     && mv "$SONAR_DIR"/sonar-scanner-* "$SONAR_DIR"/sonar-scanner/ \
     && mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/
 
-# Set up ROS2 environment
+# Set up ROS 2 environment
 RUN echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc
 
 # Add carma user
