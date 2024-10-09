@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  Copyright (C) 2018-2021 LEIDOS.
+#  Copyright (C) 2018-2024 LEIDOS.
 # 
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License. You may obtain a copy of
@@ -13,10 +13,11 @@
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #  License for the specific language governing permissions and limitations under
 #  the License.
-set -x
 
 USERNAME=usdotfhwastol
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+BUILD_FOCAL=false
+BUILD_JAMMY=false
 
 cd "$(dirname "$0")"
 IMAGE=$(basename `git rev-parse --show-toplevel`)
@@ -34,7 +35,8 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --system-release)
-            SYSTEM_RELEASE=true
+            USERNAME=usdotfhwastol
+            COMPONENT_VERSION_STRING=$("./get-system-version.sh")
             shift
             ;;
         -p|--push)
@@ -56,6 +58,14 @@ while [[ $# -gt 0 ]]; do
             fi
             shift
             ;;
+        --focal)
+            BUILD_FOCAL=true
+            shift
+            ;;
+        --jammy)
+            BUILD_JAMMY=true
+            shift
+            ;;
     esac
 done
 
@@ -63,32 +73,54 @@ if [[ -z "$COMPONENT_VERSION_STRING" ]]; then
     COMPONENT_VERSION_STRING=$("./get-component-version.sh")
 fi
 
-echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING"
-echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING"
+build_image() {
+    local dockerfile_path=$1
+    local tag_suffix=$2
 
-cd ..
-docker build --network=host --no-cache -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING \
-    --build-arg VERSION="$COMPONENT_VERSION_STRING" \
-    --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` .
+    echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING using Dockerfile: $dockerfile_path"
+    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix"
+
+    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix \
+        --build-arg VERSION="$COMPONENT_VERSION_STRING" \
+        --build-arg VCS_REF=`git rev-parse --short HEAD` \
+        --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+        -f $dockerfile_path .
+
+    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix")
+
+    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix $USERNAME/$IMAGE:latest$tag_suffix
+    TAGS+=("$USERNAME/$IMAGE:latest$tag_suffix")
+
+    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix as $USERNAME/$IMAGE:latest$tag_suffix"
+}
 
 TAGS=()
-TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING")
 
-docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING $USERNAME/$IMAGE:latest
-TAGS+=("$USERNAME/$IMAGE:latest")
+cd ..
 
-echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING as $USERNAME/$IMAGE:latest"
+# If neither --focal nor --jammy is specified, build only focal for now.
+# Once all humble related changes are merged into develop, jammy should be enabled.
+# https://usdot-carma.atlassian.net/browse/ARC-227
+if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
+    BUILD_FOCAL=true
+    BUILD_JAMMY=false
+fi
 
-if [ "$SYSTEM_RELEASE" = true ]; then
-    SYSTEM_VERSION_STRING=$("./get-system-version.sh")
-    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING
-    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING as $USERNAME/$IMAGE:$SYSTEM_VERSION_STRING"
-    TAGS+=("$USERNAME/$IMAGE:$SYSTEM_VERSION_STRING")
+# TODO, distinguish with suffix when Humble is fully integrated
+# until then focal will have no suffix and be the main image
+# https://usdot-carma.atlassian.net/browse/ARC-227
+if [ "$BUILD_FOCAL" = true ]; then
+    echo "Building carma-base focal image"
+    build_image "focal/Dockerfile" "" #replace with "-focal"
+fi
+
+if [ "$BUILD_JAMMY" = true ]; then
+    echo "Building carma-base jammy image"
+    build_image "jammy/Dockerfile" "-jammy"
 fi
 
 if [ "$PUSH" = true ]; then
-    for tag in $TAGS; do
+    for tag in "${TAGS[@]}"; do
         docker push "${tag}"
     done
 fi
