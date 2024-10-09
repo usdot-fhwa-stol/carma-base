@@ -1,0 +1,24 @@
+# This workflow will build and push official docker images for Focal OS when new push occurs 
+# to develop, master, release branches but doesn't run any unit test or sonar scanner
+name: Docker Hub build
+on:
+  push:
+    branches:
+      - develop
+      - master
+      - "release/*"
+    tags:
+      - "carma-system-*"
+    paths:
+      - '**'  # Build when there are changes in focal folder or related files
+      - '!jammy/**' # Exclude jammy folder
+jobs:
+  dockerhub-focal:
+    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      file: ./focal/Dockerfile
+      # TODO: add focal suffix when humble is migrated 
+      #tag_name_suffix: focal https://usdot-carma.atlassian.net/browse/ARC-227

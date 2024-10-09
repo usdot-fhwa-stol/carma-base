@@ -1,15 +1,13 @@
 # This workflow will only build for Pull Requests which are opened, changed , merged 
-name: Docker build
+# that has changes in focal folder or related files 
+name: Docker Focal build
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-
+    paths:
+      - '**'
+      - '!jammy/**' # Exclude jammy folder
 jobs:
-  # Jammy 22.04 (ROS2 Humble)
-  docker-build-jammy:
-    uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
-    with:
-      file: ./jammy/Dockerfile
   # Focal 20.04 (ROS1 Noetic/ ROS2 Foxy)
   docker-build-focal:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main

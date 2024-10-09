@@ -1,0 +1,23 @@
+# This workflow will build and push official docker images for Focal OS when new push occurs 
+# to develop, master, release branches but doesn't run any unit test or sonar scanner
+name: Docker Hub build
+on:
+  push:
+    branches:
+      - develop
+      - master
+      - "release/*"
+    tags:
+      - "carma-system-*"
+    paths:
+      - '**' # Build when there are changes in jammy folder or related files
+      - '!focal/**' # Exclude focal folder
+jobs:
+  dockerhub-jammy:
+    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      file: ./jammy/Dockerfile
+      tag_name_suffix: jammy
