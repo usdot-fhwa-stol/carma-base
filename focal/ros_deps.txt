@@ -1,0 +1,16 @@
+python3-rosinstall
+ros-noetic-desktop-full
+python3-catkin-pkg
+python3-catkin-tools
+python3-colcon-common-extensions
+python3-rosdep
+python3-vcstool
+ros-noetic-costmap-2d
+ros-noetic-dataspeed-can
+ros-noetic-dbw-mkz
+ros-noetic-geodesy
+ros-noetic-grid-map
+ros-noetic-lusb
+ros-noetic-rosserial
+ros-noetic-rosserial-arduino
+ros-noetic-velodyne-pcl
