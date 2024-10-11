@@ -37,7 +37,7 @@ RUN useradd -m carma && \
     chown carma:carma -R /opt/carma
 
 # Copy dependency files
-COPY base_deps.txt additional_deps.txt ros_deps.txt /tmp/
+COPY ${DOCKERFILE_DIR}/base_deps.txt ${DOCKERFILE_DIR}/additional_deps.txt ${DOCKERFILE_DIR}/ros_deps.txt /tmp/
 
 # Step 2: Install base dependencies
 RUN apt-get update && \
