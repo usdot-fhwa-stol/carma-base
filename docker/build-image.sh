@@ -16,8 +16,8 @@
 
 USERNAME=usdotfhwastol
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
-BUILD_FOCAL=false
-BUILD_JAMMY=false
+BUILD_NOETIC_FOXY=false
+BUILD_HUMBLE=false
 
 cd "$(dirname "$0")"
 IMAGE=$(basename `git rev-parse --show-toplevel`)
@@ -58,12 +58,12 @@ while [[ $# -gt 0 ]]; do
             fi
             shift
             ;;
-        --focal)
-            BUILD_FOCAL=true
+        --noetic-foxy)
+            BUILD_NOETIC_FOXY=true
             shift
             ;;
-        --jammy)
-            BUILD_JAMMY=true
+        --humble)
+            BUILD_HUMBLE=true
             shift
             ;;
     esac
@@ -98,25 +98,25 @@ TAGS=()
 
 cd ..
 
-# If neither --focal nor --jammy is specified, build only focal for now.
-# Once all humble related changes are merged into develop, jammy should be enabled.
+# If neither --noetic-foxy nor --humble is specified, build only noetic-foxy for now.
+# Once all humble related changes are merged into develop, humble should be enabled.
 # https://usdot-carma.atlassian.net/browse/ARC-227
-if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
-    BUILD_FOCAL=true
-    BUILD_JAMMY=false
+if [ "$BUILD_NOETIC_FOXY" = false ] && [ "$BUILD_HUMBLE" = false ]; then
+    BUILD_NOETIC_FOXY=true
+    BUILD_HUMBLE=false
 fi
 
 # TODO, distinguish with suffix when Humble is fully integrated
-# until then focal will have no suffix and be the main image
+# until then noetic-foxy will have no suffix and be the main image
 # https://usdot-carma.atlassian.net/browse/ARC-227
-if [ "$BUILD_FOCAL" = true ]; then
-    echo "Building carma-base focal image"
-    build_image "focal/Dockerfile" "" #replace with "-focal"
+if [ "$BUILD_NOETIC_FOXY" = true ]; then
+    echo "Building carma-base noetic-foxy image"
+    build_image "noetic-foxy/Dockerfile" "" #replace with "-noetic-foxy"
 fi
 
-if [ "$BUILD_JAMMY" = true ]; then
-    echo "Building carma-base jammy image"
-    build_image "jammy/Dockerfile" "-jammy"
+if [ "$BUILD_HUMBLE" = true ]; then
+    echo "Building carma-base humble image"
+    build_image "humble/Dockerfile" "-humble"
 fi
 
 if [ "$PUSH" = true ]; then

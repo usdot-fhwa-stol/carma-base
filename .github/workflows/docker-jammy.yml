@@ -1,15 +1,15 @@
 # This workflow will only build for Pull Requests which are opened, changed , merged 
-# that has changes in jammy folder or related files 
-name: Docker Jammy build
+# that has changes in humble folder or related files 
+name: Docker Humble build
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - '**'
-      - '!focal/**' # Exclude focal folder
+      - '!noetic-foxy/**' # Exclude noetic-foxy folder
 jobs:
-  # Jammy 22.04 (ROS2 Humble)
-  docker-build-jammy:
+  # Humble 22.04 (ROS2 Humble)
+  docker-build-humble:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     with:
-      file: ./jammy/Dockerfile 
+      file: ./humble/Dockerfile 

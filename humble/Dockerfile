@@ -6,7 +6,7 @@ FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
 ARG DEBIAN_FRONTEND="noninteractive"
 
 # Dockerfile directory relative to root
-ARG DOCKERFILE_DIR="jammy"
+ARG DOCKERFILE_DIR="humble"
 
 # Specify which platform GPUs are available inside the container
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
