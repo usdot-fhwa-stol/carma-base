@@ -3,20 +3,6 @@
 FROM nvidia/cudagl:11.2.0-devel-ubuntu20.04
 
 ARG DOCKERFILE_DIR="focal"
-ARG BUILD_DATE="NULL"
-ARG VERSION="NULL"
-ARG VCS_REF="NULL"
-
-# Specify docker image metadata
-LABEL org.label-schema.schema-version="1.0"
-LABEL org.label-schema.name="carma-base"
-LABEL org.label-schema.description="Base operating system install for the CARMA Platform"
-LABEL org.label-schema.vendor="Leidos"
-LABEL org.label-schema.version=${VERSION}
-LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
-LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-base"
-LABEL org.label-schema.vcs-ref=${VCS_REF}
-LABEL org.label-schema.build-date=${BUILD_DATE}
 
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
@@ -110,7 +96,18 @@ RUN SONAR_DIR=/opt/sonarqube && \
     mv "$SONAR_DIR"/sonar-scanner-* "$SONAR_DIR"/sonar-scanner/ && \
     mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/
 
-# Step 11: Set up ROS environment
+# Step 11: Install Java 17
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Step 12: Copy files general files for image
+COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base
+COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
+COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
+
+# Step 13: Set up ROS environment
 RUN ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
     rosdep --rosdistro noetic init && \
     sudo -u carma rosdep --rosdistro noetic update && \
@@ -118,20 +115,25 @@ RUN ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
     sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
     sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc
 
-# Step 12: Install Java 17
-RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy files
-COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
-COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
-COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
-
 # Clean up dependency files
 RUN rm /tmp/base_deps.txt /tmp/additional_deps.txt /tmp/ros_deps.txt
 
 USER carma
+
+# Metadata arguments
+ARG BUILD_DATE="NULL"
+ARG VERSION="NULL"
+ARG VCS_REF="NULL"
+
+# Specify docker image metadata
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.name="carma-base"
+LABEL org.label-schema.description="Base operating system install for the CARMA Platform"
+LABEL org.label-schema.vendor="Leidos"
+LABEL org.label-schema.version=${VERSION}
+LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
+LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-base"
+LABEL org.label-schema.vcs-ref=${VCS_REF}
+LABEL org.label-schema.build-date=${BUILD_DATE}
 
 ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
