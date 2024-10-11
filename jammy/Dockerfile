@@ -8,22 +8,6 @@ ARG DEBIAN_FRONTEND="noninteractive"
 # Dockerfile directory relative to root
 ARG DOCKERFILE_DIR="jammy"
 
-# Define arguments which are used in the following metadata definition
-ARG BUILD_DATE="NULL"
-ARG VERSION="NULL"
-ARG VCS_REF="NULL"
-
-# Specify docker image metadata
-LABEL org.label-schema.schema-version="1.0"
-LABEL org.label-schema.name="carma-base"
-LABEL org.label-schema.description="Base operating system install for the CARMA Platform"
-LABEL org.label-schema.vendor="Leidos"
-LABEL org.label-schema.version=${VERSION}
-LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
-LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-base"
-LABEL org.label-schema.vcs-ref=${VCS_REF}
-LABEL org.label-schema.build-date=${BUILD_DATE}
-
 # Specify which platform GPUs are available inside the container
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
@@ -88,6 +72,22 @@ RUN useradd -m carma && \
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
 COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
+
+# Define arguments which are used in the following metadata definition
+ARG BUILD_DATE="NULL"
+ARG VERSION="NULL"
+ARG VCS_REF="NULL"
+
+# Specify docker image metadata
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.name="carma-base"
+LABEL org.label-schema.description="Base operating system install for the CARMA Platform"
+LABEL org.label-schema.vendor="Leidos"
+LABEL org.label-schema.version=${VERSION}
+LABEL org.label-schema.url="https://highways.dot.gov/research/research-programs/operations/CARMA"
+LABEL org.label-schema.vcs-url="https://github.com/usdot-fhwa-stol/carma-base"
+LABEL org.label-schema.vcs-ref=${VCS_REF}
+LABEL org.label-schema.build-date=${BUILD_DATE}
 
 USER carma
 WORKDIR /home/carma
