@@ -5,14 +5,15 @@
 # CARMABase
 CARMA Base is the Docker base image for Dockerized releases and deployments of the CARMA Platform. All CARMA images should inherit from this and any dependencies of those images should be instaled in this base image to minimize system build time and final image size.
 
-There are two CARMA Base image types. One is based on Ubuntu Focal Fossa (20.04 LTS) which supports ROS Noetic. 
+There are two CARMA Base image types. One is based on Ubuntu Focal Fossa (20.04 LTS) which supports ROS Noetic (not available on 22.04 LTS). 
 The other is based on Ubuntu Jammy Jellyfish (22.04 LTS) which supports ROS 2 Humble.
+CARMA runs hybrid ROS1/ROS2 because some of the vehicle controller drivers are in ROS Noetic, and there is no plan to upgrade them in the foreseeable future.
 
 # CARMAPlatform
 The primary CARMAPlatform repository can be found [here](https://github.com/usdot-fhwa-stol/carma-platform) and is part of the [USDOT FHWA STOL](https://github.com/usdot-fhwa-stol/)
 github organization. Documentation on how the CARMAPlatform functions, how it will evolve over time, and how you can contribute can be found at the above links as well
 
-## Contribution
+## Contribution 
 Welcome to the CARMA contributing guide. Please read this guide to learn about our development process, how to propose pull requests and improvements, and how to build and test your changes to this project. [CARMA Contributing Guide](https://github.com/usdot-fhwa-stol/carma-platform/blob/develop/Contributing.md) 
 
 ## Code of Conduct 
