@@ -13,7 +13,7 @@ on:
       - '**'  # Build when there are changes in noetic-foxy folder or related files
       - '!humble/**' # Exclude humble folder
 jobs:
-  # Noetic/Foxy 20.04 (ROS1 Noetic/ ROS2 Foxy)
+  # Ubuntu 20.04 (ROS1 Noetic/ ROS2 Foxy)
   dockerhub-noetic-foxy:
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
     secrets:

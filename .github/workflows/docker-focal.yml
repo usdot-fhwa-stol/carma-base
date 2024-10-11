@@ -8,7 +8,7 @@ on:
       - '**'
       - '!humble/**' # Exclude humble folder
 jobs:
-  # Noetic/Foxy 20.04 (ROS1 Noetic/ ROS2 Foxy)
+  # Ubuntu 20.04 (ROS1 Noetic/ ROS2 Foxy)
   docker-build-noetic-foxy:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     with:

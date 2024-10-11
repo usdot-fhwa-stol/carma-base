@@ -13,7 +13,7 @@ on:
       - '**' # Build when there are changes in humble folder or related files
       - '!noetic-foxy/**' # Exclude noetic-foxy folder
 jobs:
-  # Humble 22.04 (ROS2 Humble)
+  # Ubuntu 22.04 (ROS2 Humble)
   dockerhub-humble:
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
     secrets:

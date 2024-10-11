@@ -8,7 +8,7 @@ on:
       - '**'
       - '!noetic-foxy/**' # Exclude noetic-foxy folder
 jobs:
-  # Humble 22.04 (ROS2 Humble)
+  # Ubuntu 22.04 (ROS2 Humble)
   docker-build-humble:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     with:
