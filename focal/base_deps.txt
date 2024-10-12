@@ -1,0 +1,8 @@
+ca-certificates
+curl
+gnupg2
+locales
+lsb-release
+openssl
+xterm
+libmsgsl-dev
