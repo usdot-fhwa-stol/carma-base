@@ -1,6 +1,6 @@
 # This workflow will only build for Pull Requests which are opened, changed , merged 
 # that has changes in noetic-foxy folder or related files 
-name: Docker Noetic/Foxy build
+name: Docker Noetic-Foxy build
 on:
   pull_request:
     types: [opened, synchronize, reopened]

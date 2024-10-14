@@ -111,7 +111,7 @@ fi
 # https://usdot-carma.atlassian.net/browse/ARC-227
 if [ "$BUILD_NOETIC_FOXY" = true ]; then
     echo "Building carma-base noetic-foxy image"
-    build_image "noetic-foxy/Dockerfile" "" #replace with just "-noetic"
+    build_image "noetic-foxy/Dockerfile" "" #replace with just "-noetic" after ros2 is migrated to humble 
 fi
 
 if [ "$BUILD_HUMBLE" = true ]; then
