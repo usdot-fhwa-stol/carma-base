@@ -16,8 +16,8 @@
 
 USERNAME=usdotfhwastol
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
-BUILD_FOCAL=false
-BUILD_JAMMY=false
+BUILD_NOETIC=false
+BUILD_HUMBLE=false
 
 cd "$(dirname "$0")"
 IMAGE=$(basename `git rev-parse --show-toplevel`)
@@ -58,12 +58,12 @@ while [[ $# -gt 0 ]]; do
             fi
             shift
             ;;
-        --focal)
-            BUILD_FOCAL=true
+        --noetic)
+            BUILD_NOETIC=true
             shift
             ;;
-        --jammy)
-            BUILD_JAMMY=true
+        --humble)
+            BUILD_HUMBLE=true
             shift
             ;;
     esac
@@ -98,21 +98,19 @@ TAGS=()
 
 cd ..
 
-# If neither --focal nor --jammy is specified, build both.
-if [ "$BUILD_FOCAL" = false ] && [ "$BUILD_JAMMY" = false ]; then
-    echo "No specific OS specified. Building both carma-base focal and jammy images"
-    BUILD_FOCAL=true
-    BUILD_JAMMY=true
+if [ "$BUILD_NOETIC" = false ] && [ "$BUILD_HUMBLE" = false ]; then
+    BUILD_NOETIC=true
+    BUILD_HUMBLE=true
 fi
 
-if [ "$BUILD_FOCAL" = true ]; then
-    echo "Building carma-base focal image"
-    build_image "focal/Dockerfile" "focal"
+if [ "$BUILD_NOETIC" = true ]; then
+    echo "Building carma-base noetic image"
+    build_image "noetic/Dockerfile" "noetic"
 fi
 
-if [ "$BUILD_JAMMY" = true ]; then
-    echo "Building carma-base jammy image"
-    build_image "jammy/Dockerfile" "jammy"
+if [ "$BUILD_HUMBLE" = true ]; then
+    echo "Building carma-base humble image"
+    build_image "humble/Dockerfile" "humble"
 fi
 
 if [ "$PUSH" = true ]; then

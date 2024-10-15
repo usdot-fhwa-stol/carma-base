@@ -1,15 +1,15 @@
 # This workflow will only build for Pull Requests which are opened, changed , merged 
-# that has changes in jammy folder or related files 
-name: Docker Jammy build
+# that has changes in noetic folder or related files 
+name: Docker Noetic build
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - '**'
-      - '!focal/**' # Exclude focal folder
+      - '!humble/**' # Exclude humble folder
 jobs:
-  # Jammy 22.04 (ROS2 Humble)
-  docker-build-jammy:
+  # Ubuntu 20.04 (ROS1 Noetic)
+  docker-build-noetic:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     with:
-      file: ./jammy/Dockerfile 
+      file: ./noetic/Dockerfile
