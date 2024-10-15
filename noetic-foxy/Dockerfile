@@ -18,7 +18,7 @@
 FROM nvidia/cudagl:11.2.0-devel-ubuntu20.04
 
 # Dockerfile directory relative to root
-ARG DOCKERFILE_DIR="focal"
+ARG DOCKERFILE_DIR="noetic-foxy"
 
 # Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
@@ -205,7 +205,7 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         apt-get install --no-install-recommends --yes kvaser-canlib-dev can-utils && \
         # Download a cmake module for PROJ, needed for lanelet2_extension, autoware_lanelet2_ros_interface, and maybe more
         curl --output /usr/share/cmake-3.16/Modules/FindPROJ4.cmake https://raw.githubusercontent.com/mloskot/cmake-modules/master/modules/FindPROJ4.cmake && \
-        # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu focal
+        # Install version 45.2.0 for setuptools since that is the latest version available for ubuntu noetic-foxy
         # Version match is needed to build some of the packages
         pip3 install --no-cache-dir setuptools==45.2.0 simple-pid && \
         ###

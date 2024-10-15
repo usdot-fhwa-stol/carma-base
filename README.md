@@ -1,13 +1,13 @@
-| Dockerhub Focal Build - Develop | Dockerhub Focal Build - Release | Dockerhub Jammy Build - Develop | Dockerhub Jammy Build - Release |
+| Dockerhub Noetic-Foxy Build - Develop | Dockerhub Noetic-Foxy Build - Release | Dockerhub Humble Build - Develop | Dockerhub Humble Build - Release |
 |-------------------------------|------------------------------|------------------------------|------------------------------|
-[![Focal Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml) | [![Focal Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-focal.yml) | [![Jammy Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml) | [![Jammy Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-jammy.yml)
+[![Noetic-Foxy Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic-foxy.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic-foxy.yml) | [![Noetic-Foxy Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic-foxy.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic-foxy.yml) | [![Humble Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml) | [![Humble Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml)
 
 # CARMABase
 CARMA Base is the Docker base image for Dockerized releases and deployments of the CARMA Platform. All CARMA images should inherit from this and any dependencies of those images should be instaled in this base image to minimize system build time and final image size.
 
 Currently there are two CARMA Base image types. One is based on Ubuntu Focal Fossa (20.04 LTS) which supports ROS Noetic and ROS 2 Foxy. 
 The other is based on Ubuntu Jammy Jellyfish (22.04 LTS) which supports ROS 2 Humble.
-When ROS 2 Humble is the default ROS version for the CARMA Platform, CARMA Base Focal will only be used for ROS Noetic to support hybrid deployments.
+When ROS 2 Humble is the default ROS version for the CARMA Platform, CARMA Base Noetic-Foxy will only be used for ROS Noetic to support hybrid deployments.
 
 # CARMAPlatform
 The primary CARMAPlatform repository can be found [here](https://github.com/usdot-fhwa-stol/carma-platform) and is part of the [USDOT FHWA STOL](https://github.com/usdot-fhwa-stol/)

@@ -1,6 +1,6 @@
-# This workflow will build and push official docker images for Focal OS when new push occurs 
+# This workflow will build and push official docker images for Noetic-Foxy OS when new push occurs 
 # to develop, master, release branches but doesn't run any unit test or sonar scanner
-name: Docker Hub Jammy build
+name: Docker Hub Humble build
 on:
   push:
     branches:
@@ -10,15 +10,15 @@ on:
     tags:
       - "carma-system-*"
     paths:
-      - '**' # Build when there are changes in jammy folder or related files
-      - '!focal/**' # Exclude focal folder
+      - '**' # Build when there are changes in humble folder or related files
+      - '!noetic-foxy/**' # Exclude noetic-foxy folder
 jobs:
-  # Jammy 22.04 (ROS2 Humble)
-  dockerhub-jammy:
+  # Ubuntu 22.04 (ROS2 Humble)
+  dockerhub-humble:
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
-      file: ./jammy/Dockerfile
-      tag_name_suffix: jammy
+      file: ./humble/Dockerfile
+      tag_name_suffix: humble
