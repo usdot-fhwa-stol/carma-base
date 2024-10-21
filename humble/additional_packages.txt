@@ -1,6 +1,7 @@
 locales
 openssl
 git
+gcovr
 jq
 libboost-python-dev
 libfftw3-dev
