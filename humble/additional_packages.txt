@@ -1,5 +1,6 @@
 locales
 openssl
+gcovr
 git
 jq
 libboost-python-dev
