@@ -1,4 +1,5 @@
 python3-colcon-common-extensions
+ros-humble-asio-cmake-module
 ros-humble-desktop
 ros-humble-rmw-cyclonedds-cpp
 ros-humble-pcl-ros
@@ -13,6 +14,10 @@ ros-humble-automotive-platform-msgs
 ros-humble-diagnostic-updater
 ros-humble-gps-msgs
 ros-humble-joy-linux
+ros-humble-lanelet2-core
+ros-humble-lanelet2-io
+ros-humble-lanelet2-projection
+ros-humble-lanelet2-routing
 ros-humble-lgsvl-msgs
 ros-humble-osqp-vendor
 ros-humble-osrf-testing-tools-cpp
