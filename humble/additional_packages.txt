@@ -4,6 +4,7 @@ git
 gcovr
 jq
 libboost-python-dev
+libcgal-dev
 libfftw3-dev
 libgeographic-dev
 libgmock-dev
@@ -11,6 +12,7 @@ libnl-genl-3-dev
 libopenblas-dev
 libpcap-dev
 libpugixml-dev
+libxmlrpcpp-dev
 lttng-tools
 mesa-utils
 nano
