@@ -136,7 +136,6 @@ ARG ROS_DEPS="apt-transport-https \
         ros-foxy-nmea-msgs \
         ros-foxy-gps-tools \
         ros-foxy-rosbag2-storage-mcap \
-        ros-foxy-automotive-navigation-msgs \
         ros-foxy-pacmod3-msgs \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
