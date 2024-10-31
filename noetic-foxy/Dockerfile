@@ -136,6 +136,7 @@ ARG ROS_DEPS="apt-transport-https \
         ros-foxy-nmea-msgs \
         ros-foxy-gps-tools \
         ros-foxy-rosbag2-storage-mcap \
+        ros-foxy-automotive-navigation-msgs \
         ros-noetic-costmap-2d \
         ros-noetic-dataspeed-can \
         ros-noetic-dbw-mkz \
@@ -197,6 +198,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
         apt-get install --no-install-recommends --yes libas-common && \
+        # ROS2 SSC dependencies from Astuff
+        apt-get install ros-foxy-pacmod3-msgs --yes && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
         apt-get install --fix-missing --no-install-recommends --yes libqtcore4 libqt4-network libqt4-qt3support && \
