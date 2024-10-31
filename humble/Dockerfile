@@ -38,7 +38,7 @@ RUN pip3 install --no-cache-dir vcstool setuptools pybind11
 # Install Java 17
 RUN apt-get update && apt-get install -y openjdk-17-jdk
 
-# Clean 
+# Clean
 RUN rm -rf /var/lib/apt/lists/*
 
 # Install SonarQube scanner
@@ -65,7 +65,7 @@ RUN useradd -m carma && \
     chmod 0440 /etc/sudoers.d/carma && \
     usermod  --uid 1000 carma && \
     groupmod --gid 1000 carma && \
-    mkdir -p /opt/carma/{launch,logs,routes} && \
+    mkdir -p /opt/carma/launch /opt/carma/logs /opt/carma/routes && \
     chown carma:carma -R /opt/carma
 
 # Copy files for carma user
