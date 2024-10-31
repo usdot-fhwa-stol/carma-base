@@ -167,7 +167,7 @@ RUN useradd -m carma && \
         chmod 0440 /etc/sudoers.d/carma && \
         usermod  --uid 1000 carma && \
         groupmod --gid 1000 carma && \
-        mkdir -p /opt/carma/{launch,logs,routes} && \
+        mkdir -p /opt/carma/launch /opt/carma/logs /opt/carma/routes && \
         chown carma:carma -R /opt/carma
 
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
