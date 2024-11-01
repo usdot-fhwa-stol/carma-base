@@ -192,12 +192,12 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         export LANG=en_US.UTF-8 && \
         # Install Sonar dependency nodejs
         curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-        # Install ROS 2 Foxy
-        apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
         # Install AutonomouStuff dependencies
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
         apt-get install --no-install-recommends --yes libas-common && \
+        # Install ROS 2 Foxy
+        apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
         apt-get install --fix-missing --no-install-recommends --yes libqtcore4 libqt4-network libqt4-qt3support && \
