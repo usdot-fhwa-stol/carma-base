@@ -15,6 +15,8 @@ ENV NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPA
 # Copy package lists early
 COPY ${DOCKERFILE_DIR}/ros_packages.txt ${DOCKERFILE_DIR}/additional_packages.txt /tmp/
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Install basic dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates curl gnupg2 lsb-release
@@ -97,4 +99,4 @@ USER carma
 WORKDIR /home/carma
 
 # Set the entrypoint
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT [ "/home/carma/.base-image/entrypoint.sh" ]
