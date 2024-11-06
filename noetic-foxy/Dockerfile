@@ -237,9 +237,6 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         # Rename files
         mv "$SONAR_DIR"/sonar-scanner-* "$SONAR_DIR"/sonar-scanner/ && \
         mv "$SONAR_DIR"/build-wrapper-* "$SONAR_DIR"/build-wrapper/ && \
-        # FIXME: The following symlink will no longer be required once images
-        # that depend on carma-base change from wait-for-it.sh to wait-for-it
-        ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
         # Install non-ros1 dependant version of catkin
         # This can be used without issue for ROS2 builds wheras the noetic version has compatability issues
         # install catkin_pkg
