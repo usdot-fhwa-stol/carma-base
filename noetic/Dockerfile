@@ -108,8 +108,7 @@ COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.ba
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
 # Step 13: Set up ROS environment
-RUN ln -s /usr/bin/wait-for-it /usr/bin/wait-for-it.sh && \
-    rosdep --rosdistro noetic init && \
+RUN rosdep --rosdistro noetic init && \
     sudo -u carma rosdep --rosdistro noetic update && \
     sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
     sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
