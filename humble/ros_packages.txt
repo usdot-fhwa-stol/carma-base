@@ -31,3 +31,4 @@ ros-humble-velodyne-pointcloud
 ros-humble-yaml-cpp-vendor
 ros-humble-pacmod3-msgs
 ros-humble-novatel-oem7-msgs
+ros-humble-tracetools-launch
