@@ -13,6 +13,7 @@ libopenblas-dev
 libpcap-dev
 libpugixml-dev
 libxmlrpcpp-dev
+lttng-modules-dkms
 lttng-tools
 mesa-utils
 nano
