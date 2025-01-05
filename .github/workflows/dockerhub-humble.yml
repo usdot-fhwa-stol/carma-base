@@ -7,6 +7,7 @@ on:
       - develop
       - master
       - "release/*"
+      - develop-humble
     tags:
       - "carma-system-*"
     paths:
