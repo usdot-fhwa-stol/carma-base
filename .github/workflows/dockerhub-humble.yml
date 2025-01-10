@@ -22,4 +22,4 @@ jobs:
     with:
       file: ./humble/Dockerfile
       tag_name_suffix: humble
-      replace_docker_tag: true # remove after develop-humble branch is merged to develop
+      replace_suffix: true # remove after develop-humble branch is merged to develop
