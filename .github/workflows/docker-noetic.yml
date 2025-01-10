@@ -1,5 +1,5 @@
-# This workflow will only build for Pull Requests which are opened, changed , merged 
-# that has changes in noetic folder or related files 
+# This workflow will only build for Pull Requests which are opened, changed , merged
+# that has changes in noetic folder or related files
 name: Docker Noetic build
 on:
   pull_request:
@@ -10,6 +10,8 @@ on:
 jobs:
   # Ubuntu 20.04 (ROS1 Noetic)
   docker-build-noetic:
-    uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
+    uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@arc-199-support-different-suffix
     with:
       file: ./noetic/Dockerfile
+      docker_tag_suffix: noetic
+      replace_docker_tag: true # remove after develop-humble branch is merged to develop
