@@ -2,6 +2,7 @@
 # to develop, master, release branches but doesn't run any unit test or sonar scanner
 name: Docker Hub Noetic build
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
