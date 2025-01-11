@@ -29,13 +29,17 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 # Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list'
 
-    # Install ROS2 packages
+# Install ROS2 packages
 RUN apt-get update && \
     apt-get install -y $(cat /tmp/ros_packages.txt)
 
 # Install additional packages
 RUN apt-get update && \
     apt-get install -y $(cat /tmp/additional_packages.txt)
+
+# Update to latest Git
+RUN add-apt-repository ppa:git-core/ppa -y && \
+    apt update && apt install git -y
 
 # Set up PROJ
 RUN curl -o /usr/share/cmake-3.22/Modules/FindPROJ.cmake https://raw.githubusercontent.com/OSGeo/libgeotiff/refs/heads/master/libgeotiff/cmake/FindPROJ.cmake

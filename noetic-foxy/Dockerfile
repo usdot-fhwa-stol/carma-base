@@ -82,6 +82,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-yaml-cpp-vendor"
 
 ARG BASE_DEPS="ca-certificates \
+	git \
         curl \
         gnupg2 \
         locales \
@@ -185,6 +186,7 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         apt-key adv --fetch-keys https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc && \
         sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(grep -oP "UBUNTU_CODENAME\=\K.*" /etc/os-release) main" > /etc/apt/sources.list.d/ros2-latest.list' && \
         apt update && \
+	# Install Base dependencies and ROS Noetic
         apt-get install --no-install-recommends --yes ${BASE_DEPS} && \
         # Prepare for ROS 2 Foxy installation
         locale-gen en_US en_US.UTF-8 && \
@@ -196,8 +198,11 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
         apt-get update && \
         apt-get install --no-install-recommends --yes libas-common && \
-        # Install ROS 2 Foxy
+        # Install ROS Noetic packages and ROS 2 Foxy
         apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+	# Add latest git repo
+ 	add-apt-repository ppa:git-core/ppa -y && \
+	apt update && apt install git -y && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
         apt-get install --fix-missing --no-install-recommends --yes libqtcore4 libqt4-network libqt4-qt3support && \
