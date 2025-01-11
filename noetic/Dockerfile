@@ -102,12 +102,16 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Step 12: Copy files general files for image
+# Step 12: Update to latest Git
+RUN add-apt-repository ppa:git-core/ppa -y && \
+    apt update && apt install git -y
+
+# Step 13: Copy files general files for image
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base
 COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
-# Step 13: Set up ROS environment
+# Step 14: Set up ROS environment
 RUN rosdep --rosdistro noetic init && \
     sudo -u carma rosdep --rosdistro noetic update && \
     sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
