@@ -37,6 +37,10 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y $(cat /tmp/additional_packages.txt)
 
+# Update to latest Git
+RUN add-apt-repository ppa:git-core/ppa -y && \
+    apt update && apt install git -y
+
 # Set up PROJ
 RUN curl -o /usr/share/cmake-3.22/Modules/FindPROJ.cmake https://raw.githubusercontent.com/OSGeo/libgeotiff/refs/heads/master/libgeotiff/cmake/FindPROJ.cmake
 
