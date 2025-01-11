@@ -155,7 +155,6 @@ ARG ROS_DEPS="apt-transport-https \
         unzip \
         vim \
         wait-for-it \
-	git \
         x-window-system"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -197,12 +196,13 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
         # Install AutonomouStuff dependencies
         sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list' && \
-	# Add latest git repo
- 	add-apt-repository ppa:git-core/ppa -y && \
         apt-get update && \
         apt-get install --no-install-recommends --yes libas-common && \
         # Install ROS Noetic packages and ROS 2 Foxy
         apt-get install --no-install-recommends --yes ${AUTOWAREAUTO_DEPS} ${ROS_DEPS} && \
+	# Add latest git repo
+ 	add-apt-repository ppa:git-core/ppa -y && \
+	apt update && apt install git -y && \
         # Vimba Deps
         add-apt-repository --update --yes ppa:rock-core/qt4 && \
         apt-get install --fix-missing --no-install-recommends --yes libqtcore4 libqt4-network libqt4-qt3support && \
