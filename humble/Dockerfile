@@ -29,12 +29,13 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 # Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list'
 
-    # Install ROS2 packages
+# Install ROS2 packages
 RUN apt-get update && \
     apt-get install -y $(cat /tmp/ros_packages.txt)
 
 # Install additional packages
-RUN apt-get update && \
+RUN add-apt-repository ppa:git-core/ppa -y && \
+    apt-get update && \
     apt-get install -y $(cat /tmp/additional_packages.txt)
 
 # Set up PROJ
