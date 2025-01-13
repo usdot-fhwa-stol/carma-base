@@ -1,7 +1,8 @@
-# This workflow will build and push official docker images for Noetic ROS when new push occurs 
+# This workflow will build and push official docker images for Noetic ROS when new push occurs
 # to develop, master, release branches but doesn't run any unit test or sonar scanner
 name: Docker Hub Noetic build
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
@@ -22,3 +23,4 @@ jobs:
     with:
       file: ./noetic/Dockerfile
       tag_name_suffix: noetic
+      replace_suffix: true # TODO: remove after develop-humble branch is merged to develop
