@@ -33,8 +33,8 @@ RUN apt-get update && \
     apt-get install -y $(cat /tmp/ros_packages.txt)
 
 RUN rosdep --rosdistro humble init && \
-    sudo -u carma rosdep --rosdistro humble update && \
-    sudo -u carma rosdep --rosdistro humble install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y
+    rosdep --rosdistro humble update && \
+    rosdep --rosdistro humble install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y
 
 # Install additional packages
 RUN apt-get update && \
