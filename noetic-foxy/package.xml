@@ -35,16 +35,20 @@
   <depend condition="$ROS_VERSION == 1">dataspeed_ulc_can</depend>
   <depend condition="$ROS_VERSION == 1">dbw_mkz_msgs</depend>
   <depend condition="$ROS_VERSION == 1">effort_controllers</depend>
+  <depend condition="$ROS_VERSION == 1">eigen_conversions</depend>
   <depend condition="$ROS_VERSION == 1">gazebo_ros_control</depend>
   <depend condition="$ROS_VERSION == 1">genmsg</depend>
   <depend condition="$ROS_VERSION == 1">genpy</depend>
+  <depend condition="$ROS_VERSION == 1">grid_map_msgs</depend>
   <depend condition="$ROS_VERSION == 1">grid_map_ros</depend>
   <depend condition="$ROS_VERSION == 1">grid_map_visualization</depend>
+  <depend condition="$ROS_VERSION == 1">gps_common</depend>
   <depend condition="$ROS_VERSION == 1">image_proc</depend>
   <depend condition="$ROS_VERSION == 1">image_view2</depend>
   <depend condition="$ROS_VERSION == 1">imu_filter_madgwick</depend>
   <depend condition="$ROS_VERSION == 1">imu_tools</depend>
   <depend condition="$ROS_VERSION == 1">joint_state_controller</depend>
+  <depend condition="$ROS_VERSION == 1">jsk_recognition_msgs</depend>
   <depend condition="$ROS_VERSION == 1">jsk_recognition_utils</depend>
   <depend condition="$ROS_VERSION == 1">jsk_rviz_plugins</depend>
   <depend condition="$ROS_VERSION == 1">jsk_topic_tools</depend>
@@ -74,10 +78,12 @@
   <depend condition="$ROS_VERSION == 1">swri_serial_util</depend>
   <depend condition="$ROS_VERSION == 1">swri_string_util</depend>
   <depend condition="$ROS_VERSION == 1">swri_nodelet</depend>
+  <depend condition="$ROS_VERSION == 1">tablet_socket_msgs</depend>
   <depend condition="$ROS_VERSION == 1">tf</depend>
   <depend condition="$ROS_VERSION == 1">tf_conversions</depend>
   <depend condition="$ROS_VERSION == 1">topic_tools</depend>
   <depend condition="$ROS_VERSION == 1">transmission_interface</depend>
+  <depend condition="$ROS_VERSION == 1">vector_map_msgs</depend>
   <depend condition="$ROS_VERSION == 1">velodyne_description</depend>
   <depend condition="$ROS_VERSION == 1">velodyne_gazebo_plugins</depend>
   <depend condition="$ROS_VERSION == 1">velodyne_pcl</depend>
@@ -101,18 +107,14 @@
   <depend>diagnostic_aggregator</depend>
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
-  <depend>eigen_conversions</depend>
   <depend>eigen</depend>
   <depend>gazebo_msgs</depend>
   <depend>geometry_msgs</depend>
-  <depend>gps_common</depend>
-  <depend>grid_map_msgs</depend>
   <depend>gtest</depend>
   <depend>image_common</depend>
   <depend>image_geometry</depend>
   <depend>image_transport</depend>
   <depend>joy</depend>
-  <depend>jsk_recognition_msgs</depend>
   <depend>libgflags-dev</depend>
   <depend>libglew-dev</depend>
   <depend>libgoogle-glog-dev</depend>
@@ -141,14 +143,12 @@
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>stereo_msgs</depend>
-  <depend>tablet_socket_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_geometry_msgs</depend>
   <depend>tf2_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>tinyxml</depend>
   <depend>v4l-utils</depend>
-  <depend>vector_map_msgs</depend>
   <depend>velocity_controllers</depend>
   <depend>velodyne</depend>
   <depend>velodyne_pointcloud</depend>
