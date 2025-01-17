@@ -32,10 +32,6 @@ RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/
 RUN apt-get update && \
     apt-get install -y $(cat /tmp/ros_packages.txt)
 
-RUN rosdep --rosdistro humble init && \
-    rosdep --rosdistro humble update && \
-    rosdep --rosdistro humble install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y
-
 # Install additional packages
 RUN apt-get update && \
     apt-get install -y $(cat /tmp/additional_packages.txt)
@@ -88,6 +84,10 @@ RUN useradd -m carma && \
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
 COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
+
+RUN rosdep --rosdistro humble init && \
+    sudo -u carma rosdep --rosdistro humble update && \
+    sudo -u carma rosdep --rosdistro humble install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y
 
 # Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
