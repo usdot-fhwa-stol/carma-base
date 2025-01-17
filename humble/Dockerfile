@@ -19,7 +19,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install basic dependencies
 RUN apt-get update && apt-get install -y \
-    ca-certificates curl gnupg2 lsb-release
+    ca-certificates curl gnupg2 lsb-release python3-rosdep
 
 # Set up ROS2 repository
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
