@@ -265,6 +265,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         rosdep --rosdistro noetic init && \
         sudo -u carma rosdep --rosdistro noetic update && \
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
+        sudo -u carma rosdep --rosdistro foxy update && \
+        sudo -u carma rosdep --rosdistro foxy install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
 	# Install Java 17
