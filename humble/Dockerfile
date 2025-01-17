@@ -85,10 +85,6 @@ COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspa
 COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 
-RUN rosdep --rosdistro humble init && \
-    sudo -u carma rosdep --rosdistro humble update && \
-    sudo -u carma rosdep --rosdistro humble install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y
-
 # Define arguments which are used in the following metadata definition
 ARG BUILD_DATE="NULL"
 ARG VERSION="NULL"

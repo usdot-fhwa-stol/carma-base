@@ -61,6 +61,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-ament-cmake-google-benchmark \
         ros-foxy-apex-test-tools \
         ros-foxy-automotive-platform-msgs \
+        ros-foxy-automotive-navigation-msgs \
         ros-foxy-casadi-vendor \
         ros-foxy-diagnostic-updater \
         ros-foxy-gps-msgs \
