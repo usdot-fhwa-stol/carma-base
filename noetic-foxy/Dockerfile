@@ -132,6 +132,7 @@ ARG ROS_DEPS="apt-transport-https \
         python3-vcstool \
         python3-pybind11 \
         ros-foxy-desktop \
+        ros-foxy-rclcpp \
         ros-foxy-rmw-cyclonedds-cpp \
         ros-foxy-pcl-ros \
         ros-foxy-test-msgs \
