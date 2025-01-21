@@ -61,6 +61,7 @@ ARG AUTOWAREAUTO_DEPS="coinor-libipopt-dev \
         ros-foxy-ament-cmake-google-benchmark \
         ros-foxy-apex-test-tools \
         ros-foxy-automotive-platform-msgs \
+        ros-foxy-automotive-navigation-msgs \
         ros-foxy-casadi-vendor \
         ros-foxy-diagnostic-updater \
         ros-foxy-gps-msgs \
@@ -131,6 +132,7 @@ ARG ROS_DEPS="apt-transport-https \
         python3-vcstool \
         python3-pybind11 \
         ros-foxy-desktop \
+        ros-foxy-rclcpp \
         ros-foxy-rmw-cyclonedds-cpp \
         ros-foxy-pcl-ros \
         ros-foxy-test-msgs \
@@ -265,6 +267,8 @@ RUN sed -i 's|http://archive.ubuntu.com|http://us.archive.ubuntu.com|g' /etc/apt
         rosdep --rosdistro noetic init && \
         sudo -u carma rosdep --rosdistro noetic update && \
         sudo -u carma rosdep --rosdistro noetic install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
+        sudo -u carma rosdep --rosdistro foxy update && \
+        sudo -u carma rosdep --rosdistro foxy install --from-paths /home/carma/.base-image/workspace/src --ignore-src -y && \
         sudo -u carma echo "source ~/.base-image/init-env.sh" >> /home/carma/.bashrc && \
         sudo -u carma echo "cd /opt/carma" >> /home/carma/.bashrc && \
 	# Install Java 17

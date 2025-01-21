@@ -18,61 +18,95 @@
   <name>carma_base</name>
   <version>3.4.0</version>
   <description>A metapackage to install the dependencies for CARMA</description>
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <maintainer email="carma@dot.gov">carma</maintainer>
   <license>Apache 2.0</license>
 
+  <!-- ROS 1 specific dependencies -->
+  <depend condition="$ROS_VERSION == 1">bondcpp</depend>
+  <depend condition="$ROS_VERSION == 1">camera_calibration</depend>
+  <depend condition="$ROS_VERSION == 1">class_loader</depend>
+  <depend condition="$ROS_VERSION == 1">cmake_modules</depend>
+  <depend condition="$ROS_VERSION == 1">controller_manager</depend>
+  <depend condition="$ROS_VERSION == 1">cpp_common</depend>
+  <depend condition="$ROS_VERSION == 1">dataspeed_ulc_can</depend>
+  <depend condition="$ROS_VERSION == 1">dbw_mkz_msgs</depend>
+  <depend condition="$ROS_VERSION == 1">effort_controllers</depend>
+  <depend condition="$ROS_VERSION == 1">eigen_conversions</depend>
+  <depend condition="$ROS_VERSION == 1">gazebo_ros_control</depend>
+  <depend condition="$ROS_VERSION == 1">genmsg</depend>
+  <depend condition="$ROS_VERSION == 1">genpy</depend>
+  <depend condition="$ROS_VERSION == 1">grid_map_msgs</depend>
+  <depend condition="$ROS_VERSION == 1">grid_map_ros</depend>
+  <depend condition="$ROS_VERSION == 1">grid_map_visualization</depend>
+  <depend condition="$ROS_VERSION == 1">gps_common</depend>
+  <depend condition="$ROS_VERSION == 1">image_proc</depend>
+  <depend condition="$ROS_VERSION == 1">image_view2</depend>
+  <depend condition="$ROS_VERSION == 1">imu_filter_madgwick</depend>
+  <depend condition="$ROS_VERSION == 1">imu_tools</depend>
+  <depend condition="$ROS_VERSION == 1">joint_state_controller</depend>
+  <depend condition="$ROS_VERSION == 1">jsk_recognition_msgs</depend>
+  <depend condition="$ROS_VERSION == 1">jsk_recognition_utils</depend>
+  <depend condition="$ROS_VERSION == 1">jsk_rviz_plugins</depend>
+  <depend condition="$ROS_VERSION == 1">jsk_topic_tools</depend>
+  <depend condition="$ROS_VERSION == 1">nodelet</depend>
+  <depend condition="$ROS_VERSION == 1">position_controllers</depend>
+  <depend condition="$ROS_VERSION == 1">python_qt_binding</depend>
+  <depend condition="$ROS_VERSION == 1">rosbag</depend>
+  <depend condition="$ROS_VERSION == 1">rosbag_storage</depend>
+  <depend condition="$ROS_VERSION == 1">rosconsole</depend>
+  <depend condition="$ROS_VERSION == 1">roscpp</depend>
+  <depend condition="$ROS_VERSION == 1">roscpp_serialization</depend>
+  <depend condition="$ROS_VERSION == 1">roslaunch</depend>
+  <depend condition="$ROS_VERSION == 1">roslib</depend>
+  <depend condition="$ROS_VERSION == 1">roslint</depend>
+  <depend condition="$ROS_VERSION == 1">rospy</depend>
+  <depend condition="$ROS_VERSION == 1">rostest</depend>
+  <depend condition="$ROS_VERSION == 1">rosunit</depend>
+  <depend condition="$ROS_VERSION == 1">rqt_gui</depend>
+  <depend condition="$ROS_VERSION == 1">rqt_gui_py</depend>
+  <depend condition="$ROS_VERSION == 1">rqt_plot</depend>
+  <depend condition="$ROS_VERSION == 1">rviz</depend>
+  <depend condition="$ROS_VERSION == 1">socketcan_bridge</depend>
+  <depend condition="$ROS_VERSION == 1">socketcan_interface</depend>
+  <depend condition="$ROS_VERSION == 1">sound_play</depend>
+  <depend condition="$ROS_VERSION == 1">swri_math_util</depend>
+  <depend condition="$ROS_VERSION == 1">swri_roscpp</depend>
+  <depend condition="$ROS_VERSION == 1">swri_serial_util</depend>
+  <depend condition="$ROS_VERSION == 1">swri_string_util</depend>
+  <depend condition="$ROS_VERSION == 1">swri_nodelet</depend>
+  <depend condition="$ROS_VERSION == 1">tablet_socket_msgs</depend>
+  <depend condition="$ROS_VERSION == 1">tf</depend>
+  <depend condition="$ROS_VERSION == 1">tf_conversions</depend>
+  <depend condition="$ROS_VERSION == 1">topic_tools</depend>
+  <depend condition="$ROS_VERSION == 1">transmission_interface</depend>
+  <depend condition="$ROS_VERSION == 1">vector_map_msgs</depend>
+  <depend condition="$ROS_VERSION == 1">velodyne_description</depend>
+  <depend condition="$ROS_VERSION == 1">velodyne_gazebo_plugins</depend>
+  <depend condition="$ROS_VERSION == 1">velodyne_pcl</depend>
+  <depend condition="$ROS_VERSION == 1">xmlrpcpp</depend>
+
+  <!-- Common dependencies that exist in both ROS 1 and ROS 2 -->
   <depend>ackermann_msgs</depend>
-  <depend>armadillo</depend>
   <depend>automotive_navigation_msgs</depend>
   <depend>automotive_platform_msgs</depend>
-  <depend>bondcpp</depend>
   <depend>boost</depend>
   <depend>camera_info_manager</depend>
   <depend>can_msgs</depend>
   <depend>carla_msgs</depend>
-  <depend>catkin</depend>
-  <depend>class_loader</depend>
   <depend>cmake</depend>
-  <depend>cmake_modules</depend>
-  <depend>controller_manager</depend>
-  <depend>cpp_common</depend>
   <depend>curl</depend>
   <depend>cv_bridge</depend>
-  <depend>camera_calibration</depend>
   <depend>diagnostic_aggregator</depend>
   <depend>diagnostic_msgs</depend>
   <depend>diagnostic_updater</depend>
-  <depend>dynamic_reconfigure</depend>
-  <depend>dbw_mkz_msgs</depend>
-  <depend>dataspeed_ulc_can</depend>
-  <depend>effort_controllers</depend>
-  <depend>eigen_conversions</depend>
   <depend>eigen</depend>
   <depend>gazebo_msgs</depend>
-  <depend>gazebo_ros_control</depend>
-  <depend>genmsg</depend>
-  <depend>genpy</depend>
   <depend>geometry_msgs</depend>
-  <depend>glut</depend>
-  <depend>gps_common</depend>
-  <depend>grid_map_msgs</depend>
-  <depend>grid_map_ros</depend>
-  <depend>grid_map_visualization</depend>
   <depend>gtest</depend>
   <depend>image_common</depend>
   <depend>image_geometry</depend>
-  <depend>image_proc</depend>
   <depend>image_transport</depend>
-  <depend>image_view2</depend>
-  <depend>imu_filter_madgwick</depend>
-  <depend>imu_tools</depend>
-  <depend>joint_state_controller</depend>
   <depend>joy</depend>
-  <depend>jsk_recognition_msgs</depend>
-  <depend>jsk_recognition_utils</depend>
-  <depend>jsk_rviz_plugins</depend>
-  <depend>jsk_topic_tools</depend>
   <depend>libgflags-dev</depend>
   <depend>libglew-dev</depend>
   <depend>libgoogle-glog-dev</depend>
@@ -84,80 +118,33 @@
   <depend>libqt5-opengl</depend>
   <depend>libqt5-opengl-dev</depend>
   <depend>libqt5-widgets</depend>
-  <depend>libssh2</depend>
-  <depend>libx11-dev</depend>
-  <depend>libxi-dev</depend>
-  <depend>libxmu-dev</depend>
-  <depend>linux-kernel-headers</depend>
   <depend>message_filters</depend>
-  <depend>message_generation</depend>
-  <depend>message_runtime</depend>
   <depend>nav_msgs</depend>
   <depend>nmea_msgs</depend>
-  <depend>nodelet</depend>
-  <depend>opengl</depend>
   <depend>pcl_conversions</depend>
   <depend>pcl_msgs</depend>
   <depend>pcl_ros</depend>
-  <depend>position_controllers</depend>
-  <depend>python-imaging</depend>
   <depend>python3-nose</depend>
-  <depend>python_qt_binding</depend>
   <depend>python3-requests</depend>
-  <depend>python3-rospkg</depend>
   <depend>python3-serial</depend>
   <depend>python3-yaml</depend>
   <depend>qtbase5-dev</depend>
   <depend>robot_state_publisher</depend>
-  <depend>rosbag</depend>
-  <depend>rosbag_storage</depend>
   <depend>rosbridge_server</depend>
-  <depend>rosconsole</depend>
-  <depend>roscpp</depend>
-  <depend>roscpp_serialization</depend>
-  <depend>rosgraph_msgs</depend>
-  <depend>roslaunch</depend>
-  <depend>roslib</depend>
-  <depend>roslint</depend>
-  <depend>rospy</depend>
-  <depend>rostest</depend>
-  <depend>rosunit</depend>
-  <depend>rqt_gui</depend>
-  <depend>rqt_gui_py</depend>
-  <depend>rqt_plot</depend>
-  <depend>rviz</depend>
   <depend>sensor_msgs</depend>
-  <depend>socketcan_bridge</depend>
-  <depend>socketcan_interface</depend>
-  <depend>sound_play</depend>
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>stereo_msgs</depend>
-  <depend>swri_math_util</depend>
-  <depend>swri_roscpp</depend>
-  <depend>swri_serial_util</depend>
-  <depend>swri_string_util</depend>
-  <depend>swri_nodelet</depend>
-  <depend>tablet_socket_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_geometry_msgs</depend>
   <depend>tf2_msgs</depend>
   <depend>tf2_ros</depend>
-  <depend>tf_conversions</depend>
-  <depend>tf</depend>
   <depend>tinyxml</depend>
-  <depend>topic_tools</depend>
-  <depend>transmission_interface</depend>
   <depend>v4l-utils</depend>
-  <depend>vector_map_msgs</depend>
   <depend>velocity_controllers</depend>
   <depend>velodyne</depend>
-  <depend>velodyne_description</depend>
-  <depend>velodyne_gazebo_plugins</depend>
   <depend>velodyne_pointcloud</depend>
-  <depend>velodyne_pcl</depend>
   <depend>visualization_msgs</depend>
   <depend>xacro</depend>
-  <depend>xmlrpcpp</depend>
   <depend>yaml-cpp</depend>
 </package>
