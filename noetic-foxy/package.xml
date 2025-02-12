@@ -129,7 +129,6 @@
   <depend>python3-serial</depend>
   <depend>python3-yaml</depend>
   <depend>qtbase5-dev</depend>
-  <depend>raptor-dbw-msgs</depend>
   <depend>robot_state_publisher</depend>
   <depend>rosbridge_server</depend>
   <depend>sensor_msgs</depend>
