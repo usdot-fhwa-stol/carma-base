@@ -85,7 +85,6 @@
   <depend condition="$ROS_VERSION == 1">velodyne_pcl</depend>
   <depend condition="$ROS_VERSION == 1">xmlrpcpp</depend>
   <depend condition="$ROS_VERSION == 1">xmlrpcpp</depend>
-  <depend condition="$ROS_VERSION == 2">raptor-dbw-msgs</depend>
 
   <!-- Common dependencies that exist in both ROS 1 and ROS 2 -->
   <depend>ackermann_msgs</depend>

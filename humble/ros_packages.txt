@@ -21,7 +21,6 @@ ros-humble-lgsvl-msgs
 ros-humble-osqp-vendor
 ros-humble-osrf-testing-tools-cpp
 ros-humble-point-cloud-msg-wrapper
-ros-humble-raptor-dbw-msgs
 ros-humble-ros-testing
 ros-humble-rosapi
 ros-humble-rosapi-msgs
