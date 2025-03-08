@@ -25,8 +25,7 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-
-# Install AutonomousStuff dependencies
+# Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list'
 
 # Install ROS2 packages
@@ -82,7 +81,6 @@ RUN useradd -m carma && \
     chown carma:carma -R /opt/carma
 
 # Copy files for carma user
-COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
 COPY --chown=carma ./entrypoint.sh ${DOCKERFILE_DIR}/init-env.sh /home/carma/.base-image/
 COPY --chown=carma ./code_coverage /home/carma/.ci-image/engineering_tools/code_coverage
 

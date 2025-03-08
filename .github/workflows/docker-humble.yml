@@ -1,5 +1,5 @@
-# This workflow will only build for Pull Requests which are opened, changed , merged 
-# that has changes in humble folder or related files 
+# This workflow will only build for Pull Requests which are opened, changed , merged
+# that has changes in humble folder or related files
 name: Docker Humble build
 on:
   pull_request:
@@ -12,4 +12,6 @@ jobs:
   docker-build-humble:
     uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
     with:
-      file: ./humble/Dockerfile 
+      file: ./humble/Dockerfile
+      tag_name_suffix: humble
+      replace_suffix: true # TODO: remove after develop-humble branch is merged to develop
