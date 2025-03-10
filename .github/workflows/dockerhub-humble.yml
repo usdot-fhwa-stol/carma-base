@@ -1,12 +1,14 @@
-# This workflow will build and push official docker images for ROS Humble when new push occurs 
+# This workflow will build and push official docker images for ROS Humble when new push occurs
 # to develop, master, release branches but doesn't run any unit test or sonar scanner
 name: Docker Hub Humble build
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
       - master
       - "release/*"
+      - develop-humble
     tags:
       - "carma-system-*"
     paths:
@@ -22,3 +24,4 @@ jobs:
     with:
       file: ./humble/Dockerfile
       tag_name_suffix: humble
+      replace_suffix: true # TODO: remove after develop-humble branch is merged to develop
