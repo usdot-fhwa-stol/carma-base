@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (C) 2018-2021 LEIDOS.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy of
+  the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+-->
+<package format="3">
+  <name>carma_base</name>
+  <version>3.4.0</version>
+  <description>A metapackage to install the dependencies for CARMA</description>
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <maintainer email="carma@dot.gov">carma</maintainer>
+  <license>Apache 2.0</license>
+
+  <depend>ackermann_msgs</depend>
+  <depend>armadillo</depend>
+  <depend>automotive_navigation_msgs</depend>
+  <depend>automotive_platform_msgs</depend>
+  <depend>bondcpp</depend>
+  <depend>boost</depend>
+  <depend>camera_info_manager</depend>
+  <depend>can_msgs</depend>
+  <depend>carla_msgs</depend>
+  <depend>catkin</depend>
+  <depend>class_loader</depend>
+  <depend>cmake</depend>
+  <depend>cmake_modules</depend>
+  <depend>controller_manager</depend>
+  <depend>cpp_common</depend>
+  <depend>curl</depend>
+  <depend>cv_bridge</depend>
+  <depend>camera_calibration</depend>
+  <depend>diagnostic_aggregator</depend>
+  <depend>diagnostic_msgs</depend>
+  <depend>diagnostic_updater</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>dbw_mkz_msgs</depend>
+  <depend>dataspeed_ulc_can</depend>
+  <depend>effort_controllers</depend>
+  <depend>eigen_conversions</depend>
+  <depend>eigen</depend>
+  <depend>gazebo_msgs</depend>
+  <depend>gazebo_ros_control</depend>
+  <depend>genmsg</depend>
+  <depend>genpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>glut</depend>
+  <depend>gps_common</depend>
+  <depend>grid_map_msgs</depend>
+  <depend>grid_map_ros</depend>
+  <depend>grid_map_visualization</depend>
+  <depend>gtest</depend>
+  <depend>image_common</depend>
+  <depend>image_geometry</depend>
+  <depend>image_proc</depend>
+  <depend>image_transport</depend>
+  <depend>image_view2</depend>
+  <depend>imu_filter_madgwick</depend>
+  <depend>imu_tools</depend>
+  <depend>joint_state_controller</depend>
+  <depend>joy</depend>
+  <depend>jsk_recognition_msgs</depend>
+  <depend>jsk_recognition_utils</depend>
+  <depend>jsk_rviz_plugins</depend>
+  <depend>jsk_topic_tools</depend>
+  <depend>libgflags-dev</depend>
+  <depend>libglew-dev</depend>
+  <depend>libgoogle-glog-dev</depend>
+  <depend>libopencv-dev</depend>
+  <depend>libpcl-all</depend>
+  <depend>libpcl-all-dev</depend>
+  <depend>libqt5-core</depend>
+  <depend>libqt5-gui</depend>
+  <depend>libqt5-opengl</depend>
+  <depend>libqt5-opengl-dev</depend>
+  <depend>libqt5-widgets</depend>
+  <depend>libssh2</depend>
+  <depend>libx11-dev</depend>
+  <depend>libxi-dev</depend>
+  <depend>libxmu-dev</depend>
+  <depend>linux-kernel-headers</depend>
+  <depend>message_filters</depend>
+  <depend>message_generation</depend>
+  <depend>message_runtime</depend>
+  <depend>nav_msgs</depend>
+  <depend>nmea_msgs</depend>
+  <depend>nodelet</depend>
+  <depend>opengl</depend>
+  <depend>pcl_conversions</depend>
+  <depend>pcl_msgs</depend>
+  <depend>pcl_ros</depend>
+  <depend>position_controllers</depend>
+  <depend>python-imaging</depend>
+  <depend>python3-nose</depend>
+  <depend>python_qt_binding</depend>
+  <depend>python3-requests</depend>
+  <depend>python3-rospkg</depend>
+  <depend>python3-serial</depend>
+  <depend>python3-yaml</depend>
+  <depend>qtbase5-dev</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>rosbag</depend>
+  <depend>rosbag_storage</depend>
+  <depend>rosbridge_server</depend>
+  <depend>rosconsole</depend>
+  <depend>roscpp</depend>
+  <depend>roscpp_serialization</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>roslaunch</depend>
+  <depend>roslib</depend>
+  <depend>roslint</depend>
+  <depend>rospy</depend>
+  <depend>rostest</depend>
+  <depend>rosunit</depend>
+  <depend>rqt_gui</depend>
+  <depend>rqt_gui_py</depend>
+  <depend>rqt_plot</depend>
+  <depend>rviz</depend>
+  <depend>sensor_msgs</depend>
+  <depend>socketcan_bridge</depend>
+  <depend>socketcan_interface</depend>
+  <depend>sound_play</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>stereo_msgs</depend>
+  <depend>swri_math_util</depend>
+  <depend>swri_roscpp</depend>
+  <depend>swri_serial_util</depend>
+  <depend>swri_string_util</depend>
+  <depend>swri_nodelet</depend>
+  <depend>tablet_socket_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>tf2_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf_conversions</depend>
+  <depend>tf</depend>
+  <depend>tinyxml</depend>
+  <depend>topic_tools</depend>
+  <depend>transmission_interface</depend>
+  <depend>v4l-utils</depend>
+  <depend>vector_map_msgs</depend>
+  <depend>velocity_controllers</depend>
+  <depend>velodyne</depend>
+  <depend>velodyne_description</depend>
+  <depend>velodyne_gazebo_plugins</depend>
+  <depend>velodyne_pointcloud</depend>
+  <depend>velodyne_pcl</depend>
+  <depend>visualization_msgs</depend>
+  <depend>xacro</depend>
+  <depend>xmlrpcpp</depend>
+  <depend>yaml-cpp</depend>
+</package>

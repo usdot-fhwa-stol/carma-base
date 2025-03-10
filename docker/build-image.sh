@@ -16,7 +16,7 @@
 
 USERNAME=usdotfhwastol
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
-BUILD_NOETIC_FOXY=false
+BUILD_NOETIC=false
 BUILD_HUMBLE=false
 
 cd "$(dirname "$0")"
@@ -58,8 +58,8 @@ while [[ $# -gt 0 ]]; do
             fi
             shift
             ;;
-        --noetic-foxy)
-            BUILD_NOETIC_FOXY=true
+        --noetic)
+            BUILD_NOETIC=true
             shift
             ;;
         --humble)
@@ -78,45 +78,39 @@ build_image() {
     local tag_suffix=$2
 
     echo "Building docker image for $IMAGE version: $COMPONENT_VERSION_STRING using Dockerfile: $dockerfile_path"
-    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix"
+    echo "Final image name: $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix"
 
-    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix \
+    DOCKER_BUILDKIT=1 docker build --network=host -t $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix \
         --build-arg VERSION="$COMPONENT_VERSION_STRING" \
         --build-arg VCS_REF=`git rev-parse --short HEAD` \
         --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
         -f $dockerfile_path .
 
-    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix")
+    TAGS+=("$USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix")
 
-    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix $USERNAME/$IMAGE:latest$tag_suffix
-    TAGS+=("$USERNAME/$IMAGE:latest$tag_suffix")
+    docker tag $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix $USERNAME/$IMAGE:latest-$tag_suffix
+    TAGS+=("$USERNAME/$IMAGE:latest-$tag_suffix")
 
-    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING$tag_suffix as $USERNAME/$IMAGE:latest$tag_suffix"
+    echo "Tagged $USERNAME/$IMAGE:$COMPONENT_VERSION_STRING-$tag_suffix as $USERNAME/$IMAGE:latest-$tag_suffix"
 }
 
 TAGS=()
 
 cd ..
 
-# If neither --noetic-foxy nor --humble is specified, build only noetic-foxy for now.
-# Once all humble related changes are merged into develop, humble should be enabled.
-# https://usdot-carma.atlassian.net/browse/ARC-227
-if [ "$BUILD_NOETIC_FOXY" = false ] && [ "$BUILD_HUMBLE" = false ]; then
-    BUILD_NOETIC_FOXY=true
-    BUILD_HUMBLE=false
+if [ "$BUILD_NOETIC" = false ] && [ "$BUILD_HUMBLE" = false ]; then
+    BUILD_NOETIC=true
+    BUILD_HUMBLE=true
 fi
 
-# TODO, distinguish with suffix when Humble is fully integrated
-# until then noetic-foxy will have no suffix and be the main image
-# https://usdot-carma.atlassian.net/browse/ARC-227
-if [ "$BUILD_NOETIC_FOXY" = true ]; then
-    echo "Building carma-base noetic-foxy image"
-    build_image "noetic-foxy/Dockerfile" "" #replace with just "-noetic" after ros2 is migrated to humble 
+if [ "$BUILD_NOETIC" = true ]; then
+    echo "Building carma-base noetic image"
+    build_image "noetic/Dockerfile" "noetic"
 fi
 
 if [ "$BUILD_HUMBLE" = true ]; then
     echo "Building carma-base humble image"
-    build_image "humble/Dockerfile" "-humble"
+    build_image "humble/Dockerfile" "humble"
 fi
 
 if [ "$PUSH" = true ]; then
