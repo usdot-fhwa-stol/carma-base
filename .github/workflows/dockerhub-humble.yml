@@ -8,7 +8,6 @@ on:
       - develop
       - master
       - "release/*"
-      - develop-humble
     tags:
       - "carma-system-*"
     paths:
@@ -24,4 +23,3 @@ jobs:
     with:
       file: ./humble/Dockerfile
       tag_name_suffix: humble
-      replace_suffix: true # TODO: remove after develop-humble branch is merged to develop
