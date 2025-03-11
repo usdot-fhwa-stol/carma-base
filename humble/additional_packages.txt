@@ -15,6 +15,10 @@ libpugixml-dev
 libxmlrpcpp-dev
 lttng-modules-dkms
 lttng-tools
+liblttng-ust-dev
+python3-lttng
+python3-babeltrace
+babeltrace
 mesa-utils
 nano
 nodejs
