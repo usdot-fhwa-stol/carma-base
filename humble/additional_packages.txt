@@ -31,3 +31,4 @@ unzip
 vim
 wait-for-it
 x-window-system
+clang-tidy
