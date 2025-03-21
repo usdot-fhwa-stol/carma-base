@@ -14,4 +14,3 @@ ros-noetic-lusb
 ros-noetic-rosserial
 ros-noetic-rosserial-arduino
 ros-noetic-velodyne-pcl
-ros-noetic-gps-common
