@@ -15,6 +15,7 @@ ros-humble-automotive-platform-msgs
 ros-humble-automotive-navigation-msgs
 ros-humble-automotive-autonomy-msgs
 ros-humble-diagnostic-updater
+ros-humble-foxglove-bridge
 ros-humble-gps-msgs
 ros-humble-joy-linux
 ros-humble-lgsvl-msgs
