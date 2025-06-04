@@ -2,6 +2,7 @@ apt-transport-https
 apt-utils
 automake
 autotools-dev
+cmake
 dialog
 gcovr
 gdb
