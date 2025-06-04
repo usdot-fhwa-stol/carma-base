@@ -39,7 +39,10 @@ RUN apt-get update && \
 
 # Step 4: Set up ROS repository and install ROS dependencies
 ARG ROS_DISTRO=noetic
-RUN apt update && apt install ros-apt-source
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros.list > /dev/null && \
+    apt update && apt install -y ros-apt-source
+
 
 # Step 5: Install AutonomouStuff dependencies
 RUN echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list && \
