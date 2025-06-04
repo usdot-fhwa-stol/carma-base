@@ -28,7 +28,7 @@ RUN apt update && apt install locales && \
     export LANG=en_US.UTF-8
 
 # Set up sources before installing ROS2
-RUN apt install software-properties-common && \
+RUN apt install -y software-properties-common && \
     add-apt-repository universe
 
 # Installing the ros2-apt-source package will configure ROS 2 repositories
