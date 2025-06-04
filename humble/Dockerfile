@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates curl gnupg2 lsb-release
 
 # Set up ROS2 repository
-RUN sudo apt update && sudo apt install ros2-apt-source
+RUN apt update && apt install ros2-apt-source
 
 # Install AutonomouStuff dependencies
 RUN sh -c 'echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list'
