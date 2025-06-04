@@ -22,7 +22,6 @@ babeltrace
 mesa-utils
 nano
 nodejs
-software-properties-common
 sqlite3
 ssh
 sudo
