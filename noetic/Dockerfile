@@ -43,7 +43,8 @@ ARG ROS_DISTRO=noetic
 RUN apt-get update && apt-get install -y software-properties-common curl && \
     add-apt-repository universe
 
-# Installing the ros-apt-source packages will configure ROS 1 repositories
+# Install the ros-apt-source package, which configures ROS 1 repositories
+# Then clean the downloaded .deb file to save space
 RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}') && \
     curl -L -o /tmp/ros-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" && \
     apt-get install -y /tmp/ros-apt-source.deb && \
@@ -111,7 +112,7 @@ RUN apt-get update && \
 
 # Step 12: Update to latest Git
 RUN add-apt-repository ppa:git-core/ppa -y && \
-    apt update && apt install git -y
+    apt-get update && apt-get install git -y
 
 # Step 13: Copy files general files for image
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/

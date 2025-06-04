@@ -22,18 +22,19 @@ RUN apt-get update && apt-get install -y \
     ca-certificates curl gnupg2 lsb-release
 
 # Set Locale before setting up ROS2 repository
-RUN apt update && apt install locales && \
+RUN apt-get update && apt-get install -y locales && \
     locale-gen en_US en_US.UTF-8 && \
     update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 && \
     export LANG=en_US.UTF-8
 
 # Set up sources before installing ROS2
-RUN apt install -y software-properties-common && \
+RUN apt-get install -y software-properties-common && \
     add-apt-repository universe
 
-# Installing the ros2-apt-source package will configure ROS 2 repositories
+# Install the ros2-apt-source package, which configures ROS 2 repositories
+# Then clean the downloaded .deb file to save space
 ARG ROS_DISTRO=humble
-RUN apt update && \
+RUN apt-get update && \
     export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}') && \
     curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" && \
     apt-get install -y /tmp/ros2-apt-source.deb && \
@@ -52,7 +53,7 @@ RUN apt-get update && \
 
 # Update to latest Git
 RUN add-apt-repository ppa:git-core/ppa -y && \
-    apt update && apt install git -y
+    apt-get update && apt-get install git -y
 
 # Set up PROJ
 RUN curl -o /usr/share/cmake-3.22/Modules/FindPROJ.cmake https://raw.githubusercontent.com/OSGeo/libgeotiff/refs/heads/master/libgeotiff/cmake/FindPROJ.cmake
