@@ -8,7 +8,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 # Dockerfile directory relative to root
 ARG DOCKERFILE_DIR="humble"
 
-# Specify which platform GPUs are available inside the container
+# Specify which platform GPUs are available inside the containerr
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
