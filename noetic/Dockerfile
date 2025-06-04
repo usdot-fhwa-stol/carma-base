@@ -47,6 +47,10 @@ RUN apt-get update && apt-get install -y software-properties-common curl && \
 RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}') && \
     curl -L -o /tmp/ros-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" && \
     apt-get install -y /tmp/ros-apt-source.deb && \
+    apt-get update && \
+    xargs -a /tmp/ros_deps.txt apt-get install --no-install-recommends -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     rm /tmp/ros-apt-source.deb
 
 # Step 5: Install AutonomouStuff dependencies
