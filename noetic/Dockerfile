@@ -39,12 +39,20 @@ RUN apt-get update && \
 
 # Step 4: Set up ROS repository and install ROS dependencies
 ARG ROS_DISTRO=noetic
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \
-    echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list && \
+# Set up sources before installing ROS
+RUN apt-get update && apt-get install -y software-properties-common curl && \
+    add-apt-repository universe
+
+# Install the ros-apt-source package, which configures ROS 1 repositories
+# Then clean the downloaded .deb file to save space
+RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}') && \
+    curl -L -o /tmp/ros-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" && \
+    apt-get install -y /tmp/ros-apt-source.deb && \
     apt-get update && \
     xargs -a /tmp/ros_deps.txt apt-get install --no-install-recommends -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm /tmp/ros-apt-source.deb
 
 # Step 5: Install AutonomouStuff dependencies
 RUN echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list && \
@@ -104,7 +112,7 @@ RUN apt-get update && \
 
 # Step 12: Update to latest Git
 RUN add-apt-repository ppa:git-core/ppa -y && \
-    apt update && apt install git -y
+    apt-get update && apt-get install git -y
 
 # Step 13: Copy files general files for image
 COPY --chown=carma ${DOCKERFILE_DIR}/package.xml /home/carma/.base-image/workspace/src/carma_base/
