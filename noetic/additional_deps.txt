@@ -30,7 +30,6 @@ python3-pip
 python3-setuptools
 python3-testresources
 python3-pybind11
-software-properties-common
 sqlite3
 ssh
 sudo
