@@ -49,6 +49,13 @@ RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-inf
     apt-get install -y /tmp/ros-apt-source.deb && \
     rm /tmp/ros-apt-source.deb
 
+# Step 5: Install AutonomouStuff dependencies
+RUN echo "deb [trusted=yes] https://s3.amazonaws.com/autonomoustuff-repo/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/autonomoustuff-public.list && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y libas-common && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Step 6: Install Vimba dependencies
 RUN add-apt-repository --update -y ppa:rock-core/qt4 && \
     apt-get update && \
