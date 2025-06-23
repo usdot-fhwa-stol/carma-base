@@ -1,0 +1,16 @@
+# This workflow will only build for Pull Requests which are opened, changed , merged
+# that has changes in humble folder or related files
+name: Docker Humble build
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**'
+      - '!noetic/**' # Exclude noetic folder
+jobs:
+  # Ubuntu 22.04 (ROS2 Humble)
+  docker-build-humble:
+    uses: usdot-fhwa-stol/actions/.github/workflows/docker.yml@main
+    with:
+      file: ./humble/Dockerfile
+      tag_name_suffix: humble

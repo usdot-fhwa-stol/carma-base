@@ -1,0 +1,25 @@
+# This workflow will build and push official docker images for Noetic ROS when new push occurs
+# to develop, master, release branches but doesn't run any unit test or sonar scanner
+name: Docker Hub Noetic build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - master
+      - "release/*"
+    tags:
+      - "carma-system-*"
+    paths:
+      - '**'  # Build when there are changes in noetic folder or related files
+      - '!humble/**' # Exclude humble folder
+jobs:
+  # Ubuntu 20.04 (ROS1 Noetic)
+  dockerhub-noetic:
+    uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      file: ./noetic/Dockerfile
+      tag_name_suffix: noetic

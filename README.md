@@ -1,16 +1,18 @@
-| DockerHub Release | DockerHub Release Candidate | DockerHub Develop |
-|------|-----|-----|
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/usdotfhwastol/carma-base?label=Docker%20Build&logo=232496ED)](https://hub.docker.com/repository/docker/usdotfhwastol/carma-base) | [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/usdotfhwastolcandidate/carma-base?label=Docker%20Build&logo=232496ED)](https://hub.docker.com/repository/docker/usdotfhwastolcandidate/carma-base) | [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/usdotfhwastoldev/carma-base?label=Docker%20Build&logo=232496ED)](https://hub.docker.com/repository/docker/usdotfhwastoldev/carma-base)
-
+| Dockerhub Noetic Build - Develop | Dockerhub Noetic Build - Release | Dockerhub Humble Build - Develop | Dockerhub Humble Build - Release |
+|-------------------------------|------------------------------|------------------------------|------------------------------|
+[![Noetic Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic.yml) | [![Noetic Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-noetic.yml) | [![Humble Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml/badge.svg?branch=develop)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml) | [![Humble Build](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml/badge.svg?tag=carma-system-*)](https://github.com/usdot-fhwa-stol/carma-base/actions/workflows/dockerhub-humble.yml)
 
 # CARMABase
 CARMA Base is the Docker base image for Dockerized releases and deployments of the CARMA Platform. All CARMA images should inherit from this and any dependencies of those images should be instaled in this base image to minimize system build time and final image size.
+
+Currently there are two CARMA Base image types. One is based on Ubuntu Focal Fossa (20.04 LTS) which supports ROS Noetic. 
+The other is based on Ubuntu Jammy Jellyfish (22.04 LTS) which supports ROS 2 Humble.
 
 # CARMAPlatform
 The primary CARMAPlatform repository can be found [here](https://github.com/usdot-fhwa-stol/carma-platform) and is part of the [USDOT FHWA STOL](https://github.com/usdot-fhwa-stol/)
 github organization. Documentation on how the CARMAPlatform functions, how it will evolve over time, and how you can contribute can be found at the above links as well
 
-## Contribution
+## Contribution 
 Welcome to the CARMA contributing guide. Please read this guide to learn about our development process, how to propose pull requests and improvements, and how to build and test your changes to this project. [CARMA Contributing Guide](https://github.com/usdot-fhwa-stol/carma-platform/blob/develop/Contributing.md) 
 
 ## Code of Conduct 
