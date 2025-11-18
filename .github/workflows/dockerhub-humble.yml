@@ -13,9 +13,12 @@ on:
     paths:
       - '**' # Build when there are changes in humble folder or related files
       - '!noetic/**' # Exclude noetic folder
+  create:
 jobs:
   # Ubuntu 22.04 (ROS2 Humble)
   dockerhub-humble:
+    # For create: only allow release/* branches to trigger builds
+    if: github.event_name != 'create' || startsWith(github.ref, 'refs/heads/release/')
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
