@@ -1,6 +1,6 @@
 # CARMA Base Image Docker Configuration Script
 
-FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
+FROM nvidia/cuda:12.3.0-devel-ubuntu22.04
 
 # Avoid interactive prompts during the building of this docker image
 ARG DEBIAN_FRONTEND="noninteractive"
