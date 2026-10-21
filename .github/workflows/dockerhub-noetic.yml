@@ -17,8 +17,12 @@ on:
 jobs:
   # Ubuntu 20.04 (ROS1 Noetic)
   dockerhub-noetic:
-    # For create: only allow release/* branches
-    if: github.event_name != 'create' || startsWith(github.ref, 'refs/heads/release/')
+    # Preserve push/manual builds; also build newly created release branches.
+    if: >-
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'create' && github.event.ref_type == 'branch' &&
+       startsWith(github.event.ref, 'release/'))
     uses: usdot-fhwa-stol/actions/.github/workflows/dockerhub.yml@main
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
