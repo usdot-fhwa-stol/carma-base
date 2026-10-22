@@ -95,8 +95,8 @@ RUN curl -L -o Vimba_v5.0_Linux.tgz https://github.com/usdot-fhwa-stol/avt_vimba
 # Step 10: Set up SonarQube
 RUN SONAR_DIR=/opt/sonarqube && \
     mkdir $SONAR_DIR && \
-    curl -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip && \
-    curl -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
+    curl -fL -o $SONAR_DIR/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip && \
+    curl -fL -o $SONAR_DIR/build-wrapper.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip && \
     unzip $SONAR_DIR/sonar-scanner.zip -d "$SONAR_DIR"/ && \
     unzip $SONAR_DIR/build-wrapper.zip -d "$SONAR_DIR"/ && \
     rm $SONAR_DIR/sonar-scanner.zip && \

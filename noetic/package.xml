@@ -100,7 +100,7 @@
   <depend>pcl_msgs</depend>
   <depend>pcl_ros</depend>
   <depend>position_controllers</depend>
-  <depend>python-imaging</depend>
+  <depend>python3-pil</depend>
   <depend>python3-nose</depend>
   <depend>python_qt_binding</depend>
   <depend>python3-requests</depend>
